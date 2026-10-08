@@ -1047,3 +1047,167 @@ a:active {
 	font-size: 13px;
 	margin-top: 14px;
 }
+
+/* ==========================================================================
+   Адаптивная верстка (Mobile & Tablet)
+   ========================================================================== */
+
+/* Планшеты (до 992px) */
+@media (max-width: 992px) {
+	.container {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.layout-wrapper {
+		flex-direction: column;
+	}
+
+	.sidebar {
+		width: 100%;
+	}
+
+	.header-container {
+		flex-wrap: wrap;
+		gap: 15px;
+	}
+
+	.search-form {
+		order: 3;
+		width: 100%;
+	}
+
+	.stats-grid {
+		flex-wrap: wrap;
+	}
+
+	.stat-box {
+		min-width: calc(50% - 10px);
+	}
+}
+
+/* Мобильные телефоны (до 768px) */
+@media (max-width: 768px) {
+	.header-container {
+		justify-content: space-between;
+	}
+
+	.nav-list {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.nav-link {
+		padding: 10px 12px;
+		font-size: 13px;
+	}
+
+	.promo-banner {
+		padding: 20px 15px;
+	}
+
+	.promo-heading {
+		font-size: 20px;
+	}
+
+	.movie-card {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.poster-box {
+		width: 100%;
+		height: auto;
+		max-width: 220px;
+		margin: 15px auto 0;
+	}
+
+	.poster-image {
+		width: 100%;
+		height: auto;
+	}
+
+	.movie-view-header {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.movie-view-poster {
+		width: 100%;
+		max-width: 240px;
+		height: auto;
+	}
+
+	.movie-view-rating {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.about-grid,
+	.contacts-grid {
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.stat-box {
+		min-width: 100%;
+	}
+
+	.footer-container {
+		flex-direction: column;
+		gap: 15px;
+		text-align: center;
+	}
+
+	.footer-navigation {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 12px;
+	}
+
+	.player-box {
+		height: 250px;
+	}
+}
+
+/* Маленькие смартфоны (до 480px) */
+@media (max-width: 480px) {
+	.logo-text {
+		font-size: 20px;
+	}
+
+	.logo-image {
+		width: 26px;
+		height: 26px;
+	}
+
+	.nav-list {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		width: 100%;
+		text-align: center;
+	}
+
+	.nav-item.active .nav-link {
+		border-bottom: none;
+		background-color: #ed8936;
+		color: #ffffff;
+	}
+
+	.catalog-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+
+	.filter-box {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	.modal-window {
+		margin: 0 15px;
+	}
+}
