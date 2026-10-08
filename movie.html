@@ -19,7 +19,7 @@
 			</div>
 
 			<form id="search-form" class="search-form" action="index.html" method="get">
-				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма по названию..." autocomplete="off">
 				<button type="submit" class="search-button">Найти</button>
 			</form>
 
@@ -28,13 +28,16 @@
 			</div>
 		</div>
 
-		<!-- Главное меню -->
+		<!-- Главное меню (то же самое, что на главной) -->
 		<nav id="main-navigation" class="navigation">
 			<div class="container">
-				<ul class="nav-list">
+				<ul class="nav-list" id="nav-tabs">
 					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
-					<li class="nav-item active"><a href="#" class="nav-link">Просмотр фильма</a></li>
-					<li class="nav-item"><a href="index.html" class="nav-link" id="nav-contacts-link">Контакты</a></li>
+					<li class="nav-item"><a href="index.html?tab=movies" class="nav-link">Фильмы</a></li>
+					<li class="nav-item"><a href="index.html?tab=series" class="nav-link">Сериалы</a></li>
+					<li class="nav-item"><a href="index.html?tab=new" class="nav-link">Новинки</a></li>
+					<li class="nav-item"><a href="index.html?tab=top" class="nav-link">Топ-100</a></li>
+					<li class="nav-item"><a href="index.html?tab=contacts" class="nav-link">Контакты</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -99,7 +102,8 @@
 			</div>
 			<ul class="footer-navigation">
 				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
-				<li class="footer-nav-item"><a href="index.html" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="index.html?tab=movies" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="index.html?tab=contacts" class="footer-link">Контакты</a></li>
 			</ul>
 		</div>
 	</footer>

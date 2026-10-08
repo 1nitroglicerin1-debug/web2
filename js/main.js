@@ -79,11 +79,15 @@ document.addEventListener("DOMContentLoaded", function () {
 				</article>
 			`;
 
-			// Рекомендации в сайдбар
+			// Сайдбар: похожие фильмы, отсортированные строго по рейтингу
 			const similarList = document.getElementById("similar-movies-list");
 			if (similarList) {
 				const mainGenre = movie.genre.split(",")[0].trim();
-				const similar = moviesData.filter(m => m.id !== movie.id && m.genre.includes(mainGenre)).slice(0, 4);
+				const similar = moviesData
+					.filter(m => m.id !== movie.id && m.genre.includes(mainGenre))
+					.sort((a, b) => b.rating - a.rating)
+					.slice(0, 4);
+
 				similarList.innerHTML = similar.map((m, idx) => `
 					<li class="top-list-item">
 						<span class="position-number">${idx + 1}</span>
@@ -102,15 +106,27 @@ document.addEventListener("DOMContentLoaded", function () {
 	// =========================================================================
 	const moviesContainer = document.getElementById("movies-container");
 	if (moviesContainer) {
+		const urlParams = new URLSearchParams(window.location.search);
+		let currentTab = urlParams.get("tab") || "all";
 		let currentGenre = "all";
-		let currentTab = "all";
-		let currentSort = "date";
-		let searchQuery = "";
+		let currentSort = currentTab === "top" ? "rating" : "date";
+		let searchQuery = urlParams.get("search") ? urlParams.get("search").toLowerCase().trim() : "";
 		let currentPage = 1;
 		const pageSize = 5;
 
 		const pagination = document.getElementById("pagination");
 		const catalogTitle = document.getElementById("catalog-title");
+		const promoBanner = document.getElementById("promo-banner");
+		const catalogView = document.getElementById("catalog-view");
+		const contactsView = document.getElementById("contacts-view");
+		const sortDateBtn = document.getElementById("sort-date");
+		const sortRatingBtn = document.getElementById("sort-rating");
+		const searchInput = document.getElementById("search-input");
+		const searchForm = document.getElementById("search-form");
+
+		if (searchInput && searchQuery) {
+			searchInput.value = searchQuery;
+		}
 
 		function updateGenreCounters() {
 			const genres = [
@@ -153,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				if (currentTab === "movies" && movie.type !== "movies") return false;
 				if (currentTab === "series" && movie.type !== "series") return false;
 				if (currentTab === "new" && movie.type !== "new") return false;
-				if (currentTab === "top" && movie.rating < 8.7) return false;
+				if (currentTab === "top" && movie.rating < 8.6) return false;
 
 				if (currentGenre !== "all" && !movie.genre.includes(currentGenre)) return false;
 
@@ -163,8 +179,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				}
 				return true;
 			}).sort((a, b) => {
-				if (currentSort === "date") return b.year - a.year;
-				return b.rating - a.rating;
+				// Во вкладке "Топ-100" сортировка ВСЕГДА по рейтингу по убыванию
+				if (currentTab === "top" || currentSort === "rating") {
+					return b.rating - a.rating;
+				}
+				return b.year - a.year;
 			});
 		}
 
@@ -218,37 +237,49 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		}
 
-		// Вкладки
-		const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
-		const promoBanner = document.getElementById("promo-banner");
-		const catalogView = document.getElementById("catalog-view");
-		const contactsView = document.getElementById("contacts-view");
+		function applyTab(tabName, titleText) {
+			currentTab = tabName;
+			currentPage = 1;
 
+			document.querySelectorAll("#nav-tabs .nav-item").forEach(item => {
+				const link = item.querySelector(".nav-link");
+				if (link && link.dataset.tab === tabName) {
+					item.classList.add("active");
+				} else {
+					item.classList.remove("active");
+				}
+			});
+
+			if (currentTab === "contacts") {
+				if (promoBanner) promoBanner.classList.add("hidden");
+				if (catalogView) catalogView.classList.add("hidden");
+				if (contactsView) contactsView.classList.remove("hidden");
+			} else {
+				if (contactsView) contactsView.classList.add("hidden");
+				if (catalogView) catalogView.classList.remove("hidden");
+				if (promoBanner) promoBanner.classList.remove("hidden");
+
+				if (currentTab === "top") {
+					currentSort = "rating";
+					if (sortRatingBtn) sortRatingBtn.classList.add("active");
+					if (sortDateBtn) sortDateBtn.classList.remove("active");
+				}
+
+				if (catalogTitle && titleText) catalogTitle.textContent = titleText;
+				renderCatalog();
+			}
+		}
+
+		// Обработка кликов по вкладкам на главной
+		const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
 		navLinks.forEach(link => {
 			link.addEventListener("click", function (e) {
 				e.preventDefault();
-				navLinks.forEach(l => l.parentElement.classList.remove("active"));
-				this.parentElement.classList.add("active");
-
-				currentTab = this.dataset.tab;
-				currentPage = 1;
-
-				if (currentTab === "contacts") {
-					promoBanner.classList.add("hidden");
-					catalogView.classList.add("hidden");
-					contactsView.classList.remove("hidden");
-				} else {
-					contactsView.classList.add("hidden");
-					catalogView.classList.remove("hidden");
-					promoBanner.classList.remove("hidden");
-
-					catalogTitle.textContent = this.textContent;
-					renderCatalog();
-				}
+				applyTab(this.dataset.tab, this.textContent);
 			});
 		});
 
-		// Сайдбар - жанры
+		// Сайдбар - фильтрация по жанрам
 		const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
 		genreLinks.forEach(link => {
 			link.addEventListener("click", function (e) {
@@ -261,10 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		});
 
-		// Сортировка
-		const sortDateBtn = document.getElementById("sort-date");
-		const sortRatingBtn = document.getElementById("sort-rating");
-
+		// Переключатели сортировки
 		if (sortDateBtn && sortRatingBtn) {
 			sortDateBtn.addEventListener("click", function (e) {
 				e.preventDefault();
@@ -284,9 +312,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		// Поиск
-		const searchInput = document.getElementById("search-input");
-		const searchForm = document.getElementById("search-form");
-
 		if (searchInput) {
 			searchInput.addEventListener("input", function () {
 				searchQuery = this.value.toLowerCase().trim();
@@ -304,14 +329,23 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		}
 
-		// Инициализация каталога
+		// Стартовая инициализация
 		updateGenreCounters();
 		renderTopSidebar();
-		renderCatalog();
+
+		const initialTabTitles = {
+			all: "Главная",
+			movies: "Фильмы",
+			series: "Сериалы",
+			new: "Новинки",
+			top: "Топ-100",
+			contacts: "Контакты"
+		};
+		applyTab(currentTab, initialTabTitles[currentTab] || "Новинки проката");
 	}
 
 	// =========================================================================
-	// В. Общие элементы (Модальное окно, футер)
+	// В. Общие модули (Вход, Контакты)
 	// =========================================================================
 	const loginBtn = document.getElementById("open-login-btn");
 	const loginModal = document.getElementById("login-modal");
