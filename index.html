@@ -18,7 +18,7 @@
 				</a>
 			</div>
 
-			<form id="search-form" class="search-form" action="#" method="get">
+			<form id="search-form" class="search-form" action="movies.html" method="get">
 				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма по названию..." autocomplete="off">
 				<button type="submit" class="search-button">Найти</button>
 			</form>
@@ -28,16 +28,15 @@
 			</div>
 		</div>
 
-		<!-- Главное меню (вкладки) -->
+		<!-- Главное меню -->
 		<nav id="main-navigation" class="navigation">
 			<div class="container">
 				<ul class="nav-list" id="nav-tabs">
-					<li class="nav-item active"><a href="#" class="nav-link" data-tab="all">Главная</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-tab="movies">Фильмы</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-tab="series">Сериалы</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-tab="new">Новинки</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-tab="top">Топ-100</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-tab="contacts">Контакты</a></li>
+					<li class="nav-item active"><a href="index.html" class="nav-link" data-tab="all">Главная</a></li>
+					<li class="nav-item"><a href="about.html" class="nav-link">О Компании</a></li>
+					<li class="nav-item"><a href="movies.html" class="nav-link" data-tab="movies">Каталог фильмов</a></li>
+					<li class="nav-item"><a href="price.html" class="nav-link">Прайс-лист</a></li>
+					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -48,7 +47,6 @@
 		
 		<!-- Сайдбар -->
 		<aside id="sidebar" class="sidebar">
-			<!-- Фильтр по жанрам с динамическим подсчётом -->
 			<section class="widget">
 				<h3 class="widget-title">Жанры кино</h3>
 				<ul class="widget-list genre-list" id="genre-filter">
@@ -61,12 +59,17 @@
 				</ul>
 			</section>
 
-			<!-- Топ фильмов -->
 			<section class="widget">
 				<h3 class="widget-title">Популярные фильмы</h3>
 				<ul class="widget-list top-list" id="top-movies-list">
 					<!-- Наполняется скриптом -->
 				</ul>
+			</section>
+
+			<section class="widget widget-promo-offer">
+				<h3 class="widget-title">Спецпредложение</h3>
+				<p class="widget-promo-text">Подключите тариф <strong>«Стандарт»</strong> всего за 399 ₽ в месяц без ограничений.</p>
+				<a href="price.html" class="button button-primary button-block">Посмотреть прайс</a>
 			</section>
 		</aside>
 
@@ -76,47 +79,16 @@
 			<!-- Промо-баннер -->
 			<section class="promo-banner" id="promo-banner">
 				<div class="promo-inner">
-					<h2 class="promo-heading">Премьера недели</h2>
-					<p class="promo-description">Смотрите лучшие мировые шедевры киноиндустрии в высоком цифровом качестве и с профессиональным переводом.</p>
-					<button type="button" class="button button-primary" id="promo-action-btn">Смотреть трейлер</button>
-				</div>
-			</section>
-
-			<!-- Секция контактов -->
-			<section id="contacts-view" class="contacts-section hidden">
-				<h2 class="catalog-title">Контакты и обратная связь</h2>
-				<p class="contacts-intro">Возникли вопросы или предложения? Напишите нам, и администрация портала свяжется с вами.</p>
-				<div class="contacts-grid">
-					<form id="feedback-form" class="feedback-form">
-						<div class="form-group">
-							<label for="contact-name">Ваше имя:</label>
-							<input type="text" id="contact-name" class="form-control" placeholder="Иван Иванов" required>
-						</div>
-						<div class="form-group">
-							<label for="contact-email">Email:</label>
-							<input type="email" id="contact-email" class="form-control" placeholder="ivan@example.com" required>
-						</div>
-						<div class="form-group">
-							<label for="contact-msg">Сообщение:</label>
-							<textarea id="contact-msg" class="form-control textarea" rows="4" placeholder="Текст сообщения..." required></textarea>
-						</div>
-						<button type="submit" class="button button-primary">Отправить</button>
-					</form>
-					<div class="contacts-info">
-						<h3 class="widget-title">Информация</h3>
-						<ul class="info-list">
-							<li><strong>Адрес:</strong> г. Брянск, б-р 50 лет Октября, 7</li>
-							<li><strong>Телефон:</strong> +7 (4832) 58-82-58</li>
-							<li><strong>Email:</strong> support@kinobase.ru</li>
-						</ul>
-					</div>
+					<h2 class="promo-heading">Премьера недели: Интерстеллар</h2>
+					<p class="promo-description">Смотрите признанные мировые шедевры киноиндустрии в высоком цифровом качестве Full HD и 4K HDR с профессиональным дублированным переводом.</p>
+					<button type="button" class="button button-primary" id="promo-action-btn">Смотреть онлайн</button>
 				</div>
 			</section>
 
 			<!-- Каталог фильмов -->
 			<section class="catalog" id="catalog-view">
 				<div class="catalog-header">
-					<h2 class="catalog-title" id="catalog-title">Новинки проката</h2>
+					<h2 class="catalog-title" id="catalog-title">Популярные премьеры и фильмы</h2>
 					<div class="filter-box">
 						<span class="filter-label">Сортировка:</span>
 						<a href="#" class="filter-link active" id="sort-date">По дате</a>
@@ -168,9 +140,11 @@
 				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
 			</div>
 			<ul class="footer-navigation">
-				<li class="footer-nav-item"><a href="#" class="footer-link">Политика сайта</a></li>
-				<li class="footer-nav-item"><a href="#" class="footer-link">Правообладателям</a></li>
-				<li class="footer-nav-item"><a href="#" class="footer-link" id="footer-contact-link">Контакты</a></li>
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
+				<li class="footer-nav-item"><a href="about.html" class="footer-link">О Компании</a></li>
+				<li class="footer-nav-item"><a href="movies.html" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="price.html" class="footer-link">Прайс-лист</a></li>
+				<li class="footer-nav-item"><a href="contacts.html" class="footer-link">Контакты</a></li>
 			</ul>
 		</div>
 	</footer>

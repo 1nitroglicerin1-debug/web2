@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kinobase — Прайс-лист и тарифные планы</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<header id="site-header" class="header">
+		<div class="container header-container">
+			<div class="logo">
+				<a href="index.html" class="logo-link">
+					<img src="images/logo.png" alt="Логотип Kinobase" class="logo-image">
+					<span class="logo-text">KINO<span class="logo-accent">BASE</span></span>
+				</a>
+			</div>
+
+			<form id="search-form" class="search-form" action="movies.html" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+				<button type="submit" class="search-button">Найти</button>
+			</form>
+
+			<div class="user-panel">
+				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
+			</div>
+		</div>
+
+		<nav id="main-navigation" class="navigation">
+			<div class="container">
+				<ul class="nav-list">
+					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+					<li class="nav-item"><a href="about.html" class="nav-link">О Компании</a></li>
+					<li class="nav-item"><a href="movies.html" class="nav-link">Каталог фильмов</a></li>
+					<li class="nav-item active"><a href="price.html" class="nav-link">Прайс-лист</a></li>
+					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container layout-wrapper">
+		<main id="main-content" class="content full-width">
+			<section class="price-section">
+				<h2 class="catalog-title">Прайс-лист подписок и услуг</h2>
+				<p class="price-intro">Ознакомьтесь с актуальными тарифными планами и разовыми услугами онлайн-кинотеатра Kinobase. Различные типы ячеек выделены цветом для наглядности.</p>
+
+				<!-- Таблица тарифов подписки -->
+				<div class="table-container">
+					<table class="price-table">
+						<caption class="table-caption">Таблица 1. Тарифные планы ежемесячной подписки</caption>
+						<thead>
+							<tr class="row-header">
+								<th scope="col" class="cell-feature">Параметры и опции</th>
+								<th scope="col" class="cell-plan">Тариф «Базовый»</th>
+								<th scope="col" class="cell-plan cell-popular-header">Тариф «Стандарт» (Хит)</th>
+								<th scope="col" class="cell-plan">Тариф «Премиум 4K»</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row-even">
+								<td class="cell-title">Максимальное качество видео</td>
+								<td class="cell-val">HD (720p)</td>
+								<td class="cell-val cell-popular">Full HD (1080p)</td>
+								<td class="cell-val cell-premium">Ultra HD (4K HDR)</td>
+							</tr>
+							<tr class="row-odd">
+								<td class="cell-title">Количество устройств одновременно</td>
+								<td class="cell-val">1 устройство</td>
+								<td class="cell-val cell-popular">2 устройства</td>
+								<td class="cell-val cell-premium">5 устройств (Семейный)</td>
+							</tr>
+							<tr class="row-even">
+								<td class="cell-title">Отключение рекламы</td>
+								<td class="cell-val cell-no">Частично</td>
+								<td class="cell-val cell-popular cell-yes">Полностью</td>
+								<td class="cell-val cell-premium cell-yes">Полностью</td>
+							</tr>
+							<tr class="row-odd">
+								<td class="cell-title">Загрузка на мобильные устройства</td>
+								<td class="cell-val cell-no">Недоступно</td>
+								<td class="cell-val cell-popular cell-yes">До 10 фильмов</td>
+								<td class="cell-val cell-premium cell-yes">Без ограничений</td>
+							</tr>
+							<tr class="row-even">
+								<td class="cell-title">Звук Dolby Atmos 5.1</td>
+								<td class="cell-val cell-no">Стерео 2.0</td>
+								<td class="cell-val cell-popular cell-no">Стерео 2.0</td>
+								<td class="cell-val cell-premium cell-yes">Dolby Atmos 5.1</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr class="row-pricing">
+								<td class="cell-price-title">Стоимость подписки</td>
+								<td class="cell-price">199 ₽ / мес.</td>
+								<td class="cell-price cell-popular-price">399 ₽ / мес.</td>
+								<td class="cell-price cell-premium-price">699 ₽ / мес.</td>
+							</tr>
+							<tr class="row-actions">
+								<td class="cell-action-title">Оформление тарифа</td>
+								<td class="cell-action"><button type="button" class="button button-detail">Выбрать Базовый</button></td>
+								<td class="cell-action cell-popular"><button type="button" class="button button-primary">Подключить Хит</button></td>
+								<td class="cell-action cell-premium"><button type="button" class="button button-detail">Выбрать Премиум</button></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+
+				<!-- Таблица разовой аренды новинок -->
+				<div class="table-container table-secondary">
+					<table class="price-table">
+						<caption class="table-caption">Таблица 2. Стоимость разовой аренды и покупки цифровых премьер</caption>
+						<thead>
+							<tr class="row-header">
+								<th scope="col" class="cell-feature">Категория кинопродукции</th>
+								<th scope="col">Аренда на 48 часов (SD)</th>
+								<th scope="col">Аренда на 48 часов (Full HD)</th>
+								<th scope="col">Покупка навсегда (4K UHD)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row-even">
+								<td class="cell-title">Горячие новинки кинопроката текущего года</td>
+								<td class="cell-val">149 ₽</td>
+								<td class="cell-val cell-highlight">199 ₽</td>
+								<td class="cell-val cell-premium">499 ₽</td>
+							</tr>
+							<tr class="row-odd">
+								<td class="cell-title">Классические фильмы и шедевры мирового кино</td>
+								<td class="cell-val">49 ₽</td>
+								<td class="cell-val cell-highlight">99 ₽</td>
+								<td class="cell-val cell-premium">249 ₽</td>
+							</tr>
+							<tr class="row-even">
+								<td class="cell-title">Короткометражное и фестивальное кино</td>
+								<td class="cell-val cell-yes">Бесплатно</td>
+								<td class="cell-val cell-yes">Бесплатно</td>
+								<td class="cell-val cell-premium">99 ₽</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<div id="login-modal" class="modal-overlay hidden">
+		<div class="modal-window">
+			<div class="modal-header">
+				<h3 class="modal-title">Вход в Kinobase</h3>
+				<button type="button" id="close-modal-btn" class="modal-close">&times;</button>
+			</div>
+			<form id="login-form" class="modal-form">
+				<div class="form-group">
+					<label for="login-email">Логин или Email:</label>
+					<input type="text" id="login-email" class="form-control" placeholder="user@example.com" required>
+				</div>
+				<div class="form-group">
+					<label for="login-password">Пароль:</label>
+					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="submit" class="button button-primary button-block">Войти в аккаунт</button>
+			</form>
+		</div>
+	</div>
+
+	<footer id="site-footer" class="footer">
+		<div class="container footer-container">
+			<div class="footer-copyright">
+				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
+			</div>
+			<ul class="footer-navigation">
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
+				<li class="footer-nav-item"><a href="about.html" class="footer-link">О Компании</a></li>
+				<li class="footer-nav-item"><a href="movies.html" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="price.html" class="footer-link">Прайс-лист</a></li>
+				<li class="footer-nav-item"><a href="contacts.html" class="footer-link">Контакты</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Kinobase — Каталог фильмов и сериалов</title>
+	<title>Kinobase — О компании</title>
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -31,8 +31,8 @@
 			<div class="container">
 				<ul class="nav-list">
 					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
-					<li class="nav-item"><a href="about.html" class="nav-link">О Компании</a></li>
-					<li class="nav-item active"><a href="movies.html" class="nav-link">Каталог фильмов</a></li>
+					<li class="nav-item active"><a href="about.html" class="nav-link">О Компании</a></li>
+					<li class="nav-item"><a href="movies.html" class="nav-link">Каталог фильмов</a></li>
 					<li class="nav-item"><a href="price.html" class="nav-link">Прайс-лист</a></li>
 					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
 				</ul>
@@ -42,23 +42,48 @@
 
 	<div class="container layout-wrapper">
 		<main id="main-content" class="content full-width">
-			<section class="catalog">
-				<div class="catalog-header">
-					<h2 class="catalog-title">Полный каталог кино</h2>
-					<div class="filter-box">
-						<span class="filter-label">Сортировка:</span>
-						<a href="#" class="filter-link active" id="sort-date">По дате</a>
-						<a href="#" class="filter-link" id="sort-rating">По рейтингу</a>
+			<section class="about-section">
+				<h2 class="catalog-title">О компании Kinobase</h2>
+				<p class="about-lead">Kinobase — ведущий современный онлайн-кинотеатр и мультимедийная платформа, объединяющая миллионы ценителей качественного кинематографа.</p>
+
+				<div class="about-grid">
+					<div class="about-card">
+						<h3 class="about-subtitle">Наша миссия</h3>
+						<p>Мы открываем доступ к мировому культурному наследию и новинкам кинопроката в высочайшем качестве 4K HDR с безупречным профессиональным дублированным переводом и объемным звуком Dolby Atmos.</p>
+					</div>
+					<div class="about-card">
+						<h3 class="about-subtitle">Технологии и инновации</h3>
+						<p>Наш видеоплеер адаптируется под любую скорость интернет-соединения, гарантируя плавное воспроизведение без задержек на смарт-ТВ, компьютерах, планшетах и мобильных устройствах.</p>
 					</div>
 				</div>
 
-				<div class="movies-collection" id="movies-container">
-					<!-- Наполняется js/main.js -->
+				<h3 class="section-heading">Ключевые показатели деятельности компании</h3>
+				<div class="stats-grid">
+					<div class="stat-box">
+						<div class="stat-number">10 000+</div>
+						<div class="stat-label">Фильмов и сериалов в каталоге</div>
+					</div>
+					<div class="stat-box">
+						<div class="stat-number">2.5 млн</div>
+						<div class="stat-label">Ежемесячных зрителей</div>
+					</div>
+					<div class="stat-box">
+						<div class="stat-number">99.9%</div>
+						<div class="stat-label">Отказоустойчивость серверов</div>
+					</div>
+					<div class="stat-box">
+						<div class="stat-number">8 лет</div>
+						<div class="stat-label">Успешной работы на рынке</div>
+					</div>
 				</div>
 
-				<div class="pagination-wrapper">
-					<ul class="pagination-list" id="pagination">
-						<!-- Кнопки страниц -->
+				<div class="about-contacts-block">
+					<h3 class="section-heading">Юридическая информация</h3>
+					<ul class="about-info-list">
+						<li><strong>Полное наименование:</strong> ООО «Кинобейз Диджитал»</li>
+						<li><strong>ОГРН:</strong> 1183256004921 | <strong>ИНН:</strong> 3257064210</li>
+						<li><strong>Юридический адрес:</strong> 241035, г. Брянск, б-р 50 лет Октября, д. 7, офис 402</li>
+						<li><strong>Служба клиентской поддержки:</strong> support@kinobase.ru | +7 (4832) 58-82-58</li>
 					</ul>
 				</div>
 			</section>

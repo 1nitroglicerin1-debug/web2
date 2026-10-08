@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			movieDetailsContainer.innerHTML = `
 				<div class="movie-view-card">
 					<h2>Фильм не найден</h2>
-					<p style="margin: 15px 0; color: #a0aec0;">Запрашиваемый фильм отсутствует в базе данных.</p>
+					<p class="not-found-text">Запрашиваемый фильм отсутствует в базе данных.</p>
 					<a href="index.html" class="button button-primary">Вернуться на главную</a>
 				</div>
 			`;
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 							<p class="movie-view-desc">${movie.desc}</p>
 							<div>
 								<button type="button" class="button button-primary" onclick="document.getElementById('video-player').scrollIntoView({behavior: 'smooth'})">Смотреть онлайн</button>
-								<a href="index.html" class="button button-detail" style="margin-left: 10px;">В каталог</a>
+								<a href="movies.html" class="button button-detail button-inline">В каталог</a>
 							</div>
 						</div>
 					</div>
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				</article>
 			`;
 
-			// Сайдбар: похожие фильмы, отсортированные строго по рейтингу
+			// Сайдбар: похожие фильмы
 			const similarList = document.getElementById("similar-movies-list");
 			if (similarList) {
 				const mainGenre = movie.genre.split(",")[0].trim();
@@ -102,14 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// =========================================================================
-	// Б. Логика каталога на главной странице (index.html)
+	// Б. Логика каталога на главной странице (index.html) и в каталоге (movies.html)
 	// =========================================================================
 	const moviesContainer = document.getElementById("movies-container");
 	if (moviesContainer) {
 		const urlParams = new URLSearchParams(window.location.search);
 		let currentTab = urlParams.get("tab") || "all";
 		let currentGenre = "all";
-		let currentSort = currentTab === "top" ? "rating" : "date";
+		let currentSort = "date";
 		let searchQuery = urlParams.get("search") ? urlParams.get("search").toLowerCase().trim() : "";
 		let currentPage = 1;
 		const pageSize = 5;
@@ -117,8 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		const pagination = document.getElementById("pagination");
 		const catalogTitle = document.getElementById("catalog-title");
 		const promoBanner = document.getElementById("promo-banner");
-		const catalogView = document.getElementById("catalog-view");
-		const contactsView = document.getElementById("contacts-view");
 		const sortDateBtn = document.getElementById("sort-date");
 		const sortRatingBtn = document.getElementById("sort-rating");
 		const searchInput = document.getElementById("search-input");
@@ -166,11 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		function getFilteredMovies() {
 			return moviesData.filter(movie => {
-				if (currentTab === "movies" && movie.type !== "movies") return false;
-				if (currentTab === "series" && movie.type !== "series") return false;
-				if (currentTab === "new" && movie.type !== "new") return false;
-				if (currentTab === "top" && movie.rating < 8.6) return false;
-
 				if (currentGenre !== "all" && !movie.genre.includes(currentGenre)) return false;
 
 				if (searchQuery) {
@@ -179,8 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				}
 				return true;
 			}).sort((a, b) => {
-				// Во вкладке "Топ-100" сортировка ВСЕГДА по рейтингу по убыванию
-				if (currentTab === "top" || currentSort === "rating") {
+				if (currentSort === "rating") {
 					return b.rating - a.rating;
 				}
 				return b.year - a.year;
@@ -196,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			const pageMovies = filtered.slice(start, start + pageSize);
 
 			if (pageMovies.length === 0) {
-				moviesContainer.innerHTML = `<p style="padding: 20px; color: #a0aec0;">Фильмов не найдено. Попробуйте сбросить фильтры.</p>`;
+				moviesContainer.innerHTML = `<p class="not-found-text">Фильмов не найдено. Попробуйте сбросить фильтры поиска.</p>`;
 			} else {
 				moviesContainer.innerHTML = pageMovies.map(movie => `
 					<article class="movie-card">
@@ -218,7 +210,9 @@ document.addEventListener("DOMContentLoaded", function () {
 				`).join("");
 			}
 
-			renderPagination(totalPages);
+			if (pagination) {
+				renderPagination(totalPages);
+			}
 		}
 
 		function renderPagination(totalPages) {
@@ -236,48 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				});
 			});
 		}
-
-		function applyTab(tabName, titleText) {
-			currentTab = tabName;
-			currentPage = 1;
-
-			document.querySelectorAll("#nav-tabs .nav-item").forEach(item => {
-				const link = item.querySelector(".nav-link");
-				if (link && link.dataset.tab === tabName) {
-					item.classList.add("active");
-				} else {
-					item.classList.remove("active");
-				}
-			});
-
-			if (currentTab === "contacts") {
-				if (promoBanner) promoBanner.classList.add("hidden");
-				if (catalogView) catalogView.classList.add("hidden");
-				if (contactsView) contactsView.classList.remove("hidden");
-			} else {
-				if (contactsView) contactsView.classList.add("hidden");
-				if (catalogView) catalogView.classList.remove("hidden");
-				if (promoBanner) promoBanner.classList.remove("hidden");
-
-				if (currentTab === "top") {
-					currentSort = "rating";
-					if (sortRatingBtn) sortRatingBtn.classList.add("active");
-					if (sortDateBtn) sortDateBtn.classList.remove("active");
-				}
-
-				if (catalogTitle && titleText) catalogTitle.textContent = titleText;
-				renderCatalog();
-			}
-		}
-
-		// Обработка кликов по вкладкам на главной
-		const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
-		navLinks.forEach(link => {
-			link.addEventListener("click", function (e) {
-				e.preventDefault();
-				applyTab(this.dataset.tab, this.textContent);
-			});
-		});
 
 		// Сайдбар - фильтрация по жанрам
 		const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
@@ -332,16 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		// Стартовая инициализация
 		updateGenreCounters();
 		renderTopSidebar();
-
-		const initialTabTitles = {
-			all: "Главная",
-			movies: "Фильмы",
-			series: "Сериалы",
-			new: "Новинки",
-			top: "Топ-100",
-			contacts: "Контакты"
-		};
-		applyTab(currentTab, initialTabTitles[currentTab] || "Новинки проката");
+		renderCatalog();
 	}
 
 	// =========================================================================
