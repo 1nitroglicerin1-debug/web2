@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Скачать 16 постеров</title>
+	<style>
+		body { background: #12151c; color: #fff; font-family: sans-serif; text-align: center; padding: 40px; }
+		button { padding: 14px 28px; font-size: 16px; background: #ed8936; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+		button:hover { background: #dd6b20; }
+		#status { margin-top: 20px; color: #a0aec0; }
+	</style>
+</head>
+<body>
+	<h2>Генератор остальных 16 файлов постеров</h2>
+	<p>Нажми кнопку ниже — браузер скачает 16 файлов постеров (jpg) прямо в папку «Загрузки».</p>
+	<button id="start-btn">Скачать все 16 постеров</button>
+	<div id="status"></div>
+	<canvas id="c" width="300" height="420" style="display:none;"></canvas>
+
+	<script>
+		const list = [
+			{ file: "poster-dark-knight.jpg", title: "THE DARK KNIGHT", year: "2008", genre: "ACTION / CRIME", g1: "#1e293b", g2: "#0f172a", a: "#94a3b8" },
+			{ file: "poster-shawshank.jpg", title: "SHAWSHANK", year: "1994", genre: "DRAMA", g1: "#334155", g2: "#1e293b", a: "#cbd5e1" },
+			{ file: "poster-pulp-fiction.jpg", title: "PULP FICTION", year: "1994", genre: "CRIME / COMEDY", g1: "#78350f", g2: "#451a03", a: "#f59e0b" },
+			{ file: "poster-fight-club.jpg", title: "FIGHT CLUB", year: "1999", genre: "DRAMA / THRILLER", g1: "#831843", g2: "#500724", a: "#f43f5e" },
+			{ file: "poster-breaking-bad.jpg", title: "BREAKING BAD", year: "2008", genre: "CRIME / DRAMA", g1: "#064e3b", g2: "#022c22", a: "#10b981" },
+			{ file: "poster-chernobyl.jpg", title: "CHERNOBYL", year: "2019", genre: "DRAMA / HISTORY", g1: "#3f3f46", g2: "#18181b", a: "#a1a1aa" },
+			{ file: "poster-peaky-blinders.jpg", title: "PEAKY BLINDERS", year: "2013", genre: "CRIME / DRAMA", g1: "#1c1917", g2: "#0c0a09", a: "#d6d3d1" },
+			{ file: "poster-stranger-things.jpg", title: "STRANGER THINGS", year: "2016", genre: "SCI-FI / DRAMA", g1: "#581c87", g2: "#3b0764", a: "#c084fc" },
+			{ file: "poster-dune-2.jpg", title: "DUNE: PART TWO", year: "2024", genre: "SCI-FI / ACTION", g1: "#92400e", g2: "#713f12", a: "#fbbf24" },
+			{ file: "poster-oppenheimer.jpg", title: "OPPENHEIMER", year: "2023", genre: "DRAMA / HISTORY", g1: "#7c2d12", g2: "#431407", a: "#fb923c" },
+			{ file: "poster-blade-runner.jpg", title: "BLADE RUNNER 2049", year: "2017", genre: "SCI-FI / THRILLER", g1: "#075985", g2: "#082f49", a: "#38bdf8" },
+			{ file: "poster-prestige.jpg", title: "THE PRESTIGE", year: "2006", genre: "DRAMA / SCI-FI", g1: "#3730a3", g2: "#1e1b4b", a: "#818cf8" },
+			{ file: "poster-intouchables.jpg", title: "INTOUCHABLES", year: "2011", genre: "COMEDY / DRAMA", g1: "#1e293b", g2: "#0f172a", a: "#38bdf8" },
+			{ file: "poster-avatar-2.jpg", title: "AVATAR: WAY OF WATER", year: "2022", genre: "SCI-FI / ACTION", g1: "#0e7490", g2: "#164e63", a: "#22d3ee" },
+			{ file: "poster-game-of-thrones.jpg", title: "GAME OF THRONES", year: "2011", genre: "FANTASY / DRAMA", g1: "#27272a", g2: "#09090b", a: "#e4e4e7" },
+			{ file: "poster-avengers-endgame.jpg", title: "AVENGERS: ENDGAME", year: "2019", genre: "ACTION / SCI-FI", g1: "#581c87", g2: "#1e1b4b", a: "#a855f7" }
+		];
+
+		const canvas = document.getElementById("c");
+		const ctx = canvas.getContext("2d");
+
+		function drawAndDownload(item) {
+			const grad = ctx.createLinearGradient(0, 0, 0, 420);
+			grad.addColorStop(0, item.g1);
+			grad.addColorStop(1, item.g2);
+			ctx.fillStyle = grad;
+			ctx.fillRect(0, 0, 300, 420);
+
+			ctx.strokeStyle = item.a;
+			ctx.lineWidth = 2;
+			ctx.strokeRect(15, 15, 270, 390);
+
+			ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+			ctx.fillRect(20, 160, 260, 100);
+
+			ctx.fillStyle = "#ffffff";
+			ctx.font = "bold 20px Arial";
+			ctx.textAlign = "center";
+			ctx.fillText(item.title, 150, 205);
+
+			ctx.fillStyle = item.a;
+			ctx.font = "bold 13px Arial";
+			ctx.fillText(item.year + " • " + item.genre, 150, 235);
+
+			const link = document.createElement("a");
+			link.download = item.file;
+			link.href = canvas.toDataURL("image/jpeg", 0.9);
+			link.click();
+		}
+
+		document.getElementById("start-btn").addEventListener("click", () => {
+			let i = 0;
+			const status = document.getElementById("status");
+			const timer = setInterval(() => {
+				if (i >= list.length) {
+					clearInterval(timer);
+					status.textContent = "Готово! Все 16 файлов скачаны. Перемести их в папку images/.";
+					return;
+				}
+				drawAndDownload(list[i]);
+				status.textContent = `Скачивание: ${list[i].file} (${i + 1} из ${list.length})...`;
+				i++;
+			}, 200);
+		});
+	</script>
+</body>
+</html>

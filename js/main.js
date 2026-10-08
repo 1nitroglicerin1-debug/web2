@@ -1,77 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
 	// ==========================================
-	// База данных из 20 фильмов
+	// База данных из 20 фильмов с файлами из images/
 	// ==========================================
 	const moviesData = [
-		{ id: 1, title: "Интерстеллар", year: 2014, rating: 8.6, genre: "Фантастика, Драма", type: "movies", desc: "Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.", color1: "#0b1d3a", color2: "#1e3a5f" },
-		{ id: 2, title: "Начало", year: 2010, rating: 8.7, genre: "Фантастика, Боевик", type: "movies", desc: "Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит выполнить противоположное — внедрить мысль.", color1: "#2d3748", color2: "#1a202c" },
-		{ id: 3, title: "Матрица", year: 1999, rating: 8.5, genre: "Фантастика, Боевик", type: "movies", desc: "Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми.", color1: "#082f14", color2: "#021207" },
-		{ id: 4, title: "Гладиатор", year: 2000, rating: 8.6, genre: "Боевик, Драма", type: "movies", desc: "Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима.", color1: "#4a2408", color2: "#2a1204" },
-		{ id: 5, title: "Тёмный рыцарь", year: 2008, rating: 9.0, genre: "Боевик, Криминал", type: "top", desc: "Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона и прокурора Дента он намерен очистить улицы Готэма от Джокера.", color1: "#1a202c", color2: "#0f172a" },
-		{ id: 6, title: "Побег из Шоушенка", year: 1994, rating: 9.1, genre: "Драма, Криминал", type: "top", desc: "Бухгалтер Энди Дюфрейн несправедливо осужден на два пожизненных срока. Оказавшись в тюрьме Шоушенк, он не теряет надежду на свободу.", color1: "#334155", color2: "#1e293b" },
-		{ id: 7, title: "Криминальное чтиво", year: 1994, rating: 8.9, genre: "Криминал, Комедия", type: "top", desc: "Двое бандитов ведут философские беседы в перерывах между разборками и поручениями криминального босса.", color1: "#3b1e08", color2: "#1e0f04" },
-		{ id: 8, title: "Бойцовский клуб", year: 1999, rating: 8.7, genre: "Драма, Триллер", type: "movies", desc: "Терзаемый бессонницей клерк встречает харизматичного торговца мылом Тайлера Дёрдена и открывает подпольный клуб.", color1: "#471822", color2: "#21090e" },
-		{ id: 9, title: "Во все тяжкие", year: 2008, rating: 9.5, genre: "Драма, Криминал", type: "series", desc: "Школьный учитель химии Уолтер Уайт узнает о смертельном диагнозе и решает варить метамфетамин ради будущего семьи.", color1: "#064e3b", color2: "#022c22" },
-		{ id: 10, title: "Чернобыль", year: 2019, rating: 8.9, genre: "Драма, История", type: "series", desc: "Хроника катастрофы на Чернобыльской АЭС в 1986 году и самоотверженных усилий людей по ликвидации ее последствий.", color1: "#364152", color2: "#1c2430" },
-		{ id: 11, title: "Острые козырьки", year: 2013, rating: 8.4, genre: "Криминал, Драма", type: "series", desc: "Британская гангстерская сага о семье Шелби в Бирмингеме 1920-х годов под руководством Томаса Шелби.", color1: "#27272a", color2: "#18181b" },
-		{ id: 12, title: "Очень странные дела", year: 2016, rating: 8.4, genre: "Фантастика, Драма", type: "series", desc: "В тихом городке пропадает мальчик. Его друзья и семья сталкиваются с секретными экспериментами и потусторонним миром.", color1: "#581c87", color2: "#2e1065" },
-		{ id: 13, title: "Дюна: Часть вторая", year: 2024, rating: 8.5, genre: "Фантастика, Боевик", type: "new", desc: "Пол Атрейдес объединяется с фременами, чтобы отомстить заговорщикам, уничтожившим его семью на планете Арракис.", color1: "#78350f", color2: "#451a03" },
-		{ id: 14, title: "Оппенгеймер", year: 2023, rating: 8.4, genre: "Драма, История", type: "new", desc: "История жизни американского физика-теоретика Роберта Оппенгеймера, руководителя Манхэттенского проекта.", color1: "#713f12", color2: "#3b1e08" },
-		{ id: 15, title: "Бегущий по лезвию 2049", year: 2017, rating: 8.0, genre: "Фантастика, Триллер", type: "movies", desc: "Офицер полиции Кей случайно натыкается на секрет, способный погрузить остатки цивилизации в хаос.", color1: "#0c4a6e", color2: "#082f49" },
-		{ id: 16, title: "Престиж", year: 2006, rating: 8.5, genre: "Драма, Фантастика", type: "movies", desc: "Два фокусника-иллюзиониста в Лондоне на рубеже XIX и XX веков ведут смертельную борьбу за секреты мастерства.", color1: "#312e81", color2: "#1e1b4b" },
-		{ id: 17, title: "1+1 (Неприкасаемые)", year: 2011, rating: 8.8, genre: "Комедия, Драма", type: "top", desc: "Богатый аристократ, прикованный к инвалидному креслу, нанимает в качестве сиделки парня с криминальным прошлым.", color1: "#1e293b", color2: "#0f172a" },
-		{ id: 18, title: "Аватар: Путь воды", year: 2022, rating: 7.6, genre: "Фантастика, Боевик", type: "new", desc: "Джейк Салли и Нейтири борются за выживание своей семьи на прекрасной и опасной планете Пандора.", color1: "#0891b2", color2: "#164e63" },
-		{ id: 19, title: "Игра престолов", year: 2011, rating: 9.2, genre: "Фэнтези, Драма", type: "series", desc: "К концу подходит время благоденствия. Несколько могущественных домов плетут интриги за Железный трон Вестероса.", color1: "#3f3f46", color2: "#18181b" },
-		{ id: 20, title: "Мстители: Финал", year: 2019, rating: 8.4, genre: "Фантастика, Боевик", type: "top", desc: "Оставшиеся в живых члены команды Мстителей разрабатывают дерзкий план, чтобы отменить действия Таноса.", color1: "#4c1d95", color2: "#2e1065" }
+		{ id: 1, title: "Интерстеллар", year: 2014, rating: 8.6, genre: "Фантастика, Драма", type: "movies", file: "poster-interstellar.jpg", desc: "Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома." },
+		{ id: 2, title: "Начало", year: 2010, rating: 8.7, genre: "Фантастика, Боевик", type: "movies", file: "poster-inception.jpg", desc: "Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит выполнить противоположное — внедрить мысль." },
+		{ id: 3, title: "Матрица", year: 1999, rating: 8.5, genre: "Фантастика, Боевик", type: "movies", file: "poster-matrix.jpg", desc: "Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми." },
+		{ id: 4, title: "Гладиатор", year: 2000, rating: 8.6, genre: "Боевик, Драма", type: "movies", file: "poster-gladiator.jpg", desc: "Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима." },
+		{ id: 5, title: "Тёмный рыцарь", year: 2008, rating: 9.0, genre: "Боевик, Криминал", type: "top", file: "poster-dark-knight.jpg", desc: "Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона и прокурора Дента он намерен очистить улицы Готэма от Джокера." },
+		{ id: 6, title: "Побег из Шоушенка", year: 1994, rating: 9.1, genre: "Драма, Криминал", type: "top", file: "poster-shawshank.jpg", desc: "Бухгалтер Энди Дюфрейн несправедливо осужден на два пожизненных срока. Оказавшись в тюрьме Шоушенк, он не теряет надежду на свободу." },
+		{ id: 7, title: "Криминальное чтиво", year: 1994, rating: 8.9, genre: "Криминал, Комедия", type: "top", file: "poster-pulp-fiction.jpg", desc: "Двое бандитов ведут философские беседы в перерывах между разборками и поручениями криминального босса." },
+		{ id: 8, title: "Бойцовский клуб", year: 1999, rating: 8.7, genre: "Драма, Триллер", type: "movies", file: "poster-fight-club.jpg", desc: "Терзаемый бессонницей клерк встречает харизматичного торговца мылом Тайлера Дёрдена и открывает подпольный клуб." },
+		{ id: 9, title: "Во все тяжкие", year: 2008, rating: 9.5, genre: "Драма, Криминал", type: "series", file: "poster-breaking-bad.jpg", desc: "Школьный учитель химии Уолтер Уайт узнает о смертельном диагнозе и решает варить метамфетамин ради будущего семьи." },
+		{ id: 10, title: "Чернобыль", year: 2019, rating: 8.9, genre: "Драма, История", type: "series", file: "poster-chernobyl.jpg", desc: "Хроника катастрофы на Чернобыльской АЭС в 1986 году и самоотверженных усилий людей по ликвидации ее последствий." },
+		{ id: 11, title: "Острые козырьки", year: 2013, rating: 8.4, genre: "Криминал, Драма", type: "series", file: "poster-peaky-blinders.jpg", desc: "Британская гангстерская сага о семье Шелби в Бирмингеме 1920-х годов под руководством Томаса Шелби." },
+		{ id: 12, title: "Очень странные дела", year: 2016, rating: 8.4, genre: "Фантастика, Драма", type: "series", file: "poster-stranger-things.jpg", desc: "В тихом городке пропадает мальчик. Его друзья и семья сталкиваются с секретными экспериментами и потусторонним миром." },
+		{ id: 13, title: "Дюна: Часть вторая", year: 2024, rating: 8.5, genre: "Фантастика, Боевик", type: "new", file: "poster-dune-2.jpg", desc: "Пол Атрейдес объединяется с фременами, чтобы отомстить заговорщикам, уничтожившим его семью на планете Арракис." },
+		{ id: 14, title: "Оппенгеймер", year: 2023, rating: 8.4, genre: "Драма, История", type: "new", file: "poster-oppenheimer.jpg", desc: "История жизни американского физика-теоретика Роберта Оппенгеймера, руководителя Манхэттенского проекта." },
+		{ id: 15, title: "Бегущий по лезвию 2049", year: 2017, rating: 8.0, genre: "Фантастика, Триллер", type: "movies", file: "poster-blade-runner.jpg", desc: "Офицер полиции Кей случайно натыкается на секрет, способный погрузить остатки цивилизации в хаос." },
+		{ id: 16, title: "Престиж", year: 2006, rating: 8.5, genre: "Драма, Фантастика", type: "movies", file: "poster-prestige.jpg", desc: "Два фокусника-иллюзиониста в Лондоне на рубеже XIX и XX веков ведут смертельную борьбу за секреты мастерства." },
+		{ id: 17, title: "1+1 (Неприкасаемые)", year: 2011, rating: 8.8, genre: "Комедия, Драма", type: "top", file: "poster-intouchables.jpg", desc: "Богатый аристократ, прикованный к инвалидному креслу, нанимает в качестве сиделки парня с криминальным прошлым." },
+		{ id: 18, title: "Аватар: Путь воды", year: 2022, rating: 7.6, genre: "Фантастика, Боевик", type: "new", file: "poster-avatar-2.jpg", desc: "Джейк Салли и Нейтири борются за выживание своей семьи на прекрасной и опасной планете Пандора." },
+		{ id: 19, title: "Игра престолов", year: 2011, rating: 9.2, genre: "Фэнтези, Драма", type: "series", file: "poster-game-of-thrones.jpg", desc: "К концу подходит время благоденствия. Несколько могущественных домов плетут интриги за Железный трон Вестероса." },
+		{ id: 20, title: "Мстители: Финал", year: 2019, rating: 8.4, genre: "Фантастика, Боевик", type: "top", file: "poster-avengers-endgame.jpg", desc: "Оставшиеся в живых члены команды Мстителей разрабатывают дерзкий план, чтобы отменить действия Таноса." }
 	];
 
-	// Состояние страницы
 	let currentGenre = "all";
 	let currentTab = "all";
 	let currentSort = "date";
 	let searchQuery = "";
 	let currentPage = 1;
-	const pageSize = 5; // 5 фильмов на страницу = ровно 4 страницы
+	const pageSize = 5;
 
 	const container = document.getElementById("movies-container");
 	const pagination = document.getElementById("pagination");
 	const catalogTitle = document.getElementById("catalog-title");
 
-	// Функция рисования постера прямо в Canvas (чтобы не нужны были картинки)
-	function drawPoster(canvas, movie) {
-		const ctx = canvas.getContext("2d");
-		const grad = ctx.createLinearGradient(0, 0, 0, 190);
-		grad.addColorStop(0, movie.color1);
-		grad.addColorStop(1, movie.color2);
-		ctx.fillStyle = grad;
-		ctx.fillRect(0, 0, 140, 190);
-
-		// Рамка
-		ctx.strokeStyle = "#ed8936";
-		ctx.lineWidth = 1;
-		ctx.strokeRect(8, 8, 124, 174);
-
-		// Заголовок
-		ctx.fillStyle = "#ffffff";
-		ctx.font = "bold 13px Arial";
-		ctx.textAlign = "center";
-
-		// Если название длинное, переносим
-		const words = movie.title.split(" ");
-		if (words.length > 2) {
-			ctx.fillText(words.slice(0, 2).join(" "), 70, 90);
-			ctx.fillText(words.slice(2).join(" "), 70, 110);
-		} else {
-			ctx.fillText(movie.title, 70, 100);
-		}
-
-		// Год
-		ctx.fillStyle = "#ed8936";
-		ctx.font = "11px Arial";
-		ctx.fillText(movie.year, 70, 130);
-	}
-
-	// Рендер сайдбара "Популярные фильмы"
 	function renderTopSidebar() {
 		const topList = document.getElementById("top-movies-list");
 		if (!topList) return;
@@ -80,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			<li class="top-list-item">
 				<span class="position-number">${idx + 1}</span>
 				<div class="top-info">
-					<a href="#" class="top-link" data-id="${m.id}">${m.title}</a>
+					<a href="#" class="top-link">${m.title}</a>
 					<span class="rating">${m.rating}</span>
 				</div>
 			</li>
@@ -97,19 +61,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Фильтрация, сортировка и пагинация
 	function getFilteredMovies() {
 		return moviesData.filter(movie => {
-			// Фильтр по верхним вкладкам
 			if (currentTab === "movies" && movie.type !== "movies") return false;
 			if (currentTab === "series" && movie.type !== "series") return false;
 			if (currentTab === "new" && movie.type !== "new") return false;
 			if (currentTab === "top" && movie.rating < 8.7) return false;
 
-			// Фильтр по сайдбару
 			if (currentGenre !== "all" && !movie.genre.includes(currentGenre)) return false;
 
-			// Поиск
 			if (searchQuery) {
 				const full = (movie.title + " " + movie.desc).toLowerCase();
 				if (!full.includes(searchQuery)) return false;
@@ -135,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			container.innerHTML = pageMovies.map(movie => `
 				<article class="movie-card">
 					<div class="poster-box">
-						<canvas class="poster-canvas" width="140" height="190" id="canvas-${movie.id}"></canvas>
+						<img src="images/${movie.file}" alt="Постер к фильму ${movie.title}" class="poster-image">
 						<span class="movie-rating-badge">${movie.rating}</span>
 					</div>
 					<div class="movie-info">
@@ -148,15 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					</div>
 				</article>
 			`).join("");
-
-			// Отрисовываем каждый постер
-			pageMovies.forEach(movie => {
-				const c = document.getElementById(`canvas-${movie.id}`);
-				if (c) drawPoster(c, movie);
-			});
 		}
 
-		// Рендер кнопок страниц пагинации
 		renderPagination(totalPages);
 	}
 
@@ -176,9 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// ==========================================
-	// 1. Вкладки главного меню
-	// ==========================================
+	// 1. Вкладки навигации
 	const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
 	const promoBanner = document.getElementById("promo-banner");
 	const catalogView = document.getElementById("catalog-view");
@@ -218,9 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// ==========================================
-	// 2. Сайдбар - фильтр по жанрам
-	// ==========================================
+	// 2. Фильтр жанров
 	const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
 	genreLinks.forEach(link => {
 		link.addEventListener("click", function (e) {
@@ -233,9 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 
-	// ==========================================
-	// 3. Сортировка по дате / рейтингу
-	// ==========================================
+	// 3. Сортировка
 	const sortDateBtn = document.getElementById("sort-date");
 	const sortRatingBtn = document.getElementById("sort-rating");
 
@@ -257,9 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// ==========================================
 	// 4. Поиск
-	// ==========================================
 	const searchInput = document.getElementById("search-input");
 	const searchForm = document.getElementById("search-form");
 
@@ -280,9 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// ==========================================
-	// 5. Модалка входа
-	// ==========================================
+	// 5. Модалка
 	const loginBtn = document.getElementById("open-login-btn");
 	const loginModal = document.getElementById("login-modal");
 	const closeModalBtn = document.getElementById("close-modal-btn");
@@ -314,7 +257,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Кнопка трейлера в баннере
 	const promoBtn = document.getElementById("promo-action-btn");
 	if (promoBtn) {
 		promoBtn.addEventListener("click", function () {
@@ -322,7 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Старт
 	renderTopSidebar();
 	renderCatalog();
 });
