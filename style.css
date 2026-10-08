@@ -1,0 +1,521 @@
+/* ==========================================================================
+   Базовые сбросы и настройки документа
+   ========================================================================== */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #12151c;
+	color: #e2e8f0;
+	line-height: 1.5;
+	font-size: 14px;
+}
+
+ul {
+	list-style: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+.container {
+	width: 1160px;
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
+/* ==========================================================================
+   Требование п. 10: Стилизация ссылок (обычные, посещенные, hover, active)
+   ========================================================================== */
+a:link {
+	color: #63b3ed;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #b794f4;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #f6ad55;
+	text-decoration: underline;
+}
+
+a:active {
+	color: #ed8936;
+	text-decoration: underline;
+}
+
+/* Для элементов навигации стиль обычной и посещенной ссылки совпадают (п. 10) */
+.nav-link:link,
+.nav-link:visited,
+.footer-link:link,
+.footer-link:visited,
+.logo-link:link,
+.logo-link:visited {
+	color: #cbd5e0;
+	text-decoration: none;
+}
+
+.nav-link:hover,
+.footer-link:hover,
+.logo-link:hover {
+	color: #f6ad55;
+	text-decoration: none;
+}
+
+.nav-link:active,
+.footer-link:active {
+	color: #ed8936;
+	text-decoration: none;
+}
+
+/* ==========================================================================
+   Кнопки
+   ========================================================================== */
+.button {
+	display: inline-block;
+	padding: 8px 18px;
+	border-radius: 4px;
+	font-weight: bold;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid transparent;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.button-primary {
+	background-color: #ed8936;
+	color: #ffffff !important;
+	text-decoration: none !important;
+}
+
+.button-primary:hover {
+	background-color: #dd6b20;
+}
+
+.button-login {
+	background-color: transparent;
+	border-color: #ed8936;
+	color: #ed8936 !important;
+	text-decoration: none !important;
+}
+
+.button-login:hover {
+	background-color: #ed8936;
+	color: #ffffff !important;
+}
+
+.button-detail {
+	background-color: #2d3748;
+	color: #edf2f7 !important;
+	padding: 6px 14px;
+	font-size: 13px;
+	text-decoration: none !important;
+}
+
+.button-detail:hover {
+	background-color: #ed8936;
+	color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Шапка (Header)
+   ========================================================================== */
+.header {
+	background-color: #1a202c;
+	border-bottom: 2px solid #2d3748;
+}
+
+.header-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	gap: 20px;
+}
+
+.logo-link {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.logo-image {
+	width: 32px;
+	height: 32px;
+}
+
+.logo-text {
+	font-size: 26px;
+	font-weight: bold;
+	color: #ffffff;
+	letter-spacing: 1px;
+}
+
+.logo-accent {
+	color: #ed8936;
+}
+
+.search-form {
+	display: flex;
+	width: 450px;
+}
+
+.search-input {
+	flex: 1;
+	padding: 9px 12px;
+	background-color: #2d3748;
+	border: 1px solid #4a5568;
+	border-radius: 4px 0 0 4px;
+	color: #ffffff;
+	outline: none;
+}
+
+.search-input:focus {
+	border-color: #ed8936;
+}
+
+.search-button {
+	padding: 9px 18px;
+	background-color: #ed8936;
+	border: none;
+	border-radius: 0 4px 4px 0;
+	color: #ffffff;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.search-button:hover {
+	background-color: #dd6b20;
+}
+
+/* Меню навигации */
+.navigation {
+	background-color: #242c3d;
+	border-top: 1px solid #2d3748;
+}
+
+.nav-list {
+	display: flex;
+}
+
+.nav-item.active .nav-link {
+	background-color: #2d3748;
+	color: #ffffff;
+	border-bottom: 2px solid #ed8936;
+}
+
+.nav-link {
+	display: block;
+	padding: 12px 18px;
+	font-weight: bold;
+}
+
+/* ==========================================================================
+   Основная блочная разметка (Layout)
+   ========================================================================== */
+.layout-wrapper {
+	display: flex;
+	gap: 25px;
+	margin-top: 25px;
+	margin-bottom: 40px;
+}
+
+/* ==========================================================================
+   Сайдбар
+   ========================================================================== */
+.sidebar {
+	width: 270px;
+	flex-shrink: 0;
+}
+
+.widget {
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+	border-radius: 5px;
+	padding: 16px;
+	margin-bottom: 20px;
+}
+
+.widget-title {
+	font-size: 16px;
+	color: #ffffff;
+	padding-left: 10px;
+	border-left: 3px solid #ed8936;
+	margin-bottom: 12px;
+}
+
+.genre-list .widget-list-item {
+	border-bottom: 1px solid #2d3748;
+}
+
+.genre-list .widget-list-item:last-child {
+	border-bottom: none;
+}
+
+.genre-link {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 0;
+	color: #a0aec0 !important;
+	text-decoration: none !important;
+}
+
+.genre-link:hover {
+	color: #ed8936 !important;
+}
+
+.count {
+	color: #718096;
+	font-size: 12px;
+}
+
+.top-list .top-list-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 9px 0;
+	border-bottom: 1px solid #2d3748;
+}
+
+.top-list .top-list-item:last-child {
+	border-bottom: none;
+}
+
+.position-number {
+	font-size: 16px;
+	font-weight: bold;
+	color: #ed8936;
+	width: 20px;
+	text-align: center;
+}
+
+.top-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.top-link {
+	color: #edf2f7 !important;
+	font-weight: bold;
+	text-decoration: none !important;
+}
+
+.top-link:hover {
+	color: #ed8936 !important;
+}
+
+.rating {
+	font-size: 12px;
+	color: #48bb78;
+	font-weight: bold;
+}
+
+/* ==========================================================================
+   Основной контент и карточки
+   ========================================================================== */
+.content {
+	flex: 1;
+}
+
+.promo-banner {
+	background: #232a3b;
+	border: 1px solid #2d3748;
+	border-radius: 6px;
+	padding: 30px;
+	margin-bottom: 25px;
+}
+
+.promo-heading {
+	font-size: 24px;
+	color: #ffffff;
+	margin-bottom: 10px;
+}
+
+.promo-description {
+	color: #a0aec0;
+	max-width: 650px;
+	margin-bottom: 16px;
+}
+
+.catalog-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.catalog-title {
+	font-size: 18px;
+	color: #ffffff;
+	border-left: 3px solid #ed8936;
+	padding-left: 10px;
+}
+
+.filter-box {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 13px;
+}
+
+.filter-label {
+	color: #718096;
+}
+
+.filter-link {
+	color: #a0aec0 !important;
+	padding: 4px 8px;
+	border-radius: 3px;
+	text-decoration: none !important;
+}
+
+.filter-link.active,
+.filter-link:hover {
+	background-color: #2d3748;
+	color: #ffffff !important;
+}
+
+.movies-collection {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.movie-card {
+	display: flex;
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.movie-card:hover {
+	border-color: #4a5568;
+}
+
+.poster-box {
+	position: relative;
+	width: 140px;
+	min-height: 190px;
+	flex-shrink: 0;
+	background-color: #2d3748;
+}
+
+.poster-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.movie-rating-badge {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	background-color: #38a169;
+	color: #ffffff;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 2px 6px;
+	border-radius: 3px;
+}
+
+.movie-info {
+	padding: 14px 18px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex: 1;
+}
+
+.movie-name {
+	font-size: 17px;
+	margin-bottom: 4px;
+}
+
+.movie-link {
+	color: #ffffff !important;
+	text-decoration: none !important;
+}
+
+.movie-link:hover {
+	color: #ed8936 !important;
+}
+
+.movie-meta {
+	font-size: 12px;
+	color: #ed8936;
+	margin-bottom: 8px;
+}
+
+.movie-summary {
+	color: #a0aec0;
+	font-size: 13px;
+	margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   Пагинация
+   ========================================================================== */
+.pagination-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 25px;
+}
+
+.pagination-list {
+	display: flex;
+	gap: 6px;
+}
+
+.page-link {
+	display: inline-block;
+	padding: 6px 12px;
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+	border-radius: 4px;
+	color: #cbd5e0 !important;
+	text-decoration: none !important;
+}
+
+.page-link.active,
+.page-link:hover {
+	background-color: #ed8936;
+	border-color: #ed8936;
+	color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Подвал (Footer)
+   ========================================================================== */
+.footer {
+	background-color: #161b26;
+	border-top: 1px solid #2d3748;
+	padding: 20px 0;
+	font-size: 13px;
+}
+
+.footer-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.footer-copyright {
+	color: #718096;
+}
+
+.footer-navigation {
+	display: flex;
+	gap: 20px;
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kinobase — Кинопортал</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<!-- Шапка сайта -->
+	<header id="site-header" class="header">
+		<div class="container header-container">
+			<div class="logo">
+				<a href="index.html" class="logo-link">
+					<img src="images/logo.png" alt="Логотип Kinobase" class="logo-image">
+					<span class="logo-text">KINO<span class="logo-accent">BASE</span></span>
+				</a>
+			</div>
+
+			<form id="search-form" class="search-form" action="#" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." required>
+				<button type="submit" class="search-button">Найти</button>
+			</form>
+
+			<div class="user-panel">
+				<a href="#" class="button button-login">Вход</a>
+			</div>
+		</div>
+
+		<!-- Навигационное меню -->
+		<nav id="main-navigation" class="navigation">
+			<div class="container">
+				<ul class="nav-list">
+					<li class="nav-item active"><a href="index.html" class="nav-link">Главная</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">Фильмы</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">Сериалы</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">Новинки</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">Топ-100</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">Контакты</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<!-- Основная часть страницы -->
+	<div class="container layout-wrapper">
+		
+		<!-- Боковая панель -->
+		<aside id="sidebar" class="sidebar">
+			
+			<!-- Блок: Жанры -->
+			<section class="widget">
+				<h3 class="widget-title">Жанры кино</h3>
+				<ul class="widget-list genre-list">
+					<li class="widget-list-item"><a href="#" class="genre-link">Фантастика <span class="count">(142)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link">Боевики <span class="count">(98)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link">Комедии <span class="count">(210)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link">Триллеры <span class="count">(76)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link">Драмы <span class="count">(115)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link">Приключения <span class="count">(84)</span></a></li>
+				</ul>
+			</section>
+
+			<!-- Блок: Топ фильмов -->
+			<section class="widget">
+				<h3 class="widget-title">Популярные фильмы</h3>
+				<ul class="widget-list top-list">
+					<li class="top-list-item">
+						<span class="position-number">1</span>
+						<div class="top-info">
+							<a href="#" class="top-link">Интерстеллар</a>
+							<span class="rating">8.6</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">2</span>
+						<div class="top-info">
+							<a href="#" class="top-link">Начало</a>
+							<span class="rating">8.7</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">3</span>
+						<div class="top-info">
+							<a href="#" class="top-link">Матрица</a>
+							<span class="rating">8.5</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">4</span>
+						<div class="top-info">
+							<a href="#" class="top-link">Гладиатор</a>
+							<span class="rating">8.6</span>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</aside>
+
+		<!-- Основной контент -->
+		<main id="main-content" class="content">
+
+			<!-- Промо-блок -->
+			<section class="promo-banner">
+				<div class="promo-inner">
+					<h2 class="promo-heading">Премьера недели</h2>
+					<p class="promo-description">Смотрите лучшие мировые шедевры киноиндустрии в высоком цифровом качестве и с профессиональным переводом.</p>
+					<a href="#" class="button button-primary">Смотреть онлайн</a>
+				</div>
+			</section>
+
+			<!-- Каталог фильмов -->
+			<section class="catalog">
+				<div class="catalog-header">
+					<h2 class="catalog-title">Новинки проката</h2>
+					<div class="filter-box">
+						<span class="filter-label">Сортировка:</span>
+						<a href="#" class="filter-link active">По дате</a>
+						<a href="#" class="filter-link">По рейтингу</a>
+					</div>
+				</div>
+
+				<div class="movies-collection">
+					
+					<!-- Карточка 1 -->
+					<article class="movie-card">
+						<div class="poster-box">
+							<img src="images/poster-interstellar.jpg" alt="Постер к фильму Интерстеллар" class="poster-image">
+							<span class="movie-rating-badge">8.6</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Интерстеллар</a></h3>
+							<p class="movie-meta">2014 г. • Фантастика, Драма</p>
+							<p class="movie-summary">Когда засуха и пыльные бури приводят человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-detail">Смотреть</a>
+							</div>
+						</div>
+					</article>
+
+					<!-- Карточка 2 -->
+					<article class="movie-card">
+						<div class="poster-box">
+							<img src="images/poster-inception.jpg" alt="Постер к фильму Начало" class="poster-image">
+							<span class="movie-rating-badge">8.7</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Начало</a></h3>
+							<p class="movie-meta">2010 г. • Фантастика, Боевик</p>
+							<p class="movie-summary">Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит выполнить противоположную задачу — внедрить идею.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-detail">Смотреть</a>
+							</div>
+						</div>
+					</article>
+
+					<!-- Карточка 3 -->
+					<article class="movie-card">
+						<div class="poster-box">
+							<img src="images/poster-matrix.jpg" alt="Постер к фильму Матрица" class="poster-image">
+							<span class="movie-rating-badge">8.5</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Матрица</a></h3>
+							<p class="movie-meta">1999 г. • Фантастика, Боевик</p>
+							<p class="movie-summary">Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми, и лишь ему под силу разрушить этот порядок.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-detail">Смотреть</a>
+							</div>
+						</div>
+					</article>
+
+					<!-- Карточка 4 -->
+					<article class="movie-card">
+						<div class="poster-box">
+							<img src="images/poster-gladiator.jpg" alt="Постер к фильму Гладиатор" class="poster-image">
+							<span class="movie-rating-badge">8.6</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Гладиатор</a></h3>
+							<p class="movie-meta">2000 г. • Боевик, Драма</p>
+							<p class="movie-summary">Преданный и лишенный всего римский полководец Максимус становится гладиатором. Побеждая на арене Колизея, он шаг за шагом приближается к возмездию.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-detail">Смотреть</a>
+							</div>
+						</div>
+					</article>
+
+				</div>
+
+				<!-- Пагинация -->
+				<div class="pagination-wrapper">
+					<ul class="pagination-list">
+						<li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
+						<li class="page-item"><a href="#" class="page-link active">1</a></li>
+						<li class="page-item"><a href="#" class="page-link">2</a></li>
+						<li class="page-item"><a href="#" class="page-link">3</a></li>
+						<li class="page-item"><a href="#" class="page-link">&raquo;</a></li>
+					</ul>
+				</div>
+			</section>
+
+		</main>
+	</div>
+
+	<!-- Подвал сайта -->
+	<footer id="site-footer" class="footer">
+		<div class="container footer-container">
+			<div class="footer-copyright">
+				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
+			</div>
+			<ul class="footer-navigation">
+				<li class="footer-nav-item"><a href="#" class="footer-link">Политика сайта</a></li>
+				<li class="footer-nav-item"><a href="#" class="footer-link">Правообладателям</a></li>
+				<li class="footer-nav-item"><a href="#" class="footer-link">Обратная связь</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>
