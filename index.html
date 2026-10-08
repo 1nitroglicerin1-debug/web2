@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Kinobase — Кинопортал</title>
-	<link rel="stylesheet" href="styles.css">
+	<title>Kinobase — Главная</title>
+	<link rel="stylesheet" href="styles.css" id="main-styles">
+	<link rel="stylesheet" href="print.css" id="print-styles">
 </head>
 <body>
 
@@ -24,6 +25,7 @@
 			</form>
 
 			<div class="user-panel">
+				<button type="button" id="toggle-print-btn" class="button button-print" title="Версия для печати">🖨️ Для печати</button>
 				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
 			</div>
 		</div>
@@ -32,9 +34,9 @@
 		<nav id="main-navigation" class="navigation">
 			<div class="container">
 				<ul class="nav-list" id="nav-tabs">
-					<li class="nav-item active"><a href="index.html" class="nav-link" data-tab="all">Главная</a></li>
+					<li class="nav-item active"><a href="index.html" class="nav-link">Главная</a></li>
 					<li class="nav-item"><a href="about.html" class="nav-link">О Компании</a></li>
-					<li class="nav-item"><a href="movies.html" class="nav-link" data-tab="movies">Каталог фильмов</a></li>
+					<li class="nav-item"><a href="movies.html" class="nav-link">Каталог фильмов</a></li>
 					<li class="nav-item"><a href="price.html" class="nav-link">Прайс-лист</a></li>
 					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
 				</ul>
@@ -50,19 +52,53 @@
 			<section class="widget">
 				<h3 class="widget-title">Жанры кино</h3>
 				<ul class="widget-list genre-list" id="genre-filter">
-					<li class="widget-list-item"><a href="#" class="genre-link active" data-genre="all">Все жанры <span class="count" id="count-all"></span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count" id="count-sci-fi"></span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count" id="count-action"></span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count" id="count-drama"></span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Криминал">Криминал <span class="count" id="count-crime"></span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Комедия">Комедии <span class="count" id="count-comedy"></span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link active" data-genre="all">Все жанры <span class="count" id="count-all">(20)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count" id="count-sci-fi">(8)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count" id="count-action">(7)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count" id="count-drama">(9)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Криминал">Криминал <span class="count" id="count-crime">(5)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Комедия">Комедии <span class="count" id="count-comedy">(2)</span></a></li>
 				</ul>
 			</section>
 
 			<section class="widget">
 				<h3 class="widget-title">Популярные фильмы</h3>
 				<ul class="widget-list top-list" id="top-movies-list">
-					<!-- Наполняется скриптом -->
+					<li class="top-list-item">
+						<span class="position-number">1</span>
+						<div class="top-info">
+							<a href="movie.html?id=9" class="top-link">Во все тяжкие</a>
+							<span class="rating">9.5</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">2</span>
+						<div class="top-info">
+							<a href="movie.html?id=19" class="top-link">Игра престолов</a>
+							<span class="rating">9.2</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">3</span>
+						<div class="top-info">
+							<a href="movie.html?id=6" class="top-link">Побег из Шоушенка</a>
+							<span class="rating">9.1</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">4</span>
+						<div class="top-info">
+							<a href="movie.html?id=5" class="top-link">Тёмный рыцарь</a>
+							<span class="rating">9.0</span>
+						</div>
+					</li>
+					<li class="top-list-item">
+						<span class="position-number">5</span>
+						<div class="top-info">
+							<a href="movie.html?id=10" class="top-link">Чернобыль</a>
+							<span class="rating">8.9</span>
+						</div>
+					</li>
 				</ul>
 			</section>
 
@@ -96,20 +132,113 @@
 					</div>
 				</div>
 
-				<!-- Сетка карточек -->
+				<!-- Сетка карточек: зашиты по умолчанию, динамически обновляются скриптом -->
 				<div class="movies-collection" id="movies-container">
-					<!-- Наполняется скриптом -->
+					<article class="movie-card">
+						<div class="poster-box">
+							<a href="movie.html?id=1">
+								<img src="images/poster-interstellar.jpg" alt="Постер к фильму Интерстеллар" class="poster-image">
+							</a>
+							<span class="movie-rating-badge">8.6</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="movie.html?id=1" class="movie-link">Интерстеллар</a></h3>
+							<p class="movie-meta">2014 г. • Фантастика, Драма</p>
+							<p class="movie-summary">Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.</p>
+							<div class="movie-actions">
+								<a href="movie.html?id=1" class="button button-detail">Смотреть онлайн</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card">
+						<div class="poster-box">
+							<a href="movie.html?id=2">
+								<img src="images/poster-inception.jpg" alt="Постер к фильму Начало" class="poster-image">
+							</a>
+							<span class="movie-rating-badge">8.7</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="movie.html?id=2" class="movie-link">Начало</a></h3>
+							<p class="movie-meta">2010 г. • Фантастика, Боевик</p>
+							<p class="movie-summary">Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит внедрить чужую мысль.</p>
+							<div class="movie-actions">
+								<a href="movie.html?id=2" class="button button-detail">Смотреть онлайн</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card">
+						<div class="poster-box">
+							<a href="movie.html?id=3">
+								<img src="images/poster-matrix.jpg" alt="Постер к фильму Матрица" class="poster-image">
+							</a>
+							<span class="movie-rating-badge">8.5</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="movie.html?id=3" class="movie-link">Матрица</a></h3>
+							<p class="movie-meta">1999 г. • Фантастика, Боевик</p>
+							<p class="movie-summary">Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми.</p>
+							<div class="movie-actions">
+								<a href="movie.html?id=3" class="button button-detail">Смотреть онлайн</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card">
+						<div class="poster-box">
+							<a href="movie.html?id=4">
+								<img src="images/poster-gladiator.jpg" alt="Постер к фильму Гладиатор" class="poster-image">
+							</a>
+							<span class="movie-rating-badge">8.6</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="movie.html?id=4" class="movie-link">Гладиатор</a></h3>
+							<p class="movie-meta">2000 г. • Боевик, Драма</p>
+							<p class="movie-summary">Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима.</p>
+							<div class="movie-actions">
+								<a href="movie.html?id=4" class="button button-detail">Смотреть онлайн</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card">
+						<div class="poster-box">
+							<a href="movie.html?id=5">
+								<img src="images/poster-dark-knight.jpg" alt="Постер к фильму Тёмный рыцарь" class="poster-image">
+							</a>
+							<span class="movie-rating-badge">9.0</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="movie.html?id=5" class="movie-link">Тёмный рыцарь</a></h3>
+							<p class="movie-meta">2008 г. • Боевик, Криминал</p>
+							<p class="movie-summary">Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона он намерен очистить улицы Готэма от Джокера.</p>
+							<div class="movie-actions">
+								<a href="movie.html?id=5" class="button button-detail">Смотреть онлайн</a>
+							</div>
+						</div>
+					</article>
 				</div>
 
 				<!-- Пагинация -->
 				<div class="pagination-wrapper">
 					<ul class="pagination-list" id="pagination">
-						<!-- Кнопки страниц генерируются скриптом -->
+						<li class="page-item"><button type="button" class="page-link active" data-page="1">1</button></li>
+						<li class="page-item"><button type="button" class="page-link" data-page="2">2</button></li>
+						<li class="page-item"><button type="button" class="page-link" data-page="3">3</button></li>
+						<li class="page-item"><button type="button" class="page-link" data-page="4">4</button></li>
 					</ul>
 				</div>
 			</section>
 
 		</main>
+	</div>
+
+	<!-- Панель управления печатью -->
+	<div id="print-controls" class="print-controls-bar">
+		<span>Режим предварительного просмотра печати</span>
+		<button type="button" class="print-btn-action" onclick="window.print()">Распечатать</button>
+		<button type="button" id="exit-print-btn" class="print-btn-close">Вернуться на сайт</button>
 	</div>
 
 	<!-- Модальное окно Вход -->
