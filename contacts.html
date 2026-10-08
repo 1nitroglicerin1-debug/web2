@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kinobase — Контакты и обратная связь</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<header id="site-header" class="header">
+		<div class="container header-container">
+			<div class="logo">
+				<a href="index.html" class="logo-link">
+					<img src="images/logo.png" alt="Логотип Kinobase" class="logo-image">
+					<span class="logo-text">KINO<span class="logo-accent">BASE</span></span>
+				</a>
+			</div>
+
+			<form id="search-form" class="search-form" action="movies.html" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+				<button type="submit" class="search-button">Найти</button>
+			</form>
+
+			<div class="user-panel">
+				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
+			</div>
+		</div>
+
+		<nav id="main-navigation" class="navigation">
+			<div class="container">
+				<ul class="nav-list">
+					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+					<li class="nav-item"><a href="movies.html" class="nav-link">Фильмы и сериалы</a></li>
+					<li class="nav-item active"><a href="contacts.html" class="nav-link">Контакты</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container layout-wrapper">
+		<main id="main-content" class="content full-width">
+			<section class="contacts-section">
+				<h2 class="catalog-title">Свяжитесь с нами</h2>
+				<p class="contacts-intro">Есть вопросы, предложения по сотрудничеству или замечания по работе кинопортала? Напишите нам через форму ниже или посетите наш офис.</p>
+
+				<div class="contacts-grid">
+					<div class="contacts-form-box">
+						<h3 class="widget-title">Форма обратной связи</h3>
+						<form id="feedback-form" class="feedback-form">
+							<div class="form-group">
+								<label for="contact-name">Ваше имя:</label>
+								<input type="text" id="contact-name" class="form-control" placeholder="Иван Иванов" required>
+							</div>
+							<div class="form-group">
+								<label for="contact-email">Электронная почта:</label>
+								<input type="email" id="contact-email" class="form-control" placeholder="ivan@example.com" required>
+							</div>
+							<div class="form-group">
+								<label for="contact-subject">Тема сообщения:</label>
+								<select id="contact-subject" class="form-control">
+									<option value="general">Общий вопрос</option>
+									<option value="copyright">Вопрос правообладателя</option>
+									<option value="bug">Техническая ошибка</option>
+									<option value="cooperation">Сотрудничество</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="contact-message">Текст обращения:</label>
+								<textarea id="contact-message" class="form-control textarea" rows="5" placeholder="Напишите ваше сообщение здесь..." required></textarea>
+							</div>
+							<button type="submit" class="button button-primary">Отправить сообщение</button>
+						</form>
+					</div>
+
+					<div class="contacts-info-box">
+						<h3 class="widget-title">Контактная информация</h3>
+						<ul class="info-details-list">
+							<li><strong>Адрес:</strong> г. Брянск, б-р 50 лет Октября, 7</li>
+							<li><strong>Телефон поддержки:</strong> +7 (4832) 58-82-58</li>
+							<li><strong>Электронная почта:</strong> support@kinobase.ru</li>
+							<li><strong>Режим работы:</strong> Пн–Пт с 09:00 до 18:00 (МСК)</li>
+						</ul>
+
+						<h3 class="widget-title map-title">Схема проезда</h3>
+						<div class="map-container">
+							<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A975549887756e09e13dfab67eb3ff68e8093847f9c88be2dbca5e83ea7483cb1&amp;source=constructor" width="100%" height="240" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<div id="login-modal" class="modal-overlay hidden">
+		<div class="modal-window">
+			<div class="modal-header">
+				<h3 class="modal-title">Вход в Kinobase</h3>
+				<button type="button" id="close-modal-btn" class="modal-close">&times;</button>
+			</div>
+			<form id="login-form" class="modal-form">
+				<div class="form-group">
+					<label for="login-email">Логин или Email:</label>
+					<input type="text" id="login-email" class="form-control" placeholder="user@example.com" required>
+				</div>
+				<div class="form-group">
+					<label for="login-password">Пароль:</label>
+					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="submit" class="button button-primary button-block">Войти в аккаунт</button>
+			</form>
+		</div>
+	</div>
+
+	<footer id="site-footer" class="footer">
+		<div class="container footer-container">
+			<div class="footer-copyright">
+				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
+			</div>
+			<ul class="footer-navigation">
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
+				<li class="footer-nav-item"><a href="movies.html" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="contacts.html" class="footer-link">Контакты</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>

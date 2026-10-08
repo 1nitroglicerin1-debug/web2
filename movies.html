@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kinobase — Фильмы и сериалы</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<header id="site-header" class="header">
+		<div class="container header-container">
+			<div class="logo">
+				<a href="index.html" class="logo-link">
+					<img src="images/logo.png" alt="Логотип Kinobase" class="logo-image">
+					<span class="logo-text">KINO<span class="logo-accent">BASE</span></span>
+				</a>
+			</div>
+
+			<form id="search-form" class="search-form" action="#" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+				<button type="submit" class="search-button">Найти</button>
+			</form>
+
+			<div class="user-panel">
+				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
+			</div>
+		</div>
+
+		<nav id="main-navigation" class="navigation">
+			<div class="container">
+				<ul class="nav-list">
+					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+					<li class="nav-item active"><a href="movies.html" class="nav-link">Фильмы и сериалы</a></li>
+					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container layout-wrapper">
+		<main id="main-content" class="content full-width">
+			<section class="catalog">
+				<div class="catalog-header">
+					<h2 class="catalog-title">Полный каталог кино</h2>
+					<div class="filter-box">
+						<span class="filter-label">Сортировка:</span>
+						<a href="#" class="filter-link active" id="sort-date">По дате</a>
+						<a href="#" class="filter-link" id="sort-rating">По рейтингу</a>
+					</div>
+				</div>
+
+				<div class="movies-collection" id="movies-container">
+					<article class="movie-card" data-year="2014" data-rating="8.6" data-genres="Фантастика Драма">
+						<div class="poster-box">
+							<img src="images/poster-interstellar.jpg" alt="Постер к фильму Интерстеллар" class="poster-image">
+							<span class="movie-rating-badge">8.6</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Интерстеллар</a></h3>
+							<p class="movie-meta">2014 г. • США, Великобритания • Режиссер: Кристофер Нолан</p>
+							<p class="movie-summary">Фильм повествует о путешествии группы исследователей, которые используют недавно обнаруженный пространственно-временной тоннель, чтобы обойти ограничения космических полетов.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-primary">Смотреть фильм</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card" data-year="2010" data-rating="8.7" data-genres="Фантастика Боевик">
+						<div class="poster-box">
+							<img src="images/poster-inception.jpg" alt="Постер к фильму Начало" class="poster-image">
+							<span class="movie-rating-badge">8.7</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Начало</a></h3>
+							<p class="movie-meta">2010 г. • США, Великобритания • Режиссер: Кристофер Нолан</p>
+							<p class="movie-summary">Дом Кобб крадет ценные корпоративные тайны во время фазы глубокого сна. Редкая способность Кобба сделала его ценным игроком в мире промышленного шпионажа, но лишила дома.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-primary">Смотреть фильм</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card" data-year="1999" data-rating="8.5" data-genres="Фантастика Боевик">
+						<div class="poster-box">
+							<img src="images/poster-matrix.jpg" alt="Постер к фильму Матрица" class="poster-image">
+							<span class="movie-rating-badge">8.5</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Матрица</a></h3>
+							<p class="movie-meta">1999 г. • США, Австралия • Режиссеры: Лана и Лилли Вачовски</p>
+							<p class="movie-summary">Жизнь Томаса Андерсона разделена на две части: днем он клерк в крупной компании, а ночью — хакер по имени Нео. Скоро он узнает страшную тайну окружающего мира.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-primary">Смотреть фильм</a>
+							</div>
+						</div>
+					</article>
+
+					<article class="movie-card" data-year="2000" data-rating="8.6" data-genres="Боевик Драма">
+						<div class="poster-box">
+							<img src="images/poster-gladiator.jpg" alt="Постер к фильму Гладиатор" class="poster-image">
+							<span class="movie-rating-badge">8.6</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="#" class="movie-link">Гладиатор</a></h3>
+							<p class="movie-meta">2000 г. • США, Великобритания • Режиссер: Ридли Скотт</p>
+							<p class="movie-summary">В великой Римской империи не было военачальника, равного генералу Максимусу. Но зависть наследника престола превращает героя в бесправного гладиатора.</p>
+							<div class="movie-actions">
+								<a href="#" class="button button-primary">Смотреть фильм</a>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<div id="login-modal" class="modal-overlay hidden">
+		<div class="modal-window">
+			<div class="modal-header">
+				<h3 class="modal-title">Вход в Kinobase</h3>
+				<button type="button" id="close-modal-btn" class="modal-close">&times;</button>
+			</div>
+			<form id="login-form" class="modal-form">
+				<div class="form-group">
+					<label for="login-email">Логин или Email:</label>
+					<input type="text" id="login-email" class="form-control" placeholder="user@example.com" required>
+				</div>
+				<div class="form-group">
+					<label for="login-password">Пароль:</label>
+					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="submit" class="button button-primary button-block">Войти в аккаунт</button>
+			</form>
+		</div>
+	</div>
+
+	<footer id="site-footer" class="footer">
+		<div class="container footer-container">
+			<div class="footer-copyright">
+				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
+			</div>
+			<ul class="footer-navigation">
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
+				<li class="footer-nav-item"><a href="movies.html" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="contacts.html" class="footer-link">Контакты</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>
