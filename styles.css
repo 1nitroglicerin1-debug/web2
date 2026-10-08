@@ -1047,7 +1047,6 @@ a:active {
 	font-size: 13px;
 	margin-top: 14px;
 }
-
 /* ==========================================================================
    Адаптивная верстка (Mobile & Tablet)
    ========================================================================== */
@@ -1210,4 +1209,130 @@ a:active {
 	.modal-window {
 		margin: 0 15px;
 	}
+}
+
+/* ==========================================================================
+   Лабораторная №3: Стили Умного фильтра и кнопки печати
+   ========================================================================== */
+.button-print {
+	background-color: #2d3748;
+	color: #e2e8f0 !important;
+	border: 1px solid #4a5568;
+	font-size: 13px;
+	padding: 8px 14px;
+	margin-right: 8px;
+}
+
+.button-print:hover {
+	background-color: #ed8936;
+	color: #ffffff !important;
+	border-color: #ed8936;
+}
+
+.smart-filter-widget {
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+}
+
+.filter-header-block {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 6px;
+}
+
+.filter-reset-link {
+	background: none;
+	border: none;
+	color: #ed8936;
+	font-size: 12px;
+	cursor: pointer;
+	text-decoration: underline;
+	padding: 0;
+}
+
+.filter-reset-link:hover {
+	color: #dd6b20;
+}
+
+.filter-hint {
+	font-size: 11px;
+	color: #718096;
+	margin-bottom: 15px;
+	line-height: 1.3;
+}
+
+.filter-group {
+	margin-bottom: 18px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #2d3748;
+}
+
+.filter-group:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.filter-group-title {
+	font-size: 13px;
+	font-weight: bold;
+	color: #e2e8f0;
+	margin-bottom: 8px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.filter-checkbox-item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 6px;
+	cursor: pointer;
+	user-select: none;
+	font-size: 13px;
+	color: #cbd5e0;
+	transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.filter-checkbox-item input[type="checkbox"] {
+	margin-right: 8px;
+	accent-color: #ed8936;
+	cursor: pointer;
+	width: 15px;
+	height: 15px;
+}
+
+.filter-checkbox-item:hover {
+	color: #ffffff;
+}
+
+/* Умная блокировка взаимоисключающих опций */
+.filter-checkbox-item.disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+	color: #718096 !important;
+}
+
+.filter-checkbox-item.disabled input[type="checkbox"] {
+	cursor: not-allowed;
+}
+
+.filter-count-badge {
+	margin-left: auto;
+	font-size: 11px;
+	color: #a0aec0;
+	background-color: #242c3d;
+	padding: 1px 6px;
+	border-radius: 10px;
+}
+
+.filter-checkbox-item.disabled .filter-count-badge {
+	color: #4a5568;
+	background-color: #1a202c;
+}
+
+.filter-counter {
+	color: #48bb78;
+	font-weight: bold;
+	margin-right: 15px;
 }

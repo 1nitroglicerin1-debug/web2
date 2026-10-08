@@ -1,0 +1,181 @@
+/* ==========================================================================
+   Kinobase — Таблица стилей для печати (Print Version)
+   Включается динамически по кнопке или при Ctrl+P
+   ========================================================================== */
+@media screen, print {
+	body.print-mode {
+		background-color: #ffffff !important;
+		color: #111111 !important;
+		font-family: "Times New Roman", Times, serif !important;
+		font-size: 12pt !important;
+		line-height: 1.4 !important;
+	}
+
+	/* Скрываем все второстепенные и навигационные элементы */
+	body.print-mode .header,
+	body.print-mode .navigation,
+	body.print-mode .sidebar,
+	body.print-mode .promo-banner,
+	body.print-mode .filter-box,
+	body.print-mode .pagination-wrapper,
+	body.print-mode .footer,
+	body.print-mode .modal-overlay,
+	body.print-mode .movie-actions,
+	body.print-mode .search-form,
+	body.print-mode .user-panel,
+	body.print-mode .table-secondary,
+	body.print-mode #login-modal {
+		display: none !important;
+	}
+
+	/* Разворачиваем контент на всю ширину страницы */
+	body.print-mode .container,
+	body.print-mode .layout-wrapper,
+	body.print-mode .content {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		display: block !important;
+	}
+
+	/* Шапка версии для печати */
+	body.print-mode .print-header-notice {
+		display: block !important;
+		border-bottom: 2px solid #000;
+		padding-bottom: 10px;
+		margin-bottom: 20px;
+	}
+
+	body.print-mode .print-header-notice h1 {
+		font-size: 18pt;
+		margin: 0 0 5px 0;
+		color: #000;
+	}
+
+	body.print-mode .print-header-notice p {
+		font-size: 10pt;
+		color: #555;
+		margin: 0;
+	}
+
+	/* Карточки фильмов в компактном виде для печати */
+	body.print-mode .movie-card {
+		background: none !important;
+		border: 1px solid #ccc !important;
+		border-radius: 0 !important;
+		color: #000 !important;
+		page-break-inside: avoid;
+		margin-bottom: 12px !important;
+		padding: 10px !important;
+		display: flex !important;
+		box-shadow: none !important;
+	}
+
+	body.print-mode .poster-box {
+		width: 80px !important;
+		height: 110px !important;
+		background: #f0f0f0 !important;
+		margin-right: 15px !important;
+	}
+
+	body.print-mode .poster-image {
+		width: 80px !important;
+		height: 110px !important;
+		object-fit: cover !important;
+	}
+
+	body.print-mode .movie-rating-badge {
+		background: #333 !important;
+		color: #fff !important;
+		border-radius: 0 !important;
+		font-size: 9pt !important;
+	}
+
+	body.print-mode .movie-name a {
+		color: #000 !important;
+		font-size: 14pt !important;
+		font-weight: bold !important;
+		text-decoration: none !important;
+	}
+
+	body.print-mode .movie-meta {
+		color: #444 !important;
+		font-size: 10pt !important;
+		margin: 4px 0 !important;
+	}
+
+	body.print-mode .movie-summary {
+		color: #222 !important;
+		font-size: 10pt !important;
+		line-height: 1.3 !important;
+	}
+
+	/* Таблица прайс-листа в режиме печати */
+	body.print-mode .price-table {
+		width: 100% !important;
+		border-collapse: collapse !important;
+		color: #000 !important;
+		background: none !important;
+	}
+
+	body.print-mode .price-table th,
+	body.print-mode .price-table td {
+		border: 1px solid #000 !important;
+		background: none !important;
+		color: #000 !important;
+		padding: 6px !important;
+		font-size: 10pt !important;
+	}
+
+	body.print-mode .row-header th {
+		background-color: #eee !important;
+		font-weight: bold !important;
+	}
+
+	/* Плавающая панель управления печатью на экране */
+	.print-controls-bar {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		background: #ffffff;
+		border: 2px solid #000000;
+		padding: 12px 18px;
+		border-radius: 6px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+		z-index: 99999;
+		display: none;
+		align-items: center;
+		gap: 12px;
+	}
+
+	body.print-mode .print-controls-bar {
+		display: flex !important;
+	}
+
+	.print-btn-action {
+		background: #000;
+		color: #fff;
+		border: none;
+		padding: 8px 14px;
+		font-weight: bold;
+		cursor: pointer;
+		border-radius: 4px;
+	}
+
+	.print-btn-close {
+		background: #e2e8f0;
+		color: #000;
+		border: 1px solid #aaa;
+		padding: 8px 14px;
+		font-weight: bold;
+		cursor: pointer;
+		border-radius: 4px;
+	}
+}
+
+@media print {
+	.print-controls-bar {
+		display: none !important;
+	}
+}

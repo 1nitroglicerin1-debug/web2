@@ -3,11 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Kinobase — Каталог фильмов и сериалов</title>
-	<link rel="stylesheet" href="styles.css">
+	<title>Kinobase — Каталог и Умный фильтр</title>
+	<link rel="stylesheet" href="styles.css" id="main-styles">
+	<link rel="stylesheet" href="print.css" id="print-styles">
 </head>
 <body>
 
+	<!-- Шапка сайта -->
 	<header id="site-header" class="header">
 		<div class="container header-container">
 			<div class="logo">
@@ -23,6 +25,8 @@
 			</form>
 
 			<div class="user-panel">
+				<!-- Контрольный элемент 1: Кнопка переключения версии для печати -->
+				<button type="button" id="toggle-print-btn" class="button button-print" title="Версия для печати">🖨️ Для печати</button>
 				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
 			</div>
 		</div>
@@ -41,11 +45,43 @@
 	</header>
 
 	<div class="container layout-wrapper">
-		<main id="main-content" class="content full-width">
+
+		<!-- Сайдбар с Умным фильтром (Smart Filter - Контрольный элемент 2) -->
+		<aside id="sidebar" class="sidebar">
+			<div class="widget smart-filter-widget">
+				<div class="filter-header-block">
+					<h3 class="widget-title">Умный фильтр</h3>
+					<button type="button" id="reset-filters-btn" class="filter-reset-link" title="Сбросить все выбранные фильтры">Сбросить</button>
+				</div>
+				<p class="filter-hint">Недоступные комбинации параметров отключаются автоматически.</p>
+
+				<!-- Контейнер для динамических чекбоксов умного фильтра -->
+				<div id="smart-filters-container">
+					<!-- Генерируется скриптом js/main.js -->
+				</div>
+			</div>
+
+			<section class="widget">
+				<h3 class="widget-title">Популярные фильмы</h3>
+				<ul class="widget-list top-list" id="top-movies-list">
+					<!-- Наполняется js/main.js -->
+				</ul>
+			</section>
+		</aside>
+
+		<main id="main-content" class="content">
+
+			<!-- Специальный блок заголовка для печати -->
+			<div class="print-header-notice hidden">
+				<h1>Kinobase — Каталог кинофильмов (Версия для печати)</h1>
+				<p>Сформировано: официальный каталог kinobase.ru • Документ предназначен для печати и архивирования</p>
+			</div>
+
 			<section class="catalog">
 				<div class="catalog-header">
-					<h2 class="catalog-title">Полный каталог кино</h2>
+					<h2 class="catalog-title" id="catalog-title">Каталог кинолент</h2>
 					<div class="filter-box">
+						<span class="filter-counter" id="active-matches-info">Найдено: 0</span>
 						<span class="filter-label">Сортировка:</span>
 						<a href="#" class="filter-link active" id="sort-date">По дате</a>
 						<a href="#" class="filter-link" id="sort-rating">По рейтингу</a>
@@ -63,6 +99,13 @@
 				</div>
 			</section>
 		</main>
+	</div>
+
+	<!-- Панель управления печатью (активна только в print-mode) -->
+	<div id="print-controls" class="print-controls-bar">
+		<span>Режим предварительного просмотра печати</span>
+		<button type="button" class="print-btn-action" onclick="window.print()">Распечатать</button>
+		<button type="button" id="exit-print-btn" class="print-btn-close">Вернуться на сайт</button>
 	</div>
 
 	<div id="login-modal" class="modal-overlay hidden">
