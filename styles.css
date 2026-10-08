@@ -642,3 +642,136 @@ a:active {
 	display: flex;
 	gap: 20px;
 }
+
+/* ==========================================================================
+   Стили страницы просмотра отдельного фильма (movie.html)
+   ========================================================================== */
+.movie-view-card {
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+	border-radius: 6px;
+	padding: 24px;
+	margin-bottom: 25px;
+}
+
+.movie-view-header {
+	display: flex;
+	gap: 25px;
+	margin-bottom: 25px;
+}
+
+.movie-view-poster {
+	width: 220px;
+	height: 310px;
+	flex-shrink: 0;
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+	border: 1px solid #2d3748;
+}
+
+.movie-view-poster img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.movie-view-info {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.movie-view-title {
+	font-size: 26px;
+	color: #ffffff;
+	margin-bottom: 10px;
+}
+
+.movie-view-meta {
+	font-size: 14px;
+	color: #ed8936;
+	margin-bottom: 15px;
+}
+
+.movie-view-meta span {
+	color: #a0aec0;
+	margin-right: 10px;
+}
+
+.movie-view-rating {
+	display: inline-block;
+	background-color: #38a169;
+	color: #ffffff;
+	font-weight: bold;
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 14px;
+	margin-bottom: 15px;
+	width: fit-content;
+}
+
+.movie-view-desc {
+	color: #cbd5e0;
+	line-height: 1.7;
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+
+/* Видеоплеер / Трейлер */
+.player-section {
+	background-color: #161b26;
+	border: 1px solid #2d3748;
+	border-radius: 6px;
+	padding: 20px;
+	margin-top: 20px;
+}
+
+.player-box {
+	position: relative;
+	width: 100%;
+	height: 380px;
+	background-color: #0b0e14;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #242c3d;
+	margin-top: 12px;
+}
+
+.player-icon {
+	width: 64px;
+	height: 64px;
+	background: #ed8936;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	box-shadow: 0 0 20px rgba(237, 137, 54, 0.4);
+	transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.player-icon:hover {
+	transform: scale(1.08);
+	background-color: #dd6b20;
+}
+
+.player-icon::after {
+	content: "";
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 16px solid #ffffff;
+	margin-left: 4px;
+}
+
+.player-caption {
+	color: #a0aec0;
+	font-size: 13px;
+	margin-top: 14px;
+}

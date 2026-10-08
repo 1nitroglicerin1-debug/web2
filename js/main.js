@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	// ==========================================
-	// База данных фильмов (20 штук)
+	// База данных фильмов (20 фильмов)
 	// ==========================================
 	const moviesData = [
 		{ id: 1, title: "Интерстеллар", year: 2014, rating: 8.6, genre: "Фантастика, Драма", type: "movies", file: "poster-interstellar.jpg", desc: "Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома." },
@@ -25,230 +25,294 @@ document.addEventListener("DOMContentLoaded", function () {
 		{ id: 20, title: "Мстители: Финал", year: 2019, rating: 8.4, genre: "Фантастика, Боевик", type: "top", file: "poster-avengers-endgame.jpg", desc: "Оставшиеся в живых члены команды Мстителей разрабатывают дерзкий план, чтобы отменить действия Таноса." }
 	];
 
-	let currentGenre = "all";
-	let currentTab = "all";
-	let currentSort = "date";
-	let searchQuery = "";
-	let currentPage = 1;
-	const pageSize = 5;
+	// =========================================================================
+	// А. Логика страницы отдельного фильма (movie.html)
+	// =========================================================================
+	const movieDetailsContainer = document.getElementById("movie-details-container");
+	if (movieDetailsContainer) {
+		const params = new URLSearchParams(window.location.search);
+		const movieId = Number(params.get("id")) || 1;
+		const movie = moviesData.find(m => m.id === movieId);
 
-	const container = document.getElementById("movies-container");
-	const pagination = document.getElementById("pagination");
-	const catalogTitle = document.getElementById("catalog-title");
+		if (!movie) {
+			movieDetailsContainer.innerHTML = `
+				<div class="movie-view-card">
+					<h2>Фильм не найден</h2>
+					<p style="margin: 15px 0; color: #a0aec0;">Запрашиваемый фильм отсутствует в базе данных.</p>
+					<a href="index.html" class="button button-primary">Вернуться на главную</a>
+				</div>
+			`;
+		} else {
+			document.title = `${movie.title} (${movie.year}) — Kinobase`;
+			const titleTag = document.getElementById("movie-page-title");
+			if (titleTag) titleTag.textContent = `${movie.title} — Kinobase`;
 
-	// Автоматический подсчёт цифр в скобках для сайдбара
-	function updateGenreCounters() {
-		const genres = [
-			{ id: "count-all", name: "all" },
-			{ id: "count-sci-fi", name: "Фантастика" },
-			{ id: "count-action", name: "Боевик" },
-			{ id: "count-drama", name: "Драма" },
-			{ id: "count-crime", name: "Криминал" },
-			{ id: "count-comedy", name: "Комедия" }
-		];
+			movieDetailsContainer.innerHTML = `
+				<article class="movie-view-card">
+					<div class="movie-view-header">
+						<div class="movie-view-poster">
+							<img src="images/${movie.file}" alt="Постер к фильму ${movie.title}">
+						</div>
+						<div class="movie-view-info">
+							<h1 class="movie-view-title">${movie.title}</h1>
+							<div class="movie-view-rating">★ Рейтинг: ${movie.rating} / 10</div>
+							<div class="movie-view-meta">
+								<span>Год выпуска:</span> <strong>${movie.year}</strong><br>
+								<span>Жанр:</span> <strong>${movie.genre}</strong>
+							</div>
+							<p class="movie-view-desc">${movie.desc}</p>
+							<div>
+								<button type="button" class="button button-primary" onclick="document.getElementById('video-player').scrollIntoView({behavior: 'smooth'})">Смотреть онлайн</button>
+								<a href="index.html" class="button button-detail" style="margin-left: 10px;">В каталог</a>
+							</div>
+						</div>
+					</div>
 
-		genres.forEach(g => {
-			const el = document.getElementById(g.id);
-			if (el) {
-				const count = g.name === "all"
-					? moviesData.length
-					: moviesData.filter(m => m.genre.includes(g.name)).length;
-				el.textContent = `(${count})`;
+					<!-- Онлайн-плеер -->
+					<section class="player-section" id="video-player">
+						<h3 class="widget-title">Онлайн плеер Kinobase</h3>
+						<div class="player-box">
+							<div class="player-icon" onclick="alert('Воспроизведение: ${movie.title}')"></div>
+							<p class="player-caption">Нажмите для запуска официального видеоплеера Full HD 1080p</p>
+						</div>
+					</section>
+				</article>
+			`;
+
+			// Рекомендации в сайдбар
+			const similarList = document.getElementById("similar-movies-list");
+			if (similarList) {
+				const mainGenre = movie.genre.split(",")[0].trim();
+				const similar = moviesData.filter(m => m.id !== movie.id && m.genre.includes(mainGenre)).slice(0, 4);
+				similarList.innerHTML = similar.map((m, idx) => `
+					<li class="top-list-item">
+						<span class="position-number">${idx + 1}</span>
+						<div class="top-info">
+							<a href="movie.html?id=${m.id}" class="top-link">${m.title}</a>
+							<span class="rating">${m.rating}</span>
+						</div>
+					</li>
+				`).join("");
 			}
-		});
+		}
 	}
 
-	// Топ фильмов в сайдбаре
-	function renderTopSidebar() {
-		const topList = document.getElementById("top-movies-list");
-		if (!topList) return;
-		const sorted = [...moviesData].sort((a, b) => b.rating - a.rating).slice(0, 5);
-		topList.innerHTML = sorted.map((m, idx) => `
-			<li class="top-list-item">
-				<span class="position-number">${idx + 1}</span>
-				<div class="top-info">
-					<a href="#" class="top-link">${m.title}</a>
-					<span class="rating">${m.rating}</span>
-				</div>
-			</li>
-		`).join("");
+	// =========================================================================
+	// Б. Логика каталога на главной странице (index.html)
+	// =========================================================================
+	const moviesContainer = document.getElementById("movies-container");
+	if (moviesContainer) {
+		let currentGenre = "all";
+		let currentTab = "all";
+		let currentSort = "date";
+		let searchQuery = "";
+		let currentPage = 1;
+		const pageSize = 5;
 
-		topList.querySelectorAll(".top-link").forEach(link => {
+		const pagination = document.getElementById("pagination");
+		const catalogTitle = document.getElementById("catalog-title");
+
+		function updateGenreCounters() {
+			const genres = [
+				{ id: "count-all", name: "all" },
+				{ id: "count-sci-fi", name: "Фантастика" },
+				{ id: "count-action", name: "Боевик" },
+				{ id: "count-drama", name: "Драма" },
+				{ id: "count-crime", name: "Криминал" },
+				{ id: "count-comedy", name: "Комедия" }
+			];
+
+			genres.forEach(g => {
+				const el = document.getElementById(g.id);
+				if (el) {
+					const count = g.name === "all"
+						? moviesData.length
+						: moviesData.filter(m => m.genre.includes(g.name)).length;
+					el.textContent = `(${count})`;
+				}
+			});
+		}
+
+		function renderTopSidebar() {
+			const topList = document.getElementById("top-movies-list");
+			if (!topList) return;
+			const sorted = [...moviesData].sort((a, b) => b.rating - a.rating).slice(0, 5);
+			topList.innerHTML = sorted.map((m, idx) => `
+				<li class="top-list-item">
+					<span class="position-number">${idx + 1}</span>
+					<div class="top-info">
+						<a href="movie.html?id=${m.id}" class="top-link">${m.title}</a>
+						<span class="rating">${m.rating}</span>
+					</div>
+				</li>
+			`).join("");
+		}
+
+		function getFilteredMovies() {
+			return moviesData.filter(movie => {
+				if (currentTab === "movies" && movie.type !== "movies") return false;
+				if (currentTab === "series" && movie.type !== "series") return false;
+				if (currentTab === "new" && movie.type !== "new") return false;
+				if (currentTab === "top" && movie.rating < 8.7) return false;
+
+				if (currentGenre !== "all" && !movie.genre.includes(currentGenre)) return false;
+
+				if (searchQuery) {
+					const full = (movie.title + " " + movie.desc).toLowerCase();
+					if (!full.includes(searchQuery)) return false;
+				}
+				return true;
+			}).sort((a, b) => {
+				if (currentSort === "date") return b.year - a.year;
+				return b.rating - a.rating;
+			});
+		}
+
+		function renderCatalog() {
+			const filtered = getFilteredMovies();
+			const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+			if (currentPage > totalPages) currentPage = 1;
+
+			const start = (currentPage - 1) * pageSize;
+			const pageMovies = filtered.slice(start, start + pageSize);
+
+			if (pageMovies.length === 0) {
+				moviesContainer.innerHTML = `<p style="padding: 20px; color: #a0aec0;">Фильмов не найдено. Попробуйте сбросить фильтры.</p>`;
+			} else {
+				moviesContainer.innerHTML = pageMovies.map(movie => `
+					<article class="movie-card">
+						<div class="poster-box">
+							<a href="movie.html?id=${movie.id}">
+								<img src="images/${movie.file}" alt="Постер к фильму ${movie.title}" class="poster-image">
+							</a>
+							<span class="movie-rating-badge">${movie.rating}</span>
+						</div>
+						<div class="movie-info">
+							<h3 class="movie-name"><a href="movie.html?id=${movie.id}" class="movie-link">${movie.title}</a></h3>
+							<p class="movie-meta">${movie.year} г. • ${movie.genre}</p>
+							<p class="movie-summary">${movie.desc}</p>
+							<div class="movie-actions">
+								<a href="movie.html?id=${movie.id}" class="button button-detail">Смотреть</a>
+							</div>
+						</div>
+					</article>
+				`).join("");
+			}
+
+			renderPagination(totalPages);
+		}
+
+		function renderPagination(totalPages) {
+			let html = "";
+			for (let i = 1; i <= totalPages; i++) {
+				html += `<li class="page-item"><button type="button" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button></li>`;
+			}
+			pagination.innerHTML = html;
+
+			pagination.querySelectorAll(".page-link").forEach(btn => {
+				btn.addEventListener("click", function () {
+					currentPage = Number(this.dataset.page);
+					renderCatalog();
+					window.scrollTo({ top: 250, behavior: "smooth" });
+				});
+			});
+		}
+
+		// Вкладки
+		const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
+		const promoBanner = document.getElementById("promo-banner");
+		const catalogView = document.getElementById("catalog-view");
+		const contactsView = document.getElementById("contacts-view");
+
+		navLinks.forEach(link => {
 			link.addEventListener("click", function (e) {
 				e.preventDefault();
-				document.getElementById("search-input").value = this.textContent;
-				searchQuery = this.textContent.toLowerCase();
+				navLinks.forEach(l => l.parentElement.classList.remove("active"));
+				this.parentElement.classList.add("active");
+
+				currentTab = this.dataset.tab;
+				currentPage = 1;
+
+				if (currentTab === "contacts") {
+					promoBanner.classList.add("hidden");
+					catalogView.classList.add("hidden");
+					contactsView.classList.remove("hidden");
+				} else {
+					contactsView.classList.add("hidden");
+					catalogView.classList.remove("hidden");
+					promoBanner.classList.remove("hidden");
+
+					catalogTitle.textContent = this.textContent;
+					renderCatalog();
+				}
+			});
+		});
+
+		// Сайдбар - жанры
+		const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
+		genreLinks.forEach(link => {
+			link.addEventListener("click", function (e) {
+				e.preventDefault();
+				genreLinks.forEach(l => l.classList.remove("active"));
+				this.classList.add("active");
+				currentGenre = this.dataset.genre;
 				currentPage = 1;
 				renderCatalog();
 			});
 		});
-	}
 
-	function getFilteredMovies() {
-		return moviesData.filter(movie => {
-			if (currentTab === "movies" && movie.type !== "movies") return false;
-			if (currentTab === "series" && movie.type !== "series") return false;
-			if (currentTab === "new" && movie.type !== "new") return false;
-			if (currentTab === "top" && movie.rating < 8.7) return false;
+		// Сортировка
+		const sortDateBtn = document.getElementById("sort-date");
+		const sortRatingBtn = document.getElementById("sort-rating");
 
-			if (currentGenre !== "all" && !movie.genre.includes(currentGenre)) return false;
-
-			if (searchQuery) {
-				const full = (movie.title + " " + movie.desc).toLowerCase();
-				if (!full.includes(searchQuery)) return false;
-			}
-			return true;
-		}).sort((a, b) => {
-			if (currentSort === "date") return b.year - a.year;
-			return b.rating - a.rating;
-		});
-	}
-
-	function renderCatalog() {
-		const filtered = getFilteredMovies();
-		const totalPages = Math.ceil(filtered.length / pageSize) || 1;
-		if (currentPage > totalPages) currentPage = 1;
-
-		const start = (currentPage - 1) * pageSize;
-		const pageMovies = filtered.slice(start, start + pageSize);
-
-		if (pageMovies.length === 0) {
-			container.innerHTML = `<p style="padding: 20px; color: #a0aec0;">Фильмов не найдено. Попробуйте сбросить фильтры.</p>`;
-		} else {
-			container.innerHTML = pageMovies.map(movie => `
-				<article class="movie-card">
-					<div class="poster-box">
-						<img src="images/${movie.file}" alt="Постер к фильму ${movie.title}" class="poster-image">
-						<span class="movie-rating-badge">${movie.rating}</span>
-					</div>
-					<div class="movie-info">
-						<h3 class="movie-name"><a href="#" class="movie-link">${movie.title}</a></h3>
-						<p class="movie-meta">${movie.year} г. • ${movie.genre}</p>
-						<p class="movie-summary">${movie.desc}</p>
-						<div class="movie-actions">
-							<button type="button" class="button button-detail" onclick="alert('Открытие фильма: ${movie.title}')">Смотреть</button>
-						</div>
-					</div>
-				</article>
-			`).join("");
-		}
-
-		renderPagination(totalPages);
-	}
-
-	function renderPagination(totalPages) {
-		let html = "";
-		for (let i = 1; i <= totalPages; i++) {
-			html += `<li class="page-item"><button type="button" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button></li>`;
-		}
-		pagination.innerHTML = html;
-
-		pagination.querySelectorAll(".page-link").forEach(btn => {
-			btn.addEventListener("click", function () {
-				currentPage = Number(this.dataset.page);
+		if (sortDateBtn && sortRatingBtn) {
+			sortDateBtn.addEventListener("click", function (e) {
+				e.preventDefault();
+				sortRatingBtn.classList.remove("active");
+				this.classList.add("active");
+				currentSort = "date";
 				renderCatalog();
-				window.scrollTo({ top: 250, behavior: "smooth" });
 			});
-		});
-	}
 
-	// 1. Вкладки
-	const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
-	const promoBanner = document.getElementById("promo-banner");
-	const catalogView = document.getElementById("catalog-view");
-	const contactsView = document.getElementById("contacts-view");
-
-	navLinks.forEach(link => {
-		link.addEventListener("click", function (e) {
-			e.preventDefault();
-			navLinks.forEach(l => l.parentElement.classList.remove("active"));
-			this.parentElement.classList.add("active");
-
-			currentTab = this.dataset.tab;
-			currentPage = 1;
-
-			if (currentTab === "contacts") {
-				promoBanner.classList.add("hidden");
-				catalogView.classList.add("hidden");
-				contactsView.classList.remove("hidden");
-			} else {
-				contactsView.classList.add("hidden");
-				catalogView.classList.remove("hidden");
-				promoBanner.classList.remove("hidden");
-
-				catalogTitle.textContent = this.textContent;
+			sortRatingBtn.addEventListener("click", function (e) {
+				e.preventDefault();
+				sortDateBtn.classList.remove("active");
+				this.classList.add("active");
+				currentSort = "rating";
 				renderCatalog();
-			}
-		});
-	});
+			});
+		}
 
-	// Клик по контактам в футере
-	const footerContact = document.getElementById("footer-contact-link");
-	if (footerContact) {
-		footerContact.addEventListener("click", function (e) {
-			e.preventDefault();
-			const contactTab = document.querySelector('[data-tab="contacts"]');
-			if (contactTab) contactTab.click();
-		});
+		// Поиск
+		const searchInput = document.getElementById("search-input");
+		const searchForm = document.getElementById("search-form");
+
+		if (searchInput) {
+			searchInput.addEventListener("input", function () {
+				searchQuery = this.value.toLowerCase().trim();
+				currentPage = 1;
+				renderCatalog();
+			});
+		}
+
+		if (searchForm) {
+			searchForm.addEventListener("submit", function (e) {
+				e.preventDefault();
+				searchQuery = searchInput.value.toLowerCase().trim();
+				currentPage = 1;
+				renderCatalog();
+			});
+		}
+
+		// Инициализация каталога
+		updateGenreCounters();
+		renderTopSidebar();
+		renderCatalog();
 	}
 
-	// 2. Жанры в сайдбаре
-	const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
-	genreLinks.forEach(link => {
-		link.addEventListener("click", function (e) {
-			e.preventDefault();
-			genreLinks.forEach(l => l.classList.remove("active"));
-			this.classList.add("active");
-			currentGenre = this.dataset.genre;
-			currentPage = 1;
-			renderCatalog();
-		});
-	});
-
-	// 3. Сортировка
-	const sortDateBtn = document.getElementById("sort-date");
-	const sortRatingBtn = document.getElementById("sort-rating");
-
-	if (sortDateBtn && sortRatingBtn) {
-		sortDateBtn.addEventListener("click", function (e) {
-			e.preventDefault();
-			sortRatingBtn.classList.remove("active");
-			this.classList.add("active");
-			currentSort = "date";
-			renderCatalog();
-		});
-
-		sortRatingBtn.addEventListener("click", function (e) {
-			e.preventDefault();
-			sortDateBtn.classList.remove("active");
-			this.classList.add("active");
-			currentSort = "rating";
-			renderCatalog();
-		});
-	}
-
-	// 4. Поиск
-	const searchInput = document.getElementById("search-input");
-	const searchForm = document.getElementById("search-form");
-
-	if (searchInput) {
-		searchInput.addEventListener("input", function () {
-			searchQuery = this.value.toLowerCase().trim();
-			currentPage = 1;
-			renderCatalog();
-		});
-	}
-
-	if (searchForm) {
-		searchForm.addEventListener("submit", function (e) {
-			e.preventDefault();
-			searchQuery = searchInput.value.toLowerCase().trim();
-			currentPage = 1;
-			renderCatalog();
-		});
-	}
-
-	// 5. Модалка
+	// =========================================================================
+	// В. Общие элементы (Модальное окно, футер)
+	// =========================================================================
 	const loginBtn = document.getElementById("open-login-btn");
 	const loginModal = document.getElementById("login-modal");
 	const closeModalBtn = document.getElementById("close-modal-btn");
@@ -270,7 +334,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Форма обратной связи
 	const feedback = document.getElementById("feedback-form");
 	if (feedback) {
 		feedback.addEventListener("submit", function (e) {
@@ -280,16 +343,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Трейлер
 	const promoBtn = document.getElementById("promo-action-btn");
 	if (promoBtn) {
-		promoBtn.addEventListener("click", function () {
-			alert("Запуск премьерного трейлера недели!");
+		promoBtn.addEventListener("click", () => {
+			window.location.href = "movie.html?id=1";
 		});
 	}
-
-	// Запуск функций
-	updateGenreCounters();
-	renderTopSidebar();
-	renderCatalog();
 });

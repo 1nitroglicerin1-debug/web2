@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title id="movie-page-title">Kinobase — Страница фильма</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<!-- Шапка сайта -->
+	<header id="site-header" class="header">
+		<div class="container header-container">
+			<div class="logo">
+				<a href="index.html" class="logo-link">
+					<img src="images/logo.png" alt="Логотип Kinobase" class="logo-image">
+					<span class="logo-text">KINO<span class="logo-accent">BASE</span></span>
+				</a>
+			</div>
+
+			<form id="search-form" class="search-form" action="index.html" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+				<button type="submit" class="search-button">Найти</button>
+			</form>
+
+			<div class="user-panel">
+				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
+			</div>
+		</div>
+
+		<!-- Главное меню -->
+		<nav id="main-navigation" class="navigation">
+			<div class="container">
+				<ul class="nav-list">
+					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+					<li class="nav-item active"><a href="#" class="nav-link">Просмотр фильма</a></li>
+					<li class="nav-item"><a href="index.html" class="nav-link" id="nav-contacts-link">Контакты</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<!-- Основная часть -->
+	<div class="container layout-wrapper">
+		
+		<!-- Сайдбар -->
+		<aside id="sidebar" class="sidebar">
+			<section class="widget">
+				<h3 class="widget-title">Похожие фильмы</h3>
+				<ul class="widget-list top-list" id="similar-movies-list">
+					<!-- Наполняется скриптом -->
+				</ul>
+			</section>
+
+			<section class="widget">
+				<h3 class="widget-title">Навигация</h3>
+				<ul class="widget-list genre-list">
+					<li class="widget-list-item"><a href="index.html" class="genre-link">← Вернуться в каталог</a></li>
+				</ul>
+			</section>
+		</aside>
+
+		<!-- Карточка и плеер фильма -->
+		<main id="main-content" class="content">
+
+			<div id="movie-details-container">
+				<!-- Контент наполняется скриптом по параметру ?id= -->
+			</div>
+
+		</main>
+	</div>
+
+	<!-- Модальное окно Вход -->
+	<div id="login-modal" class="modal-overlay hidden">
+		<div class="modal-window">
+			<div class="modal-header">
+				<h3 class="modal-title">Вход в Kinobase</h3>
+				<button type="button" id="close-modal-btn" class="modal-close">&times;</button>
+			</div>
+			<form id="login-form" class="modal-form">
+				<div class="form-group">
+					<label for="login-email">Логин или Email:</label>
+					<input type="text" id="login-email" class="form-control" placeholder="user@example.com" required>
+				</div>
+				<div class="form-group">
+					<label for="login-password">Пароль:</label>
+					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="submit" class="button button-primary button-block">Войти в аккаунт</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Подвал -->
+	<footer id="site-footer" class="footer">
+		<div class="container footer-container">
+			<div class="footer-copyright">
+				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
+			</div>
+			<ul class="footer-navigation">
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Каталог</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>
