@@ -26,7 +26,48 @@ document.addEventListener("DOMContentLoaded", function () {
 	];
 
 	// =========================================================================
-	// 1. КОНТРОЛЬНЫЙ ЭЛЕМЕНТ №1: ВЕРСИЯ ДЛЯ ПЕЧАТИ (Print Mode)
+	// Общий рендер сайдбара "Популярные фильмы" (для всех страниц)
+	// =========================================================================
+	const topList = document.getElementById("top-movies-list");
+	if (topList) {
+		const sorted = [...moviesData].sort((a, b) => b.rating - a.rating).slice(0, 5);
+		topList.innerHTML = sorted.map((m, idx) => `
+			<li class="top-list-item">
+				<span class="position-number">${idx + 1}</span>
+				<div class="top-info">
+					<a href="movie.html?id=${m.id}" class="top-link">${m.title}</a>
+					<span class="rating">${m.rating}</span>
+				</div>
+			</li>
+		`).join("");
+	}
+
+	// =========================================================================
+	// Счетчик жанров на главной странице (index.html)
+	// =========================================================================
+	const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
+	if (genreLinks.length > 0) {
+		const genres = [
+			{ id: "count-all", name: "all" },
+			{ id: "count-sci-fi", name: "Фантастика" },
+			{ id: "count-action", name: "Боевик" },
+			{ id: "count-drama", name: "Драма" },
+			{ id: "count-crime", name: "Криминал" },
+			{ id: "count-comedy", name: "Комедия" }
+		];
+		genres.forEach(g => {
+			const el = document.getElementById(g.id);
+			if (el) {
+				const count = g.name === "all"
+					? moviesData.length
+					: moviesData.filter(m => m.genre.includes(g.name)).length;
+				el.textContent = `(${count})`;
+			}
+		});
+	}
+
+	// =========================================================================
+	// 1. Режим печати (Print Mode)
 	// =========================================================================
 	const togglePrintBtn = document.getElementById("toggle-print-btn");
 	const exitPrintBtn = document.getElementById("exit-print-btn");
@@ -39,28 +80,34 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 
-	if (togglePrintBtn) {
-		togglePrintBtn.addEventListener("click", function () {
-			setPrintMode(true);
-		});
-	}
-
-	if (exitPrintBtn) {
-		exitPrintBtn.addEventListener("click", function () {
-			setPrintMode(false);
-		});
-	}
+	if (togglePrintBtn) togglePrintBtn.addEventListener("click", () => setPrintMode(true));
+	if (exitPrintBtn) exitPrintBtn.addEventListener("click", () => setPrintMode(false));
 
 	// =========================================================================
-	// 2. КОНТРОЛЬНЫЙ ЭЛЕМЕНТ №2: УМНЫЙ ФИЛЬТР (Smart Filter с 3 критериями)
-	// Критерий 1: Жанр (mainGenre)
-	// Критерий 2: Эпоха / Период (epoch: 1990-е, 2000-е, 2010-е, 2020-е)
-	// Критерий 3: Рейтинг Кинопоиск (ratingTier: 9.0+, 8.5+, 8.0+, До 8.0)
+	// 2. Каталог фильмов (работает и на index.html, и на movies.html)
 	// =========================================================================
-	const smartFiltersContainer = document.getElementById("smart-filters-container");
 	const moviesContainer = document.getElementById("movies-container");
+	const smartFiltersContainer = document.getElementById("smart-filters-container");
 
-	if (smartFiltersContainer && moviesContainer) {
+	if (moviesContainer) {
+		let currentSort = "date";
+		let searchQuery = new URLSearchParams(window.location.search).get("search") || "";
+		let selectedGenreSimple = "all";
+		let currentPage = 1;
+		const pageSize = 5;
+
+		const pagination = document.getElementById("pagination");
+		const sortDateBtn = document.getElementById("sort-date");
+		const sortRatingBtn = document.getElementById("sort-rating");
+		const searchInput = document.getElementById("search-input");
+		const searchForm = document.getElementById("search-form");
+		const activeMatchesInfo = document.getElementById("active-matches-info");
+
+		if (searchInput && searchQuery) {
+			searchInput.value = searchQuery;
+		}
+
+		// Структура умного фильтра (для movies.html)
 		const filterStructure = {
 			mainGenre: {
 				title: "Жанр кино",
@@ -76,31 +123,14 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		};
 
-		// Текущее состояние выбранных чекбоксов
-		let selectedFilters = {
+		let smartSelected = {
 			mainGenre: [],
 			epoch: [],
 			ratingTier: []
 		};
 
-		let currentSort = "date";
-		let searchQuery = new URLSearchParams(window.location.search).get("search") || "";
-		let currentPage = 1;
-		const pageSize = 5;
-
-		const activeMatchesInfo = document.getElementById("active-matches-info");
-		const resetFiltersBtn = document.getElementById("reset-filters-btn");
-		const sortDateBtn = document.getElementById("sort-date");
-		const sortRatingBtn = document.getElementById("sort-rating");
-		const searchInput = document.getElementById("search-input");
-		const searchForm = document.getElementById("search-form");
-
-		if (searchInput && searchQuery) {
-			searchInput.value = searchQuery;
-		}
-
-		// Инициализация структуры фильтра в DOM
-		function buildSmartFilterMarkup() {
+		// Если есть контейнер умного фильтра (страница movies.html)
+		if (smartFiltersContainer) {
 			let html = "";
 			for (const [key, group] of Object.entries(filterStructure)) {
 				html += `<div class="filter-group" data-prop="${key}">`;
@@ -110,60 +140,88 @@ document.addEventListener("DOMContentLoaded", function () {
 						<label class="filter-checkbox-item" data-prop="${key}" data-val="${val}">
 							<input type="checkbox" name="${key}" value="${val}">
 							<span class="filter-label-text">${val}</span>
-							<span class="filter-count-badge" id="badge-${key}-${val.replace(/[^a-zA-Z0-9а-яА-Я]/g, '_')}">0</span>
+							<span class="filter-count-badge">0</span>
 						</label>
 					`;
 				});
 				html += `</div>`;
 			}
 			smartFiltersContainer.innerHTML = html;
+
+			smartFiltersContainer.addEventListener("change", function (e) {
+				if (e.target.matches("input[type='checkbox']")) {
+					const prop = e.target.name;
+					smartSelected[prop] = Array.from(smartFiltersContainer.querySelectorAll(`input[name="${prop}"]:checked`)).map(i => i.value);
+					currentPage = 1;
+					renderMoviesCatalog();
+				}
+			});
+
+			const resetBtn = document.getElementById("reset-filters-btn");
+			if (resetBtn) {
+				resetBtn.addEventListener("click", function () {
+					smartSelected = { mainGenre: [], epoch: [], ratingTier: [] };
+					smartFiltersContainer.querySelectorAll("input[type='checkbox']").forEach(ch => {
+						ch.checked = false;
+						ch.disabled = false;
+					});
+					smartFiltersContainer.querySelectorAll(".filter-checkbox-item").forEach(item => {
+						item.classList.remove("disabled");
+					});
+					currentPage = 1;
+					renderMoviesCatalog();
+				});
+			}
 		}
 
-		// Умный пересчет доступности и взаимных блокировок опций
+		// Если это главная страница index.html (простой фильтр в сайдбаре)
+		genreLinks.forEach(link => {
+			link.addEventListener("click", function (e) {
+				e.preventDefault();
+				genreLinks.forEach(l => l.classList.remove("active"));
+				this.classList.add("active");
+				selectedGenreSimple = this.dataset.genre || "all";
+				currentPage = 1;
+				renderMoviesCatalog();
+			});
+		});
+
 		function evaluateSmartFilterAvailability() {
+			if (!smartFiltersContainer) return;
+
 			for (const [propName, group] of Object.entries(filterStructure)) {
 				group.options.forEach(val => {
-					// Проверяем: сколько фильмов совпадет, ЕСЛИ включить эту опцию при уже выбранных остальных категориях
 					const count = moviesData.filter(movie => {
-						// 1. Проверяем категорию 'mainGenre'
 						if (propName === "mainGenre") {
 							if (movie.mainGenre !== val) return false;
-						} else if (selectedFilters.mainGenre.length > 0) {
-							if (!selectedFilters.mainGenre.includes(movie.mainGenre)) return false;
+						} else if (smartSelected.mainGenre.length > 0 && !smartSelected.mainGenre.includes(movie.mainGenre)) {
+							return false;
 						}
 
-						// 2. Проверяем категорию 'epoch'
 						if (propName === "epoch") {
 							if (movie.epoch !== val) return false;
-						} else if (selectedFilters.epoch.length > 0) {
-							if (!selectedFilters.epoch.includes(movie.epoch)) return false;
+						} else if (smartSelected.epoch.length > 0 && !smartSelected.epoch.includes(movie.epoch)) {
+							return false;
 						}
 
-						// 3. Проверяем категорию 'ratingTier'
 						if (propName === "ratingTier") {
 							if (movie.ratingTier !== val) return false;
-						} else if (selectedFilters.ratingTier.length > 0) {
-							if (!selectedFilters.ratingTier.includes(movie.ratingTier)) return false;
+						} else if (smartSelected.ratingTier.length > 0 && !smartSelected.ratingTier.includes(movie.ratingTier)) {
+							return false;
 						}
 
-						// Поисковая строка
 						if (searchQuery) {
 							const text = (movie.title + " " + movie.desc).toLowerCase();
 							if (!text.includes(searchQuery.toLowerCase().trim())) return false;
 						}
-
 						return true;
 					}).length;
 
-					// Находим DOM-элемент данного чекбокса
 					const labelEl = smartFiltersContainer.querySelector(`.filter-checkbox-item[data-prop="${propName}"][data-val="${val}"]`);
-					const badgeEl = labelEl ? labelEl.querySelector(".filter-count-badge") : null;
-					const inputEl = labelEl ? labelEl.querySelector("input") : null;
-
-					if (badgeEl) badgeEl.textContent = count;
-
-					// Умная блокировка: если count === 0 и он не выбран пользователем -> блокируем (disabled)
-					if (labelEl && inputEl) {
+					if (labelEl) {
+						const badgeEl = labelEl.querySelector(".filter-count-badge");
+						const inputEl = labelEl.querySelector("input");
+						if (badgeEl) badgeEl.textContent = count;
 						if (count === 0 && !inputEl.checked) {
 							labelEl.classList.add("disabled");
 							inputEl.disabled = true;
@@ -176,12 +234,17 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		}
 
-		// Выборка фильмов по текущим активным чекбоксам
 		function getFilteredMovies() {
 			return moviesData.filter(movie => {
-				if (selectedFilters.mainGenre.length > 0 && !selectedFilters.mainGenre.includes(movie.mainGenre)) return false;
-				if (selectedFilters.epoch.length > 0 && !selectedFilters.epoch.includes(movie.epoch)) return false;
-				if (selectedFilters.ratingTier.length > 0 && !selectedFilters.ratingTier.includes(movie.ratingTier)) return false;
+				// Логика умного фильтра
+				if (smartFiltersContainer) {
+					if (smartSelected.mainGenre.length > 0 && !smartSelected.mainGenre.includes(movie.mainGenre)) return false;
+					if (smartSelected.epoch.length > 0 && !smartSelected.epoch.includes(movie.epoch)) return false;
+					if (smartSelected.ratingTier.length > 0 && !smartSelected.ratingTier.includes(movie.ratingTier)) return false;
+				} else {
+					// Логика простого фильтра главной страницы
+					if (selectedGenreSimple !== "all" && !movie.genre.includes(selectedGenreSimple)) return false;
+				}
 
 				if (searchQuery) {
 					const text = (movie.title + " " + movie.desc).toLowerCase();
@@ -209,13 +272,10 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (pageMovies.length === 0) {
 				moviesContainer.innerHTML = `
 					<div class="movie-view-card" style="text-align: center; padding: 40px 20px;">
-						<h3>По выбранным фильтрам ничего не найдено</h3>
-						<p class="not-found-text">Попробуйте сбросить критерии умного фильтра или изменить условия поиска.</p>
-						<button type="button" class="button button-primary" id="btn-empty-reset">Сбросить фильтры</button>
+						<h3>По выбранным параметрам ничего не найдено</h3>
+						<p class="not-found-text">Попробуйте изменить условия поиска или сбросить фильтры.</p>
 					</div>
 				`;
-				const btnEmptyReset = document.getElementById("btn-empty-reset");
-				if (btnEmptyReset) btnEmptyReset.addEventListener("click", resetAllFilters);
 			} else {
 				moviesContainer.innerHTML = pageMovies.map(movie => `
 					<article class="movie-card">
@@ -227,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
 						</div>
 						<div class="movie-info">
 							<h3 class="movie-name"><a href="movie.html?id=${movie.id}" class="movie-link">${movie.title}</a></h3>
-							<p class="movie-meta">${movie.year} г. • ${movie.genre} • Период: ${movie.epoch}</p>
+							<p class="movie-meta">${movie.year} г. • ${movie.genre}</p>
 							<p class="movie-summary">${movie.desc}</p>
 							<div class="movie-actions">
 								<a href="movie.html?id=${movie.id}" class="button button-detail">Смотреть онлайн</a>
@@ -237,58 +297,22 @@ document.addEventListener("DOMContentLoaded", function () {
 				`).join("");
 			}
 
-			renderPagination(totalPages);
-			evaluateSmartFilterAvailability();
-		}
-
-		function renderPagination(totalPages) {
-			const pagination = document.getElementById("pagination");
-			if (!pagination) return;
-			let html = "";
-			for (let i = 1; i <= totalPages; i++) {
-				html += `<li class="page-item"><button type="button" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button></li>`;
-			}
-			pagination.innerHTML = html;
-
-			pagination.querySelectorAll(".page-link").forEach(btn => {
-				btn.addEventListener("click", function () {
-					currentPage = Number(this.dataset.page);
-					renderMoviesCatalog();
-					window.scrollTo({ top: 150, behavior: "smooth" });
+			if (pagination) {
+				let html = "";
+				for (let i = 1; i <= totalPages; i++) {
+					html += `<li class="page-item"><button type="button" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button></li>`;
+				}
+				pagination.innerHTML = html;
+				pagination.querySelectorAll(".page-link").forEach(btn => {
+					btn.addEventListener("click", function () {
+						currentPage = Number(this.dataset.page);
+						renderMoviesCatalog();
+						window.scrollTo({ top: 150, behavior: "smooth" });
+					});
 				});
-			});
-		}
-
-		function resetAllFilters() {
-			selectedFilters = {
-				mainGenre: [],
-				epoch: [],
-				ratingTier: []
-			};
-			smartFiltersContainer.querySelectorAll("input[type='checkbox']").forEach(ch => {
-				ch.checked = false;
-				ch.disabled = false;
-			});
-			smartFiltersContainer.querySelectorAll(".filter-checkbox-item").forEach(item => {
-				item.classList.remove("disabled");
-			});
-			currentPage = 1;
-			renderMoviesCatalog();
-		}
-
-		// Событие смены чекбоксов Умного фильтра
-		smartFiltersContainer.addEventListener("change", function (e) {
-			if (e.target.matches("input[type='checkbox']")) {
-				const prop = e.target.name;
-				const checkedBoxes = Array.from(smartFiltersContainer.querySelectorAll(`input[name="${prop}"]:checked`)).map(i => i.value);
-				selectedFilters[prop] = checkedBoxes;
-				currentPage = 1;
-				renderMoviesCatalog();
 			}
-		});
 
-		if (resetFiltersBtn) {
-			resetFiltersBtn.addEventListener("click", resetAllFilters);
+			evaluateSmartFilterAvailability();
 		}
 
 		if (sortDateBtn && sortRatingBtn) {
@@ -326,28 +350,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		}
 
-		// Рендер сайдбара популярных
-		const topList = document.getElementById("top-movies-list");
-		if (topList) {
-			const sorted = [...moviesData].sort((a, b) => b.rating - a.rating).slice(0, 5);
-			topList.innerHTML = sorted.map((m, idx) => `
-				<li class="top-list-item">
-					<span class="position-number">${idx + 1}</span>
-					<div class="top-info">
-						<a href="movie.html?id=${m.id}" class="top-link">${m.title}</a>
-						<span class="rating">${m.rating}</span>
-					</div>
-				</li>
-			`).join("");
-		}
-
-		// Инициализация
-		buildSmartFilterMarkup();
 		renderMoviesCatalog();
 	}
 
 	// =========================================================================
-	// 3. СТРАНИЦА ОТДЕЛЬНОГО ФИЛЬМА (movie.html)
+	// 3. Страница отдельного фильма (movie.html)
 	// =========================================================================
 	const movieDetailsContainer = document.getElementById("movie-details-container");
 	if (movieDetailsContainer) {
@@ -376,9 +383,9 @@ document.addEventListener("DOMContentLoaded", function () {
 						</div>
 						<div class="movie-view-info">
 							<h1 class="movie-view-title">${movie.title}</h1>
-							<div class="movie-view-rating">★ Рейтинг: ${movie.rating} / 10 (${movie.ratingTier})</div>
+							<div class="movie-view-rating">★ Рейтинг: ${movie.rating} / 10</div>
 							<div class="movie-view-meta">
-								<span>Год выпуска:</span> <strong>${movie.year} (${movie.epoch})</strong><br>
+								<span>Год выпуска:</span> <strong>${movie.year}</strong><br>
 								<span>Жанр:</span> <strong>${movie.genre}</strong>
 							</div>
 							<p class="movie-view-desc">${movie.desc}</p>
@@ -420,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// =========================================================================
-	// 4. МОДАЛЬНОЕ ОКНО И ФОРМЫ
+	// 4. Модальное окно и формы
 	// =========================================================================
 	const loginBtn = document.getElementById("open-login-btn");
 	const loginModal = document.getElementById("login-modal");
