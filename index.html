@@ -19,25 +19,25 @@
 			</div>
 
 			<form id="search-form" class="search-form" action="#" method="get">
-				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." required>
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
 				<button type="submit" class="search-button">Найти</button>
 			</form>
 
 			<div class="user-panel">
-				<a href="#" class="button button-login">Вход</a>
+				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
 			</div>
 		</div>
 
 		<!-- Навигационное меню -->
 		<nav id="main-navigation" class="navigation">
 			<div class="container">
-				<ul class="nav-list">
-					<li class="nav-item active"><a href="index.html" class="nav-link">Главная</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">Фильмы</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">Сериалы</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">Новинки</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">Топ-100</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">Контакты</a></li>
+				<ul class="nav-list" id="nav-tabs">
+					<li class="nav-item active"><a href="#" class="nav-link" data-tab="all">Главная</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="movies">Фильмы</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="series">Сериалы</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="new">Новинки</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="top">Топ-100</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="contacts">Контакты</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -52,13 +52,11 @@
 			<!-- Блок: Жанры -->
 			<section class="widget">
 				<h3 class="widget-title">Жанры кино</h3>
-				<ul class="widget-list genre-list">
-					<li class="widget-list-item"><a href="#" class="genre-link">Фантастика <span class="count">(142)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link">Боевики <span class="count">(98)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link">Комедии <span class="count">(210)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link">Триллеры <span class="count">(76)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link">Драмы <span class="count">(115)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link">Приключения <span class="count">(84)</span></a></li>
+				<ul class="widget-list genre-list" id="genre-filter">
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="all">Все жанры</a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count">(3)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count">(3)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count">(2)</span></a></li>
 				</ul>
 			</section>
 
@@ -106,25 +104,25 @@
 				<div class="promo-inner">
 					<h2 class="promo-heading">Премьера недели</h2>
 					<p class="promo-description">Смотрите лучшие мировые шедевры киноиндустрии в высоком цифровом качестве и с профессиональным переводом.</p>
-					<a href="#" class="button button-primary">Смотреть онлайн</a>
+					<a href="#" id="promo-btn" class="button button-primary">Смотреть онлайн</a>
 				</div>
 			</section>
 
 			<!-- Каталог фильмов -->
 			<section class="catalog">
 				<div class="catalog-header">
-					<h2 class="catalog-title">Новинки проката</h2>
+					<h2 class="catalog-title" id="catalog-title">Новинки проката</h2>
 					<div class="filter-box">
 						<span class="filter-label">Сортировка:</span>
-						<a href="#" class="filter-link active">По дате</a>
-						<a href="#" class="filter-link">По рейтингу</a>
+						<a href="#" class="filter-link active" id="sort-date">По дате</a>
+						<a href="#" class="filter-link" id="sort-rating">По рейтингу</a>
 					</div>
 				</div>
 
-				<div class="movies-collection">
+				<div class="movies-collection" id="movies-container">
 					
 					<!-- Карточка 1 -->
-					<article class="movie-card">
+					<article class="movie-card" data-year="2014" data-rating="8.6" data-genres="Фантастика Драма">
 						<div class="poster-box">
 							<img src="images/poster-interstellar.jpg" alt="Постер к фильму Интерстеллар" class="poster-image">
 							<span class="movie-rating-badge">8.6</span>
@@ -140,7 +138,7 @@
 					</article>
 
 					<!-- Карточка 2 -->
-					<article class="movie-card">
+					<article class="movie-card" data-year="2010" data-rating="8.7" data-genres="Фантастика Боевик">
 						<div class="poster-box">
 							<img src="images/poster-inception.jpg" alt="Постер к фильму Начало" class="poster-image">
 							<span class="movie-rating-badge">8.7</span>
@@ -156,7 +154,7 @@
 					</article>
 
 					<!-- Карточка 3 -->
-					<article class="movie-card">
+					<article class="movie-card" data-year="1999" data-rating="8.5" data-genres="Фантастика Боевик">
 						<div class="poster-box">
 							<img src="images/poster-matrix.jpg" alt="Постер к фильму Матрица" class="poster-image">
 							<span class="movie-rating-badge">8.5</span>
@@ -172,7 +170,7 @@
 					</article>
 
 					<!-- Карточка 4 -->
-					<article class="movie-card">
+					<article class="movie-card" data-year="2000" data-rating="8.6" data-genres="Боевик Драма">
 						<div class="poster-box">
 							<img src="images/poster-gladiator.jpg" alt="Постер к фильму Гладиатор" class="poster-image">
 							<span class="movie-rating-badge">8.6</span>
@@ -191,7 +189,7 @@
 
 				<!-- Пагинация -->
 				<div class="pagination-wrapper">
-					<ul class="pagination-list">
+					<ul class="pagination-list" id="pagination">
 						<li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
 						<li class="page-item"><a href="#" class="page-link active">1</a></li>
 						<li class="page-item"><a href="#" class="page-link">2</a></li>
@@ -202,6 +200,27 @@
 			</section>
 
 		</main>
+	</div>
+
+	<!-- Модальное окно авторизации -->
+	<div id="login-modal" class="modal-overlay hidden">
+		<div class="modal-window">
+			<div class="modal-header">
+				<h3 class="modal-title">Вход в Kinobase</h3>
+				<button type="button" id="close-modal-btn" class="modal-close">&times;</button>
+			</div>
+			<form id="login-form" class="modal-form">
+				<div class="form-group">
+					<label for="login-email">Логин или Email:</label>
+					<input type="text" id="login-email" class="form-control" placeholder="user@example.com" required>
+				</div>
+				<div class="form-group">
+					<label for="login-password">Пароль:</label>
+					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="submit" class="button button-primary button-block">Войти в аккаунт</button>
+			</form>
+		</div>
 	</div>
 
 	<!-- Подвал сайта -->

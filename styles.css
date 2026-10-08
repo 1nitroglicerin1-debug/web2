@@ -519,3 +519,95 @@ a:active {
 	display: flex;
 	gap: 20px;
 }
+/* ==========================================================================
+   Стили для модального окна и интерактива
+   ========================================================================== */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.75);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	backdrop-filter: blur(4px);
+}
+
+.modal-overlay.hidden {
+	display: none;
+}
+
+.modal-window {
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+	border-radius: 8px;
+	width: 100%;
+	max-width: 380px;
+	padding: 24px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.modal-title {
+	font-size: 18px;
+	color: #ffffff;
+}
+
+.modal-close {
+	background: none;
+	border: none;
+	font-size: 24px;
+	color: #a0aec0;
+	cursor: pointer;
+	line-height: 1;
+}
+
+.modal-close:hover {
+	color: #ffffff;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	display: block;
+	font-size: 13px;
+	color: #a0aec0;
+	margin-bottom: 6px;
+}
+
+.form-control {
+	width: 100%;
+	padding: 9px 12px;
+	background-color: #2d3748;
+	border: 1px solid #4a5568;
+	border-radius: 4px;
+	color: #ffffff;
+	outline: none;
+}
+
+.form-control:focus {
+	border-color: #ed8936;
+}
+
+.button-block {
+	width: 100%;
+	padding: 10px;
+	margin-top: 5px;
+}
+
+/* Сайдбар - выделение активного жанра */
+.genre-link.active {
+	color: #ed8936 !important;
+	font-weight: bold;
+}
