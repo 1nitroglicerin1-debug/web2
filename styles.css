@@ -611,3 +611,65 @@ a:active {
 	color: #ed8936 !important;
 	font-weight: bold;
 }
+
+/* ==========================================================================
+   Стили для страниц Каталога и Контактов
+   ========================================================================== */
+.full-width {
+	width: 100%;
+}
+
+.contacts-section {
+	background-color: #1a202c;
+	border: 1px solid #2d3748;
+	border-radius: 6px;
+	padding: 24px;
+}
+
+.contacts-intro {
+	color: #a0aec0;
+	margin-top: 10px;
+	margin-bottom: 25px;
+}
+
+.contacts-grid {
+	display: flex;
+	gap: 30px;
+}
+
+.contacts-form-box {
+	flex: 1;
+}
+
+.contacts-info-box {
+	flex: 1;
+}
+
+.info-details-list {
+	color: #cbd5e0;
+	margin-bottom: 20px;
+}
+
+.info-details-list li {
+	margin-bottom: 10px;
+}
+
+.info-details-list strong {
+	color: #ed8936;
+}
+
+.textarea {
+	resize: vertical;
+	font-family: inherit;
+}
+
+.map-title {
+	margin-top: 20px;
+}
+
+.map-container {
+	border-radius: 6px;
+	overflow: hidden;
+	border: 1px solid #2d3748;
+	margin-top: 10px;
+}

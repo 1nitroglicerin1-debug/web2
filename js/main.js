@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-	// ==========================================
 	// 1. Модальное окно "Вход"
-	// ==========================================
 	const loginBtn = document.getElementById("open-login-btn");
 	const loginModal = document.getElementById("login-modal");
 	const closeModalBtn = document.getElementById("close-modal-btn");
@@ -31,33 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// ==========================================
-	// 2. Переключение верхних вкладок (Меню)
-	// ==========================================
-	const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
-	const catalogTitle = document.getElementById("catalog-title");
-
-	navLinks.forEach(function (link) {
-		link.addEventListener("click", function (e) {
-			e.preventDefault();
-			document.querySelectorAll("#nav-tabs .nav-item").forEach(item => item.classList.remove("active"));
-			this.parentElement.classList.add("active");
-
-			// Динамически меняем заголовок секции под выбранную вкладку
-			if (catalogTitle) {
-				catalogTitle.textContent = this.textContent;
-			}
-		});
-	});
-
-	// ==========================================
-	// 3. Сортировка фильмов (По дате / По рейтингу)
-	// ==========================================
+	// 2. Сортировка карточек
 	const sortDateBtn = document.getElementById("sort-date");
 	const sortRatingBtn = document.getElementById("sort-rating");
 	const moviesContainer = document.getElementById("movies-container");
 
 	function sortCards(type) {
+		if (!moviesContainer) return;
 		const cards = Array.from(moviesContainer.querySelectorAll(".movie-card"));
 		cards.sort(function (a, b) {
 			if (type === "date") {
@@ -66,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				return Number(b.dataset.rating) - Number(a.dataset.rating);
 			}
 		});
-
 		cards.forEach(card => moviesContainer.appendChild(card));
 	}
 
@@ -86,9 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// ==========================================
-	// 4. Фильтрация по жанрам в сайдбаре
-	// ==========================================
+	// 3. Фильтрация по жанрам в сайдбаре
 	const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
 	const movieCards = document.querySelectorAll(".movie-card");
 
@@ -110,13 +85,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 
-	// ==========================================
-	// 5. Живой поиск фильмов
-	// ==========================================
+	// 4. Поиск фильмов
 	const searchInput = document.getElementById("search-input");
 	const searchForm = document.getElementById("search-form");
 
 	function filterMoviesBySearch() {
+		if (!searchInput) return;
 		const query = searchInput.value.toLowerCase().trim();
 
 		movieCards.forEach(function (card) {
@@ -137,20 +111,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (searchForm) {
 		searchForm.addEventListener("submit", function (e) {
+			if (window.location.pathname.includes("contacts.html")) return;
 			e.preventDefault();
 			filterMoviesBySearch();
 		});
 	}
 
-	// ==========================================
-	// 6. Клик по пагинации
-	// ==========================================
-	const pageLinks = document.querySelectorAll("#pagination .page-link");
-	pageLinks.forEach(function (link) {
-		link.addEventListener("click", function (e) {
+	// 5. Обработка формы контактов
+	const feedbackForm = document.getElementById("feedback-form");
+	if (feedbackForm) {
+		feedbackForm.addEventListener("submit", function (e) {
 			e.preventDefault();
-			pageLinks.forEach(l => l.classList.remove("active"));
-			this.classList.add("active");
+			const name = document.getElementById("contact-name").value;
+			alert(`Спасибо за обращение, ${name}! Ваше сообщение отправлено.`);
+			feedbackForm.reset();
 		});
-	});
+	}
 });
