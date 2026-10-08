@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	// ==========================================
-	// База данных из 20 фильмов с файлами из images/
+	// База данных фильмов (20 штук)
 	// ==========================================
 	const moviesData = [
 		{ id: 1, title: "Интерстеллар", year: 2014, rating: 8.6, genre: "Фантастика, Драма", type: "movies", file: "poster-interstellar.jpg", desc: "Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома." },
@@ -36,6 +36,29 @@ document.addEventListener("DOMContentLoaded", function () {
 	const pagination = document.getElementById("pagination");
 	const catalogTitle = document.getElementById("catalog-title");
 
+	// Автоматический подсчёт цифр в скобках для сайдбара
+	function updateGenreCounters() {
+		const genres = [
+			{ id: "count-all", name: "all" },
+			{ id: "count-sci-fi", name: "Фантастика" },
+			{ id: "count-action", name: "Боевик" },
+			{ id: "count-drama", name: "Драма" },
+			{ id: "count-crime", name: "Криминал" },
+			{ id: "count-comedy", name: "Комедия" }
+		];
+
+		genres.forEach(g => {
+			const el = document.getElementById(g.id);
+			if (el) {
+				const count = g.name === "all"
+					? moviesData.length
+					: moviesData.filter(m => m.genre.includes(g.name)).length;
+				el.textContent = `(${count})`;
+			}
+		});
+	}
+
+	// Топ фильмов в сайдбаре
 	function renderTopSidebar() {
 		const topList = document.getElementById("top-movies-list");
 		if (!topList) return;
@@ -90,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const pageMovies = filtered.slice(start, start + pageSize);
 
 		if (pageMovies.length === 0) {
-			container.innerHTML = `<p style="padding: 20px; color: #a0aec0;">Фильмов не найдено. Попробуйте сбросить фильтры или изменить поиск.</p>`;
+			container.innerHTML = `<p style="padding: 20px; color: #a0aec0;">Фильмов не найдено. Попробуйте сбросить фильтры.</p>`;
 		} else {
 			container.innerHTML = pageMovies.map(movie => `
 				<article class="movie-card">
@@ -124,12 +147,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			btn.addEventListener("click", function () {
 				currentPage = Number(this.dataset.page);
 				renderCatalog();
-				window.scrollTo({ top: 300, behavior: "smooth" });
+				window.scrollTo({ top: 250, behavior: "smooth" });
 			});
 		});
 	}
 
-	// 1. Вкладки навигации
+	// 1. Вкладки
 	const navLinks = document.querySelectorAll("#nav-tabs .nav-link");
 	const promoBanner = document.getElementById("promo-banner");
 	const catalogView = document.getElementById("catalog-view");
@@ -159,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 
-	// Кнопка в футере "Контакты"
+	// Клик по контактам в футере
 	const footerContact = document.getElementById("footer-contact-link");
 	if (footerContact) {
 		footerContact.addEventListener("click", function (e) {
@@ -169,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// 2. Фильтр жанров
+	// 2. Жанры в сайдбаре
 	const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
 	genreLinks.forEach(link => {
 		link.addEventListener("click", function (e) {
@@ -257,6 +280,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+	// Трейлер
 	const promoBtn = document.getElementById("promo-action-btn");
 	if (promoBtn) {
 		promoBtn.addEventListener("click", function () {
@@ -264,6 +288,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+	// Запуск функций
+	updateGenreCounters();
 	renderTopSidebar();
 	renderCatalog();
 });

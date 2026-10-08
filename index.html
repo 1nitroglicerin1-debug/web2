@@ -48,16 +48,16 @@
 		
 		<!-- Сайдбар -->
 		<aside id="sidebar" class="sidebar">
-			<!-- Фильтр по жанрам -->
+			<!-- Фильтр по жанрам с динамическим подсчётом -->
 			<section class="widget">
 				<h3 class="widget-title">Жанры кино</h3>
 				<ul class="widget-list genre-list" id="genre-filter">
-					<li class="widget-list-item"><a href="#" class="genre-link active" data-genre="all">Все жанры <span class="count" id="count-all">(20)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count" id="count-sci-fi">(7)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count" id="count-action">(6)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count" id="count-drama">(6)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Криминал">Криминал <span class="count" id="count-crime">(3)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Комедия">Комедии <span class="count" id="count-comedy">(2)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link active" data-genre="all">Все жанры <span class="count" id="count-all"></span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count" id="count-sci-fi"></span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count" id="count-action"></span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count" id="count-drama"></span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Криминал">Криминал <span class="count" id="count-crime"></span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Комедия">Комедии <span class="count" id="count-comedy"></span></a></li>
 				</ul>
 			</section>
 
@@ -73,7 +73,7 @@
 		<!-- Центральная секция -->
 		<main id="main-content" class="content">
 
-			<!-- Промо-баннер (как в макете) -->
+			<!-- Промо-баннер -->
 			<section class="promo-banner" id="promo-banner">
 				<div class="promo-inner">
 					<h2 class="promo-heading">Премьера недели</h2>
@@ -82,7 +82,7 @@
 				</div>
 			</section>
 
-			<!-- Секция контактов (открывается при переходе на вкладку "Контакты") -->
+			<!-- Секция контактов -->
 			<section id="contacts-view" class="contacts-section hidden">
 				<h2 class="catalog-title">Контакты и обратная связь</h2>
 				<p class="contacts-intro">Возникли вопросы или предложения? Напишите нам, и администрация портала свяжется с вами.</p>
@@ -124,15 +124,15 @@
 					</div>
 				</div>
 
-				<!-- Сетка карточек (20 фильмов) -->
+				<!-- Сетка карточек -->
 				<div class="movies-collection" id="movies-container">
-					<!-- Карточки генерируются скриптом js/main.js -->
+					<!-- Наполняется скриптом -->
 				</div>
 
 				<!-- Пагинация -->
 				<div class="pagination-wrapper">
 					<ul class="pagination-list" id="pagination">
-						<!-- Страницы генерируются скриптом -->
+						<!-- Кнопки страниц генерируются скриптом -->
 					</ul>
 				</div>
 			</section>
