@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Kinobase — Главная страница</title>
+	<title>Kinobase — Кинопортал</title>
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+	<!-- Шапка сайта -->
 	<header id="site-header" class="header">
 		<div class="container header-container">
 			<div class="logo">
@@ -17,8 +18,8 @@
 				</a>
 			</div>
 
-			<form id="search-form" class="search-form" action="movies.html" method="get">
-				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+			<form id="search-form" class="search-form" action="#" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма по названию..." autocomplete="off">
 				<button type="submit" class="search-button">Найти</button>
 			</form>
 
@@ -27,75 +28,93 @@
 			</div>
 		</div>
 
+		<!-- Главное меню (вкладки) -->
 		<nav id="main-navigation" class="navigation">
 			<div class="container">
-				<ul class="nav-list">
-					<li class="nav-item active"><a href="index.html" class="nav-link">Главная</a></li>
-					<li class="nav-item"><a href="movies.html" class="nav-link">Фильмы и сериалы</a></li>
-					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+				<ul class="nav-list" id="nav-tabs">
+					<li class="nav-item active"><a href="#" class="nav-link" data-tab="all">Главная</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="movies">Фильмы</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="series">Сериалы</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="new">Новинки</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="top">Топ-100</a></li>
+					<li class="nav-item"><a href="#" class="nav-link" data-tab="contacts">Контакты</a></li>
 				</ul>
 			</div>
 		</nav>
 	</header>
 
+	<!-- Основной контентный блок -->
 	<div class="container layout-wrapper">
 		
+		<!-- Сайдбар -->
 		<aside id="sidebar" class="sidebar">
+			<!-- Фильтр по жанрам -->
 			<section class="widget">
 				<h3 class="widget-title">Жанры кино</h3>
 				<ul class="widget-list genre-list" id="genre-filter">
-					<li class="widget-list-item"><a href="#" class="genre-link active" data-genre="all">Все жанры</a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count">(3)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count">(3)</span></a></li>
-					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count">(2)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link active" data-genre="all">Все жанры <span class="count" id="count-all">(20)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Фантастика">Фантастика <span class="count" id="count-sci-fi">(7)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Боевик">Боевики <span class="count" id="count-action">(6)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Драма">Драмы <span class="count" id="count-drama">(6)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Криминал">Криминал <span class="count" id="count-crime">(3)</span></a></li>
+					<li class="widget-list-item"><a href="#" class="genre-link" data-genre="Комедия">Комедии <span class="count" id="count-comedy">(2)</span></a></li>
 				</ul>
 			</section>
 
+			<!-- Топ фильмов -->
 			<section class="widget">
 				<h3 class="widget-title">Популярные фильмы</h3>
-				<ul class="widget-list top-list">
-					<li class="top-list-item">
-						<span class="position-number">1</span>
-						<div class="top-info">
-							<a href="movies.html" class="top-link">Интерстеллар</a>
-							<span class="rating">8.6</span>
-						</div>
-					</li>
-					<li class="top-list-item">
-						<span class="position-number">2</span>
-						<div class="top-info">
-							<a href="movies.html" class="top-link">Начало</a>
-							<span class="rating">8.7</span>
-						</div>
-					</li>
-					<li class="top-list-item">
-						<span class="position-number">3</span>
-						<div class="top-info">
-							<a href="movies.html" class="top-link">Матрица</a>
-							<span class="rating">8.5</span>
-						</div>
-					</li>
-					<li class="top-list-item">
-						<span class="position-number">4</span>
-						<div class="top-info">
-							<a href="movies.html" class="top-link">Гладиатор</a>
-							<span class="rating">8.6</span>
-						</div>
-					</li>
+				<ul class="widget-list top-list" id="top-movies-list">
+					<!-- Наполняется скриптом -->
 				</ul>
 			</section>
 		</aside>
 
+		<!-- Центральная секция -->
 		<main id="main-content" class="content">
-			<section class="promo-banner">
+
+			<!-- Промо-баннер (как в макете) -->
+			<section class="promo-banner" id="promo-banner">
 				<div class="promo-inner">
 					<h2 class="promo-heading">Премьера недели</h2>
-					<p class="promo-description">Смотрите лучшие мировые шедевры киноиндустрии в высоком качестве и с профессиональным переводом.</p>
-					<a href="movies.html" class="button button-primary">Перейти в каталог</a>
+					<p class="promo-description">Смотрите лучшие мировые шедевры киноиндустрии в высоком цифровом качестве и с профессиональным переводом.</p>
+					<button type="button" class="button button-primary" id="promo-action-btn">Смотреть трейлер</button>
 				</div>
 			</section>
 
-			<section class="catalog">
+			<!-- Секция контактов (открывается при переходе на вкладку "Контакты") -->
+			<section id="contacts-view" class="contacts-section hidden">
+				<h2 class="catalog-title">Контакты и обратная связь</h2>
+				<p class="contacts-intro">Возникли вопросы или предложения? Напишите нам, и администрация портала свяжется с вами.</p>
+				<div class="contacts-grid">
+					<form id="feedback-form" class="feedback-form">
+						<div class="form-group">
+							<label for="contact-name">Ваше имя:</label>
+							<input type="text" id="contact-name" class="form-control" placeholder="Иван Иванов" required>
+						</div>
+						<div class="form-group">
+							<label for="contact-email">Email:</label>
+							<input type="email" id="contact-email" class="form-control" placeholder="ivan@example.com" required>
+						</div>
+						<div class="form-group">
+							<label for="contact-msg">Сообщение:</label>
+							<textarea id="contact-msg" class="form-control textarea" rows="4" placeholder="Текст сообщения..." required></textarea>
+						</div>
+						<button type="submit" class="button button-primary">Отправить</button>
+					</form>
+					<div class="contacts-info">
+						<h3 class="widget-title">Информация</h3>
+						<ul class="info-list">
+							<li><strong>Адрес:</strong> г. Брянск, б-р 50 лет Октября, 7</li>
+							<li><strong>Телефон:</strong> +7 (4832) 58-82-58</li>
+							<li><strong>Email:</strong> support@kinobase.ru</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- Каталог фильмов -->
+			<section class="catalog" id="catalog-view">
 				<div class="catalog-header">
 					<h2 class="catalog-title" id="catalog-title">Новинки проката</h2>
 					<div class="filter-box">
@@ -105,71 +124,23 @@
 					</div>
 				</div>
 
+				<!-- Сетка карточек (20 фильмов) -->
 				<div class="movies-collection" id="movies-container">
-					<article class="movie-card" data-year="2014" data-rating="8.6" data-genres="Фантастика Драма">
-						<div class="poster-box">
-							<img src="images/poster-interstellar.jpg" alt="Постер к фильму Интерстеллар" class="poster-image">
-							<span class="movie-rating-badge">8.6</span>
-						</div>
-						<div class="movie-info">
-							<h3 class="movie-name"><a href="movies.html" class="movie-link">Интерстеллар</a></h3>
-							<p class="movie-meta">2014 г. • Фантастика, Драма</p>
-							<p class="movie-summary">Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.</p>
-							<div class="movie-actions">
-								<a href="movies.html" class="button button-detail">Подробнее</a>
-							</div>
-						</div>
-					</article>
+					<!-- Карточки генерируются скриптом js/main.js -->
+				</div>
 
-					<article class="movie-card" data-year="2010" data-rating="8.7" data-genres="Фантастика Боевик">
-						<div class="poster-box">
-							<img src="images/poster-inception.jpg" alt="Постер к фильму Начало" class="poster-image">
-							<span class="movie-rating-badge">8.7</span>
-						</div>
-						<div class="movie-info">
-							<h3 class="movie-name"><a href="movies.html" class="movie-link">Начало</a></h3>
-							<p class="movie-meta">2010 г. • Фантастика, Боевик</p>
-							<p class="movie-summary">Кобб — профессиональный вор, крадущий секреты из глубин подсознания во время сна. Ему предстоит выполнить противоположное — внедрить идею.</p>
-							<div class="movie-actions">
-								<a href="movies.html" class="button button-detail">Подробнее</a>
-							</div>
-						</div>
-					</article>
-
-					<article class="movie-card" data-year="1999" data-rating="8.5" data-genres="Фантастика Боевик">
-						<div class="poster-box">
-							<img src="images/poster-matrix.jpg" alt="Постер к фильму Матрица" class="poster-image">
-							<span class="movie-rating-badge">8.5</span>
-						</div>
-						<div class="movie-info">
-							<h3 class="movie-name"><a href="movies.html" class="movie-link">Матрица</a></h3>
-							<p class="movie-meta">1999 г. • Фантастика, Боевик</p>
-							<p class="movie-summary">Хакер Нео узнает правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми, и лишь ему под силу разрушить этот порядок.</p>
-							<div class="movie-actions">
-								<a href="movies.html" class="button button-detail">Подробнее</a>
-							</div>
-						</div>
-					</article>
-
-					<article class="movie-card" data-year="2000" data-rating="8.6" data-genres="Боевик Драма">
-						<div class="poster-box">
-							<img src="images/poster-gladiator.jpg" alt="Постер к фильму Гладиатор" class="poster-image">
-							<span class="movie-rating-badge">8.6</span>
-						</div>
-						<div class="movie-info">
-							<h3 class="movie-name"><a href="movies.html" class="movie-link">Гладиатор</a></h3>
-							<p class="movie-meta">2000 г. • Боевик, Драма</p>
-							<p class="movie-summary">Преданный римский полководец Максимус становится гладиатором. Побеждая на арене Колизея, он шаг за шагом приближается к возмездию.</p>
-							<div class="movie-actions">
-								<a href="movies.html" class="button button-detail">Подробнее</a>
-							</div>
-						</div>
-					</article>
+				<!-- Пагинация -->
+				<div class="pagination-wrapper">
+					<ul class="pagination-list" id="pagination">
+						<!-- Страницы генерируются скриптом -->
+					</ul>
 				</div>
 			</section>
+
 		</main>
 	</div>
 
+	<!-- Модальное окно Вход -->
 	<div id="login-modal" class="modal-overlay hidden">
 		<div class="modal-window">
 			<div class="modal-header">
@@ -190,15 +161,16 @@
 		</div>
 	</div>
 
+	<!-- Подвал -->
 	<footer id="site-footer" class="footer">
 		<div class="container footer-container">
 			<div class="footer-copyright">
 				<p>&copy; 2026 Kinobase. Лабораторная работа по веб-разработке.</p>
 			</div>
 			<ul class="footer-navigation">
-				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
-				<li class="footer-nav-item"><a href="movies.html" class="footer-link">Каталог</a></li>
-				<li class="footer-nav-item"><a href="contacts.html" class="footer-link">Контакты</a></li>
+				<li class="footer-nav-item"><a href="#" class="footer-link">Политика сайта</a></li>
+				<li class="footer-nav-item"><a href="#" class="footer-link">Правообладателям</a></li>
+				<li class="footer-nav-item"><a href="#" class="footer-link" id="footer-contact-link">Контакты</a></li>
 			</ul>
 		</div>
 	</footer>
