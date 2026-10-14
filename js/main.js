@@ -1,7 +1,8 @@
 /* ==========================================================================
    Kinobase — Основной скрипт сайта (Лабораторные работы №1–4)
    Включает: Каталог, Умный фильтр, Печать, Регистрацию, Авторизацию (Cookie),
-   Закрытый раздел, Сброс пароля по ссылке и Защиту от XSS / SQL-инъекций.
+   Закрытый раздел, Сброс пароля по ссылке, Защиту от XSS / SQL-инъекций
+   и Онлайн-видеоплеер с индивидуальными трейлерами для всех 20 фильмов.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -681,30 +682,285 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// =========================================================================
-	// 5. БАЗА ДАННЫХ ФИЛЬМОВ, УМНЫЙ ФИЛЬТР И КАТАЛОГ (Лабораторные №1–3)
+	// 5. БАЗА ДАННЫХ ФИЛЬМОВ, ТРЕЙЛЕРЫ, УМНЫЙ ФИЛЬТР И КАТАЛОГ
 	// =========================================================================
 	const MOVIES_DATA = [
-		{ id: 1, title: 'Интерстеллар', year: 2014, rating: 8.6, genres: ['Фантастика', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-interstellar.jpg', summary: 'Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.' },
-		{ id: 2, title: 'Начало', year: 2010, rating: 8.7, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-inception.jpg', summary: 'Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит внедрить чужую мысль.' },
-		{ id: 3, title: 'Матрица', year: 1999, rating: 8.5, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-matrix.jpg', summary: 'Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми.' },
-		{ id: 4, title: 'Гладиатор', year: 2000, rating: 8.6, genres: ['Боевик', 'Драма'], country: 'США', quality: 'Full HD', poster: 'images/poster-gladiator.jpg', summary: 'Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима.' },
-		{ id: 5, title: 'Тёмный рыцарь', year: 2008, rating: 9.0, genres: ['Боевик', 'Криминал'], country: 'США', quality: '4K UHD', poster: 'images/poster-dark-knight.jpg', summary: 'Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона он намерен очистить улицы Готэма от Джокера.' },
-		{ id: 6, title: 'Побег из Шоушенка', year: 1994, rating: 9.1, genres: ['Драма'], country: 'США', quality: 'Full HD', poster: 'images/poster-shawshank.jpg', summary: 'Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены. Оказавшись в тюрьме Шоушенк, он не теряет надежды на свободу.' },
-		{ id: 7, title: 'Криминальное чтиво', year: 1994, rating: 8.9, genres: ['Криминал', 'Комедия'], country: 'США', quality: 'Full HD', poster: 'images/poster-pulp-fiction.jpg', summary: 'Двое бандитов Винсент Вега и Джулс Винфилд попадают в череду непредсказуемых криминальных историй в Лос-Анджелесе.' },
-		{ id: 8, title: 'Бойцовский клуб', year: 1999, rating: 8.8, genres: ['Драма', 'Криминал'], country: 'США', quality: 'Full HD', poster: 'images/poster-fight-club.jpg', summary: 'Страдающий от бессонницы клерк встречает Тайлера Дёрдена и вместе с ним организует подпольный бойцовский клуб.' },
-		{ id: 9, title: 'Во все тяжкие', year: 2008, rating: 9.5, genres: ['Криминал', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-breaking-bad.jpg', summary: 'Школьный учитель химии Уолтер Уайт узнаёт о тяжёлом диагнозе и решает обеспечить семью, вступив в опасный криминальный мир.' },
-		{ id: 10, title: 'Чернобыль', year: 2019, rating: 8.9, genres: ['Драма'], country: 'Великобритания', quality: '4K UHD', poster: 'images/poster-chernobyl.jpg', summary: 'Историческая драма о героической ликвидации последствий аварии на Чернобыльской АЭС в апреле 1986 года.' },
-		{ id: 11, title: 'Очень странные дела', year: 2016, rating: 8.7, genres: ['Фантастика', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-stranger-things.jpg', summary: 'В тихом провинциальном городке Хоукинс загадочно исчезает подросток, открывая тайну параллельного измерения.' },
-		{ id: 12, title: 'Острые козырьки', year: 2013, rating: 8.8, genres: ['Криминал', 'Драма'], country: 'Великобритания', quality: 'Full HD', poster: 'images/poster-peaky-blinders.jpg', summary: 'История криминального клана Шелби в Бирмингеме 1920-х годов под руководством амбициозного Томаса Шелби.' },
-		{ id: 13, title: 'Дюна: Часть вторая', year: 2024, rating: 8.6, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-dune-2.jpg', summary: 'Пол Атрейдес объединяется с фрименами пустынной планеты Арракис, чтобы дать отпор заговорщикам, уничтожившим его семью.' },
-		{ id: 14, title: 'Оппенгеймер', year: 2023, rating: 8.5, genres: ['Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-oppenheimer.jpg', summary: 'История жизни американского физика-теоретика Роберта Оппенгеймера, стоявшего во главе Манхэттенского проекта.' },
-		{ id: 15, title: 'Аватар: Путь воды', year: 2022, rating: 7.9, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-avatar-2.jpg', summary: 'Джейк Салли и Нейтири вынуждены покинуть свой дом и отправиться к водным кланам Пандоры, чтобы защитить семью.' },
-		{ id: 16, title: 'Бегущий по лезвию 2049', year: 2017, rating: 8.0, genres: ['Фантастика', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-blade-runner.jpg', summary: 'Офицер полиции Кей раскрывает давний секрет, способный погрузить остатки человеческого общества в хаос.' },
-		{ id: 17, title: '1+1 (Неприкасаемые)', year: 2011, rating: 8.8, genres: ['Драма', 'Комедия'], country: 'Франция', quality: 'Full HD', poster: 'images/poster-intouchables.jpg', summary: 'Пострадавший в результате несчастного случая богатый аристократ Филипп нанимает в помощники жизнерадостного Дрисса.' },
-		{ id: 18, title: 'Престиж', year: 2006, rating: 8.5, genres: ['Драма', 'Фантастика'], country: 'Великобритания', quality: 'Full HD', poster: 'images/poster-prestige.jpg', summary: 'Противостояние двух иллюзионистов в Лондоне на рубеже XIX и XX веков превращается в опасную одержимость.' },
-		{ id: 19, title: 'Игра престолов', year: 2011, rating: 9.2, genres: ['Боевик', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-game-of-thrones.jpg', summary: 'Эпическая борьба благородных домов Вестероса за Железный Трон на фоне пробуждения древней угрозы на Севере.' },
-		{ id: 20, title: 'Мстители: Финал', year: 2019, rating: 8.4, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-avengers-endgame.jpg', summary: 'Оставшиеся в живых супергерои разрабатывают план путешествия во времени, чтобы обратить вспять действия Таноса.' }
+		{
+			id: 1,
+			title: 'Интерстеллар',
+			year: 2014,
+			rating: 8.6,
+			genres: ['Фантастика', 'Драма'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-interstellar.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/m2vijtILDuk?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+			summary: 'Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.'
+		},
+		{
+			id: 2,
+			title: 'Начало',
+			year: 2010,
+			rating: 8.7,
+			genres: ['Фантастика', 'Боевик'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-inception.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/c9hxnFo8lhI?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+			summary: 'Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит внедрить чужую мысль.'
+		},
+		{
+			id: 3,
+			title: 'Матрица',
+			year: 1999,
+			rating: 8.5,
+			genres: ['Фантастика', 'Боевик'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-matrix.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/fvdYOMHCqcg?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+			summary: 'Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми.'
+		},
+		{
+			id: 4,
+			title: 'Гладиатор',
+			year: 2000,
+			rating: 8.6,
+			genres: ['Боевик', 'Драма'],
+			country: 'США',
+			quality: 'Full HD',
+			poster: 'images/poster-gladiator.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/F2Dr7Qb2Zf8?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+			summary: 'Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима.'
+		},
+		{
+			id: 5,
+			title: 'Тёмный рыцарь',
+			year: 2008,
+			rating: 9.0,
+			genres: ['Боевик', 'Криминал'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-dark-knight.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/W_zqKjy-Vv4?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+			summary: 'Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона он намерен очистить улицы Готэма от Джокера.'
+		},
+		{
+			id: 6,
+			title: 'Побег из Шоушенка',
+			year: 1994,
+			rating: 9.1,
+			genres: ['Драма'],
+			country: 'США',
+			quality: 'Full HD',
+			poster: 'images/poster-shawshank.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/6FNZr0SoRfY?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+			summary: 'Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены. Оказавшись в тюрьме Шоушенк, он не теряет надежды на свободу.'
+		},
+		{
+			id: 7,
+			title: 'Криминальное чтиво',
+			year: 1994,
+			rating: 8.9,
+			genres: ['Криминал', 'Комедия'],
+			country: 'США',
+			quality: 'Full HD',
+			poster: 'images/poster-pulp-fiction.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/HKMfTF6yNYk?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+			summary: 'Двое бандитов Винсент Вега и Джулс Винфилд попадают в череду непредсказуемых криминальных историй в Лос-Анджелесе.'
+		},
+		{
+			id: 8,
+			title: 'Бойцовский клуб',
+			year: 1999,
+			rating: 8.8,
+			genres: ['Драма', 'Криминал'],
+			country: 'США',
+			quality: 'Full HD',
+			poster: 'images/poster-fight-club.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/8vHtD5psc00?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
+			summary: 'Страдающий от бессонницы клерк встречает Тайлера Дёрдена и вместе с ним организует подпольный бойцовский клуб.'
+		},
+		{
+			id: 9,
+			title: 'Во все тяжкие',
+			year: 2008,
+			rating: 9.5,
+			genres: ['Криминал', 'Драма'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-breaking-bad.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/HhesaQXLuRY?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackSeeTheWorld.mp4',
+			summary: 'Школьный учитель химии Уолтер Уайт узнаёт о тяжёлом диагнозе и решает обеспечить семью, вступив в опасный криминальный мир.'
+		},
+		{
+			id: 10,
+			title: 'Чернобыль',
+			year: 2019,
+			rating: 8.9,
+			genres: ['Драма'],
+			country: 'Великобритания',
+			quality: '4K UHD',
+			poster: 'images/poster-chernobyl.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/dPKaAxXqyIw?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+			summary: 'Историческая драма о героической ликвидации последствий аварии на Чернобыльской АЭС в апреле 1986 года.'
+		},
+		{
+			id: 11,
+			title: 'Очень странные дела',
+			year: 2016,
+			rating: 8.7,
+			genres: ['Фантастика', 'Драма'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-stranger-things.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/Ns1TyqmAKTU?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+			summary: 'В тихом провинциальном городке Хоукинс загадочно исчезает подросток, открывая тайну параллельного измерения.'
+		},
+		{
+			id: 12,
+			title: 'Острые козырьки',
+			year: 2013,
+			rating: 8.8,
+			genres: ['Криминал', 'Драма'],
+			country: 'Великобритания',
+			quality: 'Full HD',
+			poster: 'images/poster-peaky-blinders.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/0jMT4QZ3B6Y?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+			summary: 'История криминального клана Шелби в Бирмингеме 1920-х годов под руководством амбициозного Томаса Шелби.'
+		},
+		{
+			id: 13,
+			title: 'Дюна: Часть вторая',
+			year: 2024,
+			rating: 8.6,
+			genres: ['Фантастика', 'Боевик'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-dune-2.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/ZyUpJUNMYV4?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+			summary: 'Пол Атрейдес объединяется с фрименами пустынной планеты Арракис, чтобы дать отпор заговорщикам, уничтожившим его семью.'
+		},
+		{
+			id: 14,
+			title: 'Оппенгеймер',
+			year: 2023,
+			rating: 8.5,
+			genres: ['Драма'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-oppenheimer.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/FZBHHslg6gA?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+			summary: 'История жизни американского физика-теоретика Роберта Оппенгеймера, стоявшего во главе Манхэттенского проекта.'
+		},
+		{
+			id: 15,
+			title: 'Аватар: Путь воды',
+			year: 2022,
+			rating: 7.9,
+			genres: ['Фантастика', 'Боевик'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-avatar-2.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/L-2iTKw_BBg?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+			summary: 'Джейк Салли и Нейтири вынуждены покинуть свой дом и отправиться к водным кланам Пандоры, чтобы защитить семью.'
+		},
+		{
+			id: 16,
+			title: 'Бегущий по лезвию 2049',
+			year: 2017,
+			rating: 8.0,
+			genres: ['Фантастика', 'Драма'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-blade-runner.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/YIPFtD0oHxk?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+			summary: 'Офицер полиции Кей раскрывает давний секрет, способный погрузить остатки человеческого общества в хаос.'
+		},
+		{
+			id: 17,
+			title: '1+1 (Неприкасаемые)',
+			year: 2011,
+			rating: 8.8,
+			genres: ['Драма', 'Комедия'],
+			country: 'Франция',
+			quality: 'Full HD',
+			poster: 'images/poster-intouchables.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/UhV86p8xHIs?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+			summary: 'Пострадавший в результате несчастного случая богатый аристократ Филипп нанимает в помощники жизнерадостного Дрисса.'
+		},
+		{
+			id: 18,
+			title: 'Престиж',
+			year: 2006,
+			rating: 8.5,
+			genres: ['Драма', 'Фантастика'],
+			country: 'Великобритания',
+			quality: 'Full HD',
+			poster: 'images/poster-prestige.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/gh_nJkuMKGA?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+			summary: 'Противостояние двух иллюзионистов в Лондоне на рубеже XIX и XX веков превращается в опасную одержимость.'
+		},
+		{
+			id: 19,
+			title: 'Игра престолов',
+			year: 2011,
+			rating: 9.2,
+			genres: ['Боевик', 'Драма'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-game-of-thrones.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/edBuDu7QE14?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+			summary: 'Эпическая борьба благородных домов Вестероса за Железный Трон на фоне пробуждения древней угрозы на Севере.'
+		},
+		{
+			id: 20,
+			title: 'Мстители: Финал',
+			year: 2019,
+			rating: 8.4,
+			genres: ['Фантастика', 'Боевик'],
+			country: 'США',
+			quality: '4K UHD',
+			poster: 'images/poster-avengers-endgame.jpg',
+			trailerUrl: 'https://www.youtube.com/embed/uTZYaoeo85I?autoplay=1&rel=0',
+			videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+			summary: 'Оставшиеся в живых супергерои разрабатывают план путешествия во времени, чтобы обратить вспять действия Таноса.'
+		}
 	];
+
+	// Автозаполнение списка «Популярные фильмы» в сайдбаре (если он пуст, например на movies.html)
+	const topMoviesList = document.getElementById('top-movies-list');
+	if (topMoviesList && topMoviesList.children.length === 0) {
+		const topFive = [...MOVIES_DATA].sort((a, b) => b.rating - a.rating).slice(0, 5);
+		topMoviesList.innerHTML = topFive.map((m, idx) => `
+			<li class="top-list-item">
+				<span class="position-number">${idx + 1}</span>
+				<div class="top-info">
+					<a href="movie.html?id=${m.id}" class="top-link">${escapeHtml(m.title)}</a>
+					<span class="rating">${m.rating.toFixed(1)}</span>
+				</div>
+			</li>
+		`).join('');
+	}
 
 	// Инициализация кнопки режима печати
 	const togglePrintBtn = document.getElementById('toggle-print-btn');
@@ -893,7 +1149,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		updateCatalog();
 	}
 
-	// Страница отдельного фильма (movie.html)
+	// =========================================================================
+	// 6. СТРАНИЦА ОТДЕЛЬНОГО ФИЛЬМА И ОНЛАЙН-ПЛЕЕР С ТРЕЙЛЕРАМИ (movie.html)
+	// =========================================================================
 	const movieDetailsContainer = document.getElementById('movie-details-container');
 	if (movieDetailsContainer) {
 		const params = new URLSearchParams(window.location.search);
@@ -918,14 +1176,77 @@ document.addEventListener('DOMContentLoaded', () => {
 					</div>
 				</div>
 				<div class="player-section">
-					<h3 class="widget-title">Онлайн-плеер (${movie.quality})</h3>
-					<div class="player-box">
-						<div class="player-icon" title="Запустить просмотр"></div>
+					<div class="catalog-header" style="margin-bottom: 12px;">
+						<h3 class="widget-title" style="margin-bottom: 0;">Онлайн-плеер (${movie.quality})</h3>
+						<div class="filter-box">
+							<span class="filter-label">Источник:</span>
+							<a href="#" class="filter-link active" id="mode-trailer-btn">🎬 Трейлер фильма</a>
+							<a href="#" class="filter-link" id="mode-html5-btn">▶️ HTML5-плеер (MP4)</a>
+						</div>
+					</div>
+					<div class="player-box" id="video-player-box">
+						<div class="player-icon" id="start-video-btn" title="Запустить просмотр"></div>
 						<p class="player-caption">Нажмите Play для просмотра «${escapeHtml(movie.title)}» в качестве ${movie.quality}</p>
 					</div>
 				</div>
 			</article>
 		`;
+
+		const playerBox = document.getElementById('video-player-box');
+		const startVideoBtn = document.getElementById('start-video-btn');
+		const modeTrailerBtn = document.getElementById('mode-trailer-btn');
+		const modeHtml5Btn = document.getElementById('mode-html5-btn');
+		let currentPlayerMode = 'trailer'; // 'trailer' или 'html5'
+
+		function launchVideoPlayer(mode) {
+			if (!playerBox) return;
+			currentPlayerMode = mode;
+
+			if (modeTrailerBtn && modeHtml5Btn) {
+				modeTrailerBtn.classList.toggle('active', mode === 'trailer');
+				modeHtml5Btn.classList.toggle('active', mode === 'html5');
+			}
+
+			if (mode === 'trailer' && movie.trailerUrl) {
+				playerBox.innerHTML = `
+					<iframe
+						src="${movie.trailerUrl}"
+						title="Трейлер ${escapeHtml(movie.title)}"
+						style="width: 100%; height: 100%; border: 0; border-radius: 6px; background: #000;"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowfullscreen>
+					</iframe>
+				`;
+			} else {
+				const videoSrc = movie.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4';
+				playerBox.innerHTML = `
+					<video controls autoplay poster="${movie.poster}" style="width: 100%; height: 100%; border-radius: 6px; background: #000; outline: none;">
+						<source src="${videoSrc}" type="video/mp4">
+						Ваш браузер не поддерживает встроенное видео.
+					</video>
+				`;
+			}
+		}
+
+		if (startVideoBtn) {
+			startVideoBtn.addEventListener('click', () => {
+				launchVideoPlayer(currentPlayerMode);
+			});
+		}
+
+		if (modeTrailerBtn) {
+			modeTrailerBtn.addEventListener('click', (e) => {
+				e.preventDefault();
+				launchVideoPlayer('trailer');
+			});
+		}
+
+		if (modeHtml5Btn) {
+			modeHtml5Btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				launchVideoPlayer('html5');
+			});
+		}
 
 		const similarList = document.getElementById('similar-movies-list');
 		if (similarList) {
