@@ -1,468 +1,950 @@
-document.addEventListener("DOMContentLoaded", function () {
-	// ==========================================
-	// База данных фильмов Kinobase (20 фильмов)
-	// ==========================================
-	const moviesData = [
-		{ id: 1, title: "Интерстеллар", year: 2014, epoch: "2010-е", rating: 8.6, ratingTier: "8.5+", genre: "Фантастика, Драма", mainGenre: "Фантастика", file: "poster-interstellar.jpg", desc: "Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома." },
-		{ id: 2, title: "Начало", year: 2010, epoch: "2010-е", rating: 8.7, ratingTier: "8.5+", genre: "Фантастика, Боевик", mainGenre: "Фантастика", file: "poster-inception.jpg", desc: "Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит внедрить чужую мысль." },
-		{ id: 3, title: "Матрица", year: 1999, epoch: "1990-е", rating: 8.5, ratingTier: "8.5+", genre: "Фантастика, Боевик", mainGenre: "Фантастика", file: "poster-matrix.jpg", desc: "Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми." },
-		{ id: 4, title: "Гладиатор", year: 2000, epoch: "2000-е", rating: 8.6, ratingTier: "8.5+", genre: "Боевик, Драма", mainGenre: "Боевик", file: "poster-gladiator.jpg", desc: "Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима." },
-		{ id: 5, title: "Тёмный рыцарь", year: 2008, epoch: "2000-е", rating: 9.0, ratingTier: "9.0+", genre: "Боевик, Криминал", mainGenre: "Боевик", file: "poster-dark-knight.jpg", desc: "Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона он намерен очистить улицы Готэма от Джокера." },
-		{ id: 6, title: "Побег из Шоушенка", year: 1994, epoch: "1990-е", rating: 9.1, ratingTier: "9.0+", genre: "Драма, Криминал", mainGenre: "Драма", file: "poster-shawshank.jpg", desc: "Бухгалтер Энди Дюфрейн несправедливо осужден на два пожизненных срока в мрачной тюрьме Шоушенк." },
-		{ id: 7, title: "Криминальное чтиво", year: 1994, epoch: "1990-е", rating: 8.9, ratingTier: "8.5+", genre: "Криминал, Комедия", mainGenre: "Криминал", file: "poster-pulp-fiction.jpg", desc: "Двое бандитов ведут философские беседы в перерывах между разборками и поручениями криминального босса." },
-		{ id: 8, title: "Бойцовский клуб", year: 1999, epoch: "1990-е", rating: 8.7, ratingTier: "8.5+", genre: "Драма, Триллер", mainGenre: "Драма", file: "poster-fight-club.jpg", desc: "Терзаемый бессонницей клерк встречает харизматичного торговца мылом Тайлера Дёрдена и открывает подпольный клуб." },
-		{ id: 9, title: "Во все тяжкие", year: 2008, epoch: "2000-е", rating: 9.5, ratingTier: "9.0+", genre: "Драма, Криминал", mainGenre: "Драма", file: "poster-breaking-bad.jpg", desc: "Школьный учитель химии Уолтер Уайт узнает о смертельном диагнозе и решает производить метамфетамин ради семьи." },
-		{ id: 10, title: "Чернобыль", year: 2019, epoch: "2010-е", rating: 8.9, ratingTier: "8.5+", genre: "Драма, История", mainGenre: "Драма", file: "poster-chernobyl.jpg", desc: "Хроника катастрофы на Чернобыльской АЭС в 1986 году и самоотверженных усилий людей по ликвидации ее последствий." },
-		{ id: 11, title: "Острые козырьки", year: 2013, epoch: "2010-е", rating: 8.4, ratingTier: "8.0+", genre: "Криминал, Драма", mainGenre: "Криминал", file: "poster-peaky-blinders.jpg", desc: "Британская гангстерская сага о семье Шелби в Бирмингеме 1920-х годов под руководством Томаса Шелби." },
-		{ id: 12, title: "Очень странные дела", year: 2016, epoch: "2010-е", rating: 8.4, ratingTier: "8.0+", genre: "Фантастика, Драма", mainGenre: "Фантастика", file: "poster-stranger-things.jpg", desc: "В тихом городке пропадает мальчик. Его друзья сталкиваются с секретными экспериментами и потусторонним миром." },
-		{ id: 13, title: "Дюна: Часть вторая", year: 2024, epoch: "2020-е", rating: 8.5, ratingTier: "8.5+", genre: "Фантастика, Боевик", mainGenre: "Фантастика", file: "poster-dune-2.jpg", desc: "Пол Атрейдес объединяется с фременами, чтобы отомстить заговорщикам, уничтожившим его семью на Арракисе." },
-		{ id: 14, title: "Оппенгеймер", year: 2023, epoch: "2020-е", rating: 8.4, ratingTier: "8.0+", genre: "Драма, История", mainGenre: "Драма", file: "poster-oppenheimer.jpg", desc: "История жизни американского физика-теоретика Роберта Оппенгеймера, руководителя Манхэттенского проекта." },
-		{ id: 15, title: "Бегущий по лезвию 2049", year: 2017, epoch: "2010-е", rating: 8.0, ratingTier: "8.0+", genre: "Фантастика, Триллер", mainGenre: "Фантастика", file: "poster-blade-runner.jpg", desc: "Офицер полиции Кей случайно натыкается на секрет, способный погрузить остатки цивилизации в хаос." },
-		{ id: 16, title: "Престиж", year: 2006, epoch: "2000-е", rating: 8.5, ratingTier: "8.5+", genre: "Драма, Фантастика", mainGenre: "Драма", file: "poster-prestige.jpg", desc: "Два фокусника-иллюзиониста в Лондоне ведут смертельную борьбу за секреты непревзойденного мастерства." },
-		{ id: 17, title: "1+1 (Неприкасаемые)", year: 2011, epoch: "2010-е", rating: 8.8, ratingTier: "8.5+", genre: "Комедия, Драма", mainGenre: "Комедия", file: "poster-intouchables.jpg", desc: "Богатый аристократ в инвалидном кресле нанимает в качестве сиделки парня с уличным криминальным прошлым." },
-		{ id: 18, title: "Аватар: Путь воды", year: 2022, epoch: "2020-е", rating: 7.6, ratingTier: "До 8.0", genre: "Фантастика, Боевик", mainGenre: "Фантастика", file: "poster-avatar-2.jpg", desc: "Джейк Салли и Нейтири борются за выживание своей семьи на прекрасной и опасной планете Пандора." },
-		{ id: 19, title: "Игра престолов", year: 2011, epoch: "2010-е", rating: 9.2, ratingTier: "9.0+", genre: "Фэнтези, Драма", mainGenre: "Драма", file: "poster-game-of-thrones.jpg", desc: "Несколько могущественных домов Вестероса плетут смертельные заговоры за право обладания Железным троном." },
-		{ id: 20, title: "Мстители: Финал", year: 2019, epoch: "2010-е", rating: 8.4, ratingTier: "8.0+", genre: "Фантастика, Боевик", mainGenre: "Фантастика", file: "poster-avengers-endgame.jpg", desc: "Оставшиеся в живых члены команды Мстителей разрабатывают план отмены катастрофических действий Таноса." }
+/* ==========================================================================
+   Kinobase — Основной скрипт сайта (Лабораторные работы №1–4)
+   Включает: Каталог, Умный фильтр, Печать, Регистрацию, Авторизацию (Cookie),
+   Закрытый раздел, Сброс пароля по ссылке и Защиту от XSS / SQL-инъекций.
+   ========================================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+	// =========================================================================
+	// 1. ЗАЩИТА ОТ XSS И КРИПТОГРАФИЧЕСКИЕ ХЕЛПЕРЫ (Пункт 7 ТЗ)
+	// =========================================================================
+	function escapeHtml(str) {
+		if (str === null || str === undefined) return '';
+		return String(str)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#039;');
+	}
+
+	// Двойное хеширование пароля по методичке: hash(hash(trim(password)))
+	function doubleHash(str) {
+		const clean = String(str).trim();
+		function simpleMd5Like(s) {
+			let h1 = 0xdeadbeef ^ s.length;
+			let h2 = 0x41c6ce57 ^ s.length;
+			for (let i = 0, ch; i < s.length; i++) {
+				ch = s.charCodeAt(i);
+				h1 = Math.imul(h1 ^ ch, 2654435761);
+				h2 = Math.imul(h2 ^ ch, 1597334677);
+			}
+			h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+			h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+			return (h1 >>> 0).toString(16).padStart(8, '0') +
+			       (h2 >>> 0).toString(16).padStart(8, '0') +
+			       ((h1 ^ h2) >>> 0).toString(16).padStart(8, '0') +
+			       ((h1 + h2) >>> 0).toString(16).padStart(8, '0');
+		}
+		return simpleMd5Like(simpleMd5Like(clean));
+	}
+
+	// Генерация случайной строки (аналог generateCode() из методички)
+	function generateCode(length = 16) {
+		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789';
+		let code = '';
+		for (let i = 0; i < length; i++) {
+			code += chars.charAt(Math.floor(Math.random() * chars.length));
+		}
+		return code;
+	}
+
+	// Работа с Cookie (по методичке: id и hash на 30 дней)
+	function setCookie(name, value, days = 30) {
+		const maxAge = days * 24 * 60 * 60;
+		document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; SameSite=Lax`;
+	}
+
+	function getCookie(name) {
+		const matches = document.cookie.match(new RegExp(
+			'(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'
+		));
+		return matches ? decodeURIComponent(matches[1]) : null;
+	}
+
+	function deleteCookie(name) {
+		document.cookie = `${encodeURIComponent(name)}=; max-age=-1; path=/; SameSite=Lax`;
+	}
+
+	// =========================================================================
+	// 2. БАЗА ПОЛЬЗОВАТЕЛЕЙ (ТАБЛИЦА `users`) И СЕССИЯ
+	// =========================================================================
+	const DB_KEY = 'kinobase_users_db';
+	const DEFAULT_AVATAR = 'images/logo.png';
+
+	function getUsersDB() {
+		const raw = localStorage.getItem(DB_KEY);
+		if (!raw) {
+			const initialUsers = [
+				{
+					user_id: 1,
+					user_login: 'admin',
+					user_password: doubleHash('superpass'),
+					user_fio: 'Администратор Кинопортала',
+					user_email: 'admin@kinobase.ru',
+					user_avatar: DEFAULT_AVATAR,
+					user_hash: '',
+					user_ip: '0',
+					reset_token: null
+				}
+			];
+			localStorage.setItem(DB_KEY, JSON.stringify(initialUsers));
+			return initialUsers;
+		}
+		try {
+			return JSON.parse(raw);
+		} catch (e) {
+			return [];
+		}
+	}
+
+	function saveUsersDB(users) {
+		localStorage.setItem(DB_KEY, JSON.stringify(users));
+	}
+
+	// Проверка авторизации по Cookie (аналог check.php из методички)
+	function getAuthenticatedUser() {
+		const cookieId = getCookie('id');
+		const cookieHash = getCookie('hash');
+		if (!cookieId || !cookieHash) return null;
+
+		const users = getUsersDB();
+		const user = users.find(u => String(u.user_id) === String(cookieId));
+
+		if (!user || user.user_hash !== cookieHash) {
+			deleteCookie('id');
+			deleteCookie('hash');
+			return null;
+		}
+		return user;
+	}
+
+	// Выход из системы (аналог exit.php)
+	function logoutUser() {
+		const user = getAuthenticatedUser();
+		if (user) {
+			const users = getUsersDB();
+			const idx = users.findIndex(u => u.user_id === user.user_id);
+			if (idx !== -1) {
+				users[idx].user_hash = '';
+				saveUsersDB(users);
+			}
+		}
+		deleteCookie('id');
+		deleteCookie('hash');
+
+		if (window.location.pathname.endsWith('profile.html')) {
+			window.location.href = 'index.html';
+		} else {
+			updateAuthUI();
+		}
+	}
+
+	// =========================================================================
+	// 3. МОДАЛЬНОЕ ОКНО: ВХОД / РЕГИСТРАЦИЯ / СБРОС ПАРОЛЯ (Пункты 1, 5, 6 ТЗ)
+	// =========================================================================
+	let tempAvatarBase64 = DEFAULT_AVATAR;
+
+	function buildAuthModal() {
+		let modal = document.getElementById('login-modal');
+		if (!modal) {
+			modal = document.createElement('div');
+			modal.id = 'login-modal';
+			modal.className = 'modal-overlay hidden';
+			document.body.appendChild(modal);
+		}
+
+		modal.innerHTML = `
+			<div class="modal-window">
+				<div class="modal-header">
+					<h3 class="modal-title" id="auth-modal-title">Авторизация в Kinobase</h3>
+					<button type="button" id="close-modal-btn" class="modal-close">&times;</button>
+				</div>
+
+				<div class="auth-tabs">
+					<button type="button" class="auth-tab-btn active" data-tab="login">Вход</button>
+					<button type="button" class="auth-tab-btn" data-tab="register">Регистрация</button>
+					<button type="button" class="auth-tab-btn" data-tab="forgot">Сброс пароля</button>
+				</div>
+
+				<div id="auth-alert-box" class="auth-alert hidden"></div>
+
+				<!-- ВКЛАДКА 1: ВХОД -->
+				<form id="auth-login-form" class="modal-form">
+					<div class="form-group">
+						<label for="login-username">Логин или Email:</label>
+						<input type="text" id="login-username" class="form-control" placeholder="Например: admin" required>
+					</div>
+					<div class="form-group">
+						<label for="login-password">Пароль:</label>
+						<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+					</div>
+					<label class="checkbox-row">
+						<input type="checkbox" id="login-not-attach-ip">
+						<span>Не прикреплять к IP (не безопасно)</span>
+					</label>
+					<button type="submit" class="button button-primary button-block">Войти в аккаунт</button>
+					<p class="form-help-text" style="margin-top:10px; text-align:center;">
+						Тестовый вход: логин <strong>admin</strong>, пароль <strong>superpass</strong>
+					</p>
+				</form>
+
+				<!-- ВКЛАДКА 2: РЕГИСТРАЦИЯ (логин, пароль, ФИО, почта, аватар) -->
+				<form id="auth-register-form" class="modal-form hidden">
+					<div class="form-group">
+						<label for="reg-login">Логин (только латиница и цифры, 3–30 симв.):</label>
+						<input type="text" id="reg-login" class="form-control" placeholder="ivan2026" required>
+					</div>
+					<div class="form-group">
+						<label for="reg-password">Пароль (не менее 4 символов):</label>
+						<input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+					</div>
+					<div class="form-group">
+						<label for="reg-fio">ФИО полностью:</label>
+						<input type="text" id="reg-fio" class="form-control" placeholder="Иванов Иван Иванович" required>
+					</div>
+					<div class="form-group">
+						<label for="reg-email">Электронная почта (Email):</label>
+						<input type="email" id="reg-email" class="form-control" placeholder="ivan@example.com" required>
+					</div>
+					<div class="form-group">
+						<label for="reg-avatar">Аватар профиля:</label>
+						<input type="file" id="reg-avatar" class="form-control" accept="image/*">
+						<div class="avatar-preview-row">
+							<img id="reg-avatar-preview" src="${DEFAULT_AVATAR}" alt="Превью" class="avatar-preview-img">
+							<span class="form-help-text">Загрузите своё фото (или будет использован стандартный аватар)</span>
+						</div>
+					</div>
+					<button type="submit" class="button button-primary button-block">Зарегистрироваться</button>
+				</form>
+
+				<!-- ВКЛАДКА 3: ВОССТАНОВЛЕНИЕ ПАРОЛЯ ПО ССЫЛКЕ (Пункт 6 ТЗ) -->
+				<form id="auth-forgot-form" class="modal-form hidden">
+					<div class="form-group">
+						<label for="forgot-ident">Введите ваш Логин или Email:</label>
+						<input type="text" id="forgot-ident" class="form-control" placeholder="admin или admin@kinobase.ru" required>
+					</div>
+					<button type="submit" class="button button-primary button-block">Сгенерировать ссылку сброса</button>
+					<div id="forgot-link-output" class="reset-link-box hidden"></div>
+				</form>
+
+				<!-- ВКЛАДКА 4: УСТАНОВКА НОВОГО ПАРОЛЯ ПО ТОКЕНУ ИЗ ССЫЛКИ -->
+				<form id="auth-reset-confirm-form" class="modal-form hidden">
+					<input type="hidden" id="reset-confirm-login">
+					<input type="hidden" id="reset-confirm-token">
+					<div class="form-group">
+						<label for="reset-new-pass">Введите новый пароль:</label>
+						<input type="password" id="reset-new-pass" class="form-control" placeholder="Минимум 4 символа" required>
+					</div>
+					<div class="form-group">
+						<label for="reset-new-pass2">Повторите новый пароль:</label>
+						<input type="password" id="reset-new-pass2" class="form-control" placeholder="Повторите пароль" required>
+					</div>
+					<button type="submit" class="button button-primary button-block">Сохранить новый пароль</button>
+				</form>
+			</div>
+		`;
+
+		// Переключение вкладок
+		const tabBtns = modal.querySelectorAll('.auth-tab-btn');
+		tabBtns.forEach(btn => {
+			btn.addEventListener('click', () => {
+				switchAuthTab(btn.dataset.tab);
+			});
+		});
+
+		// Закрытие модалки
+		modal.querySelector('#close-modal-btn').addEventListener('click', () => {
+			modal.classList.add('hidden');
+		});
+		modal.addEventListener('click', (e) => {
+			if (e.target === modal) modal.classList.add('hidden');
+		});
+
+		// Превью аватара при регистрации
+		const regAvatarInput = modal.querySelector('#reg-avatar');
+		const regAvatarPreview = modal.querySelector('#reg-avatar-preview');
+		regAvatarInput.addEventListener('change', (e) => {
+			const file = e.target.files[0];
+			if (!file) return;
+			const reader = new FileReader();
+			reader.onload = (ev) => {
+				tempAvatarBase64 = ev.target.result;
+				regAvatarPreview.src = tempAvatarBase64;
+			};
+			reader.readAsDataURL(file);
+		});
+
+		// Обработка ВХОДА
+		modal.querySelector('#auth-login-form').addEventListener('submit', (e) => {
+			e.preventDefault();
+			const ident = document.getElementById('login-username').value.trim();
+			const pass = document.getElementById('login-password').value;
+			const notAttachIp = document.getElementById('login-not-attach-ip').checked;
+
+			// Проверка на попытку SQL-инъекции (п. 7 ТЗ)
+			if (/('|--|;|\bOR\b|\bUNION\b|\bSELECT\b|\bDROP\b)/i.test(ident)) {
+				showAuthAlert('Обнаружена попытка SQL-инъекции! Запрос заблокирован системой безопасности.', 'error');
+				return;
+			}
+
+			const users = getUsersDB();
+			const userIdx = users.findIndex(
+				u => u.user_login.toLowerCase() === ident.toLowerCase() || u.user_email.toLowerCase() === ident.toLowerCase()
+			);
+
+			if (userIdx === -1 || users[userIdx].user_password !== doubleHash(pass)) {
+				showAuthAlert('Вы ввели неправильный логин или пароль!', 'error');
+				return;
+			}
+
+			// Генерируем случайный хеш сессии и записываем в БД и Cookie (по методичке)
+			const sessionHash = doubleHash(generateCode(12));
+			users[userIdx].user_hash = sessionHash;
+			users[userIdx].user_ip = notAttachIp ? '0 (Отключено)' : '127.0.0.1 (Привязан к IP)';
+			saveUsersDB(users);
+
+			setCookie('id', users[userIdx].user_id, 30);
+			setCookie('hash', sessionHash, 30);
+
+			showAuthAlert(`Привет, ${escapeHtml(users[userIdx].user_fio)}! Перенаправление в закрытый раздел...`, 'success');
+			updateAuthUI();
+
+			setTimeout(() => {
+				window.location.href = 'profile.html';
+			}, 600);
+		});
+
+		// Обработка РЕГИСТРАЦИИ (п. 1 ТЗ)
+		modal.querySelector('#auth-register-form').addEventListener('submit', (e) => {
+			e.preventDefault();
+			const login = document.getElementById('reg-login').value.trim();
+			const password = document.getElementById('reg-password').value;
+			const fio = document.getElementById('reg-fio').value.trim();
+			const email = document.getElementById('reg-email').value.trim();
+
+			const errors = [];
+			if (!/^[a-zA-Z0-9]+$/.test(login)) {
+				errors.push('Логин может состоять только из букв английского алфавита и цифр');
+			}
+			if (login.length < 3 || login.length > 30) {
+				errors.push('Логин должен быть не меньше 3-х символов и не больше 30');
+			}
+			if (password.trim().length < 4) {
+				errors.push('Пароль должен содержать не менее 4 символов');
+			}
+			if (fio.length < 3) {
+				errors.push('Укажите корректное ФИО');
+			}
+
+			const users = getUsersDB();
+			if (users.some(u => u.user_login.toLowerCase() === login.toLowerCase())) {
+				errors.push('Пользователь с таким логином уже существует в базе данных');
+			}
+			if (users.some(u => u.user_email.toLowerCase() === email.toLowerCase())) {
+				errors.push('Пользователь с такой почтой уже зарегистрирован');
+			}
+
+			if (errors.length > 0) {
+				showAuthAlert('<b>При регистрации произошли ошибки:</b><br>• ' + errors.join('<br>• '), 'error');
+				return;
+			}
+
+			const newId = users.length > 0 ? Math.max(...users.map(u => u.user_id)) + 1 : 1;
+			const sessionHash = doubleHash(generateCode(12));
+
+			const newUser = {
+				user_id: newId,
+				user_login: login,
+				user_password: doubleHash(password),
+				user_fio: fio,
+				user_email: email,
+				user_avatar: tempAvatarBase64 || DEFAULT_AVATAR,
+				user_hash: sessionHash,
+				user_ip: '127.0.0.1 (Привязан к IP)',
+				reset_token: null
+			};
+
+			users.push(newUser);
+			saveUsersDB(users);
+
+			// Автоматически авторизуем после регистрации
+			setCookie('id', newUser.user_id, 30);
+			setCookie('hash', sessionHash, 30);
+
+			showAuthAlert('Регистрация прошла успешно! Выполняется вход в закрытый раздел...', 'success');
+			updateAuthUI();
+
+			setTimeout(() => {
+				window.location.href = 'profile.html';
+			}, 700);
+		});
+
+		// Обработка ВОССТАНОВЛЕНИЯ ПАРОЛЯ (п. 6 ТЗ — вывод ссылки на экран и скачивание в файл)
+		modal.querySelector('#auth-forgot-form').addEventListener('submit', (e) => {
+			e.preventDefault();
+			const ident = document.getElementById('forgot-ident').value.trim();
+			const users = getUsersDB();
+			const idx = users.findIndex(
+				u => u.user_login.toLowerCase() === ident.toLowerCase() || u.user_email.toLowerCase() === ident.toLowerCase()
+			);
+
+			const outBox = document.getElementById('forgot-link-output');
+			if (idx === -1) {
+				outBox.classList.add('hidden');
+				showAuthAlert('Пользователь с таким логином или Email не найден.', 'error');
+				return;
+			}
+
+			const token = generateCode(24);
+			users[idx].reset_token = token;
+			saveUsersDB(users);
+
+			const baseUrl = window.location.origin + window.location.pathname;
+			const resetUrl = `${baseUrl}?action=reset_password&login=${encodeURIComponent(users[idx].user_login)}&token=${encodeURIComponent(token)}`;
+
+			showAuthAlert(`Ссылка для восстановления пароля сформирована для <b>${escapeHtml(users[idx].user_email)}</b>:`, 'info');
+			outBox.classList.remove('hidden');
+			outBox.innerHTML = `
+				<div><strong>Письмо для:</strong> ${escapeHtml(users[idx].user_fio)} (${escapeHtml(users[idx].user_email)})</div>
+				<div style="margin-top:4px;">Перейдите по одноразовой ссылке для смены пароля (п. 6 ТЗ):</div>
+				<a href="${resetUrl}" id="direct-reset-link">${escapeHtml(resetUrl)}</a>
+				<div style="margin-top:10px; display:flex; gap:8px;">
+					<button type="button" id="download-reset-txt" class="button button-detail" style="flex:1;">💾 Сохранить ссылку в файл (.txt)</button>
+				</div>
+			`;
+
+			document.getElementById('download-reset-txt').addEventListener('click', () => {
+				const text = `Восстановление пароля Kinobase\nПользователь: ${users[idx].user_login}\nEmail: ${users[idx].user_email}\nСсылка для сброса пароля:\n${resetUrl}\n`;
+				const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+				const a = document.createElement('a');
+				a.href = URL.createObjectURL(blob);
+				a.download = `password_reset_${users[idx].user_login}.txt`;
+				a.click();
+			});
+		});
+
+		// Обработка СОХРАНЕНИЯ НОВОГО ПАРОЛЯ ПО ССЫЛКЕ
+		modal.querySelector('#auth-reset-confirm-form').addEventListener('submit', (e) => {
+			e.preventDefault();
+			const login = document.getElementById('reset-confirm-login').value;
+			const token = document.getElementById('reset-confirm-token').value;
+			const pass1 = document.getElementById('reset-new-pass').value;
+			const pass2 = document.getElementById('reset-new-pass2').value;
+
+			if (pass1.trim().length < 4) {
+				showAuthAlert('Новый пароль должен быть не короче 4 символов.', 'error');
+				return;
+			}
+			if (pass1 !== pass2) {
+				showAuthAlert('Введённые пароли не совпадают!', 'error');
+				return;
+			}
+
+			const users = getUsersDB();
+			const idx = users.findIndex(u => u.user_login === login && u.reset_token === token);
+			if (idx === -1) {
+				showAuthAlert('Недействительная или устаревшая ссылка восстановления пароля!', 'error');
+				return;
+			}
+
+			users[idx].user_password = doubleHash(pass1);
+			users[idx].reset_token = null;
+			saveUsersDB(users);
+
+			showAuthAlert('Пароль успешно изменён! Теперь вы можете войти с новым паролем.', 'success');
+			setTimeout(() => {
+				window.history.replaceState({}, document.title, window.location.pathname);
+				switchAuthTab('login');
+				document.getElementById('login-username').value = login;
+			}, 1200);
+		});
+	}
+
+	function showAuthAlert(htmlMessage, type = 'info') {
+		const box = document.getElementById('auth-alert-box');
+		if (!box) return;
+		box.className = `auth-alert ${type}`;
+		box.innerHTML = htmlMessage;
+		box.classList.remove('hidden');
+	}
+
+	function switchAuthTab(tabName) {
+		const modal = document.getElementById('login-modal');
+		if (!modal) return;
+
+		const title = document.getElementById('auth-modal-title');
+		const alertBox = document.getElementById('auth-alert-box');
+		if (alertBox) alertBox.classList.add('hidden');
+
+		modal.querySelectorAll('.auth-tab-btn').forEach(btn => {
+			btn.classList.toggle('active', btn.dataset.tab === tabName);
+		});
+
+		document.getElementById('auth-login-form').classList.toggle('hidden', tabName !== 'login');
+		document.getElementById('auth-register-form').classList.toggle('hidden', tabName !== 'register');
+		document.getElementById('auth-forgot-form').classList.toggle('hidden', tabName !== 'forgot');
+		document.getElementById('auth-reset-confirm-form').classList.toggle('hidden', tabName !== 'reset-confirm');
+
+		if (tabName === 'login') title.textContent = 'Вход в Kinobase';
+		if (tabName === 'register') title.textContent = 'Регистрация пользователя';
+		if (tabName === 'forgot') title.textContent = 'Восстановление пароля';
+		if (tabName === 'reset-confirm') title.textContent = 'Установка нового пароля';
+	}
+
+	function openAuthModal(defaultTab = 'login', message = null, msgType = 'info') {
+		const modal = document.getElementById('login-modal');
+		if (!modal) return;
+		modal.classList.remove('hidden');
+		switchAuthTab(defaultTab);
+		if (message) {
+			showAuthAlert(message, msgType);
+		}
+	}
+
+	// =========================================================================
+	// 4. ОБНОВЛЕНИЕ ШАПКИ, МЕНЮ И СТРАНИЦЫ ПРОФИЛЯ (Пункты 2, 3, 4 ТЗ)
+	// =========================================================================
+	function updateAuthUI() {
+		const user = getAuthenticatedUser();
+
+		// 1. Добавляем пункт «🔒 Закрытый раздел» в главное меню на всех страницах
+		const navLists = document.querySelectorAll('.nav-list');
+		navLists.forEach(ul => {
+			let secretLi = ul.querySelector('.nav-item-secret');
+			if (!secretLi) {
+				secretLi = document.createElement('li');
+				secretLi.className = 'nav-item nav-item-secret';
+				if (window.location.pathname.endsWith('profile.html')) {
+					secretLi.classList.add('active');
+				}
+				secretLi.innerHTML = `<a href="profile.html" class="nav-link">🔒 Закрытый раздел</a>`;
+				ul.appendChild(secretLi);
+			}
+		});
+
+		// 2. Обновляем панель пользователя в шапке
+		const userPanel = document.querySelector('.user-panel');
+		if (userPanel) {
+			const printBtn = document.getElementById('toggle-print-btn');
+			userPanel.innerHTML = '';
+			if (printBtn) {
+				userPanel.appendChild(printBtn);
+			}
+
+			if (user) {
+				const profileBadge = document.createElement('a');
+				profileBadge.href = 'profile.html';
+				profileBadge.className = 'header-user-badge';
+				profileBadge.title = 'Перейти в закрытый личный кабинет';
+				profileBadge.innerHTML = `
+					<img src="${escapeHtml(user.user_avatar || DEFAULT_AVATAR)}" alt="Аватар" class="header-avatar-mini">
+					<span class="header-user-name">${escapeHtml(user.user_fio || user.user_login)}</span>
+				`;
+
+				const logoutBtn = document.createElement('button');
+				logoutBtn.type = 'button';
+				logoutBtn.className = 'button button-login';
+				logoutBtn.textContent = 'Выход';
+				logoutBtn.addEventListener('click', logoutUser);
+
+				userPanel.appendChild(profileBadge);
+				userPanel.appendChild(logoutBtn);
+			} else {
+				const loginBtn = document.createElement('button');
+				loginBtn.type = 'button';
+				loginBtn.id = 'open-login-btn';
+				loginBtn.className = 'button button-login';
+				loginBtn.textContent = 'Вход / Регистрация';
+				loginBtn.addEventListener('click', () => openAuthModal('login'));
+				userPanel.appendChild(loginBtn);
+			}
+		}
+
+		// 3. Если мы находимся на странице profile.html — заполняем данные профиля
+		const profileEditForm = document.getElementById('profile-edit-form');
+		if (profileEditForm && user) {
+			document.getElementById('profile-current-avatar').src = user.user_avatar || DEFAULT_AVATAR;
+			document.getElementById('profile-display-fio').textContent = user.user_fio;
+			document.getElementById('profile-display-login').textContent = user.user_login;
+			document.getElementById('profile-display-email').textContent = user.user_email;
+
+			document.getElementById('edit-login').value = user.user_login;
+			document.getElementById('edit-fio').value = user.user_fio;
+			document.getElementById('edit-email').value = user.user_email;
+
+			document.getElementById('debug-cookie-id').textContent = getCookie('id') || '-';
+			document.getElementById('debug-cookie-hash').textContent = getCookie('hash') || '-';
+			document.getElementById('debug-user-ip').textContent = user.user_ip || '127.0.0.1';
+		}
+	}
+
+	// Обработчик редактирования данных в личном кабинете (Пункт 3 ТЗ: всё кроме логина)
+	function initProfilePage() {
+		const profileEditForm = document.getElementById('profile-edit-form');
+		if (!profileEditForm) return;
+
+		let updatedAvatarBase64 = null;
+		const avatarInput = document.getElementById('edit-avatar-file');
+		avatarInput.addEventListener('change', (e) => {
+			const file = e.target.files[0];
+			if (!file) return;
+			const reader = new FileReader();
+			reader.onload = (ev) => {
+				updatedAvatarBase64 = ev.target.result;
+				document.getElementById('profile-current-avatar').src = updatedAvatarBase64;
+			};
+			reader.readAsDataURL(file);
+		});
+
+		profileEditForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const currentUser = getAuthenticatedUser();
+			if (!currentUser) {
+				window.location.replace('index.html?auth_required=1');
+				return;
+			}
+
+			const newFio = document.getElementById('edit-fio').value.trim();
+			const newEmail = document.getElementById('edit-email').value.trim();
+			const newPass = document.getElementById('edit-new-password').value;
+			const msgBox = document.getElementById('profile-message');
+
+			const users = getUsersDB();
+			const idx = users.findIndex(u => u.user_id === currentUser.user_id);
+			if (idx === -1) return;
+
+			// Проверяем, не занят ли новый Email другим пользователем
+			if (users.some(u => u.user_id !== currentUser.user_id && u.user_email.toLowerCase() === newEmail.toLowerCase())) {
+				msgBox.className = 'auth-alert error';
+				msgBox.textContent = 'Этот Email уже используется другим аккаунтом!';
+				msgBox.classList.remove('hidden');
+				return;
+			}
+
+			// Логин НЕ меняется ни при каких условиях (п. 3 ТЗ)
+			users[idx].user_fio = newFio;
+			users[idx].user_email = newEmail;
+			if (updatedAvatarBase64) {
+				users[idx].user_avatar = updatedAvatarBase64;
+			}
+			if (newPass && newPass.trim().length >= 4) {
+				users[idx].user_password = doubleHash(newPass);
+			}
+
+			saveUsersDB(users);
+			document.getElementById('edit-new-password').value = '';
+
+			msgBox.className = 'auth-alert success';
+			msgBox.textContent = 'Регистрационные данные (кроме логина) успешно обновлены!';
+			msgBox.classList.remove('hidden');
+
+			updateAuthUI();
+		});
+
+		const profileLogoutBtn = document.getElementById('profile-logout-btn');
+		if (profileLogoutBtn) {
+			profileLogoutBtn.addEventListener('click', logoutUser);
+		}
+	}
+
+	// Проверка URL-параметров (редирект из закрытого раздела или переход по ссылке сброса пароля)
+	function checkUrlAuthActions() {
+		const params = new URLSearchParams(window.location.search);
+
+		if (params.get('auth_required') === '1') {
+			openAuthModal(
+				'login',
+				'🔒 Доступ к закрытому разделу по прямой ссылке запрещён для неавторизованных пользователей! Пожалуйста, войдите в аккаунт.',
+				'error'
+			);
+		}
+
+		if (params.get('action') === 'reset_password') {
+			const login = params.get('login') || '';
+			const token = params.get('token') || '';
+			const users = getUsersDB();
+			const validUser = users.find(u => u.user_login === login && u.reset_token === token);
+
+			if (validUser) {
+				document.getElementById('reset-confirm-login').value = login;
+				document.getElementById('reset-confirm-token').value = token;
+				openAuthModal(
+					'reset-confirm',
+					`Токен подтверждён! Установите новый пароль для пользователя <b>${escapeHtml(login)}</b>.`,
+					'info'
+				);
+			} else {
+				openAuthModal('forgot', 'Ссылка для восстановления пароля недействительна или уже была использована.', 'error');
+			}
+		}
+	}
+
+	// =========================================================================
+	// 5. БАЗА ДАННЫХ ФИЛЬМОВ, УМНЫЙ ФИЛЬТР И КАТАЛОГ (Лабораторные №1–3)
+	// =========================================================================
+	const MOVIES_DATA = [
+		{ id: 1, title: 'Интерстеллар', year: 2014, rating: 8.6, genres: ['Фантастика', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-interstellar.jpg', summary: 'Когда засуха приводит человечество к глобальному кризису, команда исследователей отправляется сквозь червоточину в поисках нового дома.' },
+		{ id: 2, title: 'Начало', year: 2010, rating: 8.7, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-inception.jpg', summary: 'Кобб — профессиональный вор, крадущий ценные секреты из глубин подсознания во время сна. Ему предстоит внедрить чужую мысль.' },
+		{ id: 3, title: 'Матрица', year: 1999, rating: 8.5, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-matrix.jpg', summary: 'Хакер Нео узнает шокирующую правду: весь привычный мир — иллюзия, созданная машинами для контроля над людьми.' },
+		{ id: 4, title: 'Гладиатор', year: 2000, rating: 8.6, genres: ['Боевик', 'Драма'], country: 'США', quality: 'Full HD', poster: 'images/poster-gladiator.jpg', summary: 'Преданный римский полководец Максимус становится рабом-гладиатором и бросает вызов жестокому императору Рима.' },
+		{ id: 5, title: 'Тёмный рыцарь', year: 2008, rating: 9.0, genres: ['Боевик', 'Криминал'], country: 'США', quality: '4K UHD', poster: 'images/poster-dark-knight.jpg', summary: 'Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Гордона он намерен очистить улицы Готэма от Джокера.' },
+		{ id: 6, title: 'Побег из Шоушенка', year: 1994, rating: 9.1, genres: ['Драма'], country: 'США', quality: 'Full HD', poster: 'images/poster-shawshank.jpg', summary: 'Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены. Оказавшись в тюрьме Шоушенк, он не теряет надежды на свободу.' },
+		{ id: 7, title: 'Криминальное чтиво', year: 1994, rating: 8.9, genres: ['Криминал', 'Комедия'], country: 'США', quality: 'Full HD', poster: 'images/poster-pulp-fiction.jpg', summary: 'Двое бандитов Винсент Вега и Джулс Винфилд попадают в череду непредсказуемых криминальных историй в Лос-Анджелесе.' },
+		{ id: 8, title: 'Бойцовский клуб', year: 1999, rating: 8.8, genres: ['Драма', 'Криминал'], country: 'США', quality: 'Full HD', poster: 'images/poster-fight-club.jpg', summary: 'Страдающий от бессонницы клерк встречает Тайлера Дёрдена и вместе с ним организует подпольный бойцовский клуб.' },
+		{ id: 9, title: 'Во все тяжкие', year: 2008, rating: 9.5, genres: ['Криминал', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-breaking-bad.jpg', summary: 'Школьный учитель химии Уолтер Уайт узнаёт о тяжёлом диагнозе и решает обеспечить семью, вступив в опасный криминальный мир.' },
+		{ id: 10, title: 'Чернобыль', year: 2019, rating: 8.9, genres: ['Драма'], country: 'Великобритания', quality: '4K UHD', poster: 'images/poster-chernobyl.jpg', summary: 'Историческая драма о героической ликвидации последствий аварии на Чернобыльской АЭС в апреле 1986 года.' },
+		{ id: 11, title: 'Очень странные дела', year: 2016, rating: 8.7, genres: ['Фантастика', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-stranger-things.jpg', summary: 'В тихом провинциальном городке Хоукинс загадочно исчезает подросток, открывая тайну параллельного измерения.' },
+		{ id: 12, title: 'Острые козырьки', year: 2013, rating: 8.8, genres: ['Криминал', 'Драма'], country: 'Великобритания', quality: 'Full HD', poster: 'images/poster-peaky-blinders.jpg', summary: 'История криминального клана Шелби в Бирмингеме 1920-х годов под руководством амбициозного Томаса Шелби.' },
+		{ id: 13, title: 'Дюна: Часть вторая', year: 2024, rating: 8.6, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-dune-2.jpg', summary: 'Пол Атрейдес объединяется с фрименами пустынной планеты Арракис, чтобы дать отпор заговорщикам, уничтожившим его семью.' },
+		{ id: 14, title: 'Оппенгеймер', year: 2023, rating: 8.5, genres: ['Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-oppenheimer.jpg', summary: 'История жизни американского физика-теоретика Роберта Оппенгеймера, стоявшего во главе Манхэттенского проекта.' },
+		{ id: 15, title: 'Аватар: Путь воды', year: 2022, rating: 7.9, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-avatar-2.jpg', summary: 'Джейк Салли и Нейтири вынуждены покинуть свой дом и отправиться к водным кланам Пандоры, чтобы защитить семью.' },
+		{ id: 16, title: 'Бегущий по лезвию 2049', year: 2017, rating: 8.0, genres: ['Фантастика', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-blade-runner.jpg', summary: 'Офицер полиции Кей раскрывает давний секрет, способный погрузить остатки человеческого общества в хаос.' },
+		{ id: 17, title: '1+1 (Неприкасаемые)', year: 2011, rating: 8.8, genres: ['Драма', 'Комедия'], country: 'Франция', quality: 'Full HD', poster: 'images/poster-intouchables.jpg', summary: 'Пострадавший в результате несчастного случая богатый аристократ Филипп нанимает в помощники жизнерадостного Дрисса.' },
+		{ id: 18, title: 'Престиж', year: 2006, rating: 8.5, genres: ['Драма', 'Фантастика'], country: 'Великобритания', quality: 'Full HD', poster: 'images/poster-prestige.jpg', summary: 'Противостояние двух иллюзионистов в Лондоне на рубеже XIX и XX веков превращается в опасную одержимость.' },
+		{ id: 19, title: 'Игра престолов', year: 2011, rating: 9.2, genres: ['Боевик', 'Драма'], country: 'США', quality: '4K UHD', poster: 'images/poster-game-of-thrones.jpg', summary: 'Эпическая борьба благородных домов Вестероса за Железный Трон на фоне пробуждения древней угрозы на Севере.' },
+		{ id: 20, title: 'Мстители: Финал', year: 2019, rating: 8.4, genres: ['Фантастика', 'Боевик'], country: 'США', quality: '4K UHD', poster: 'images/poster-avengers-endgame.jpg', summary: 'Оставшиеся в живых супергерои разрабатывают план путешествия во времени, чтобы обратить вспять действия Таноса.' }
 	];
 
-	// =========================================================================
-	// Общий рендер сайдбара "Популярные фильмы" (для всех страниц)
-	// =========================================================================
-	const topList = document.getElementById("top-movies-list");
-	if (topList) {
-		const sorted = [...moviesData].sort((a, b) => b.rating - a.rating).slice(0, 5);
-		topList.innerHTML = sorted.map((m, idx) => `
-			<li class="top-list-item">
-				<span class="position-number">${idx + 1}</span>
-				<div class="top-info">
-					<a href="movie.html?id=${m.id}" class="top-link">${m.title}</a>
-					<span class="rating">${m.rating}</span>
-				</div>
-			</li>
-		`).join("");
+	// Инициализация кнопки режима печати
+	const togglePrintBtn = document.getElementById('toggle-print-btn');
+	const exitPrintBtn = document.getElementById('exit-print-btn');
+	if (togglePrintBtn) {
+		togglePrintBtn.addEventListener('click', () => document.body.classList.add('print-mode'));
+	}
+	if (exitPrintBtn) {
+		exitPrintBtn.addEventListener('click', () => document.body.classList.remove('print-mode'));
 	}
 
-	// =========================================================================
-	// Счетчик жанров на главной странице (index.html)
-	// =========================================================================
-	const genreLinks = document.querySelectorAll("#genre-filter .genre-link");
-	if (genreLinks.length > 0) {
-		const genres = [
-			{ id: "count-all", name: "all" },
-			{ id: "count-sci-fi", name: "Фантастика" },
-			{ id: "count-action", name: "Боевик" },
-			{ id: "count-drama", name: "Драма" },
-			{ id: "count-crime", name: "Криминал" },
-			{ id: "count-comedy", name: "Комедия" }
-		];
-		genres.forEach(g => {
-			const el = document.getElementById(g.id);
-			if (el) {
-				const count = g.name === "all"
-					? moviesData.length
-					: moviesData.filter(m => m.genre.includes(g.name)).length;
-				el.textContent = `(${count})`;
-			}
-		});
-	}
-
-	// =========================================================================
-	// 1. Режим печати (Print Mode)
-	// =========================================================================
-	const togglePrintBtn = document.getElementById("toggle-print-btn");
-	const exitPrintBtn = document.getElementById("exit-print-btn");
-
-	function setPrintMode(enable) {
-		if (enable) {
-			document.body.classList.add("print-mode");
-		} else {
-			document.body.classList.remove("print-mode");
-		}
-	}
-
-	if (togglePrintBtn) togglePrintBtn.addEventListener("click", () => setPrintMode(true));
-	if (exitPrintBtn) exitPrintBtn.addEventListener("click", () => setPrintMode(false));
-
-	// =========================================================================
-	// 2. Каталог фильмов (работает и на index.html, и на movies.html)
-	// =========================================================================
-	const moviesContainer = document.getElementById("movies-container");
-	const smartFiltersContainer = document.getElementById("smart-filters-container");
-
+	// Инициализация каталога на index.html и movies.html
+	const moviesContainer = document.getElementById('movies-container');
 	if (moviesContainer) {
-		let currentSort = "date";
-		let searchQuery = new URLSearchParams(window.location.search).get("search") || "";
-		let selectedGenreSimple = "all";
+		let currentGenre = 'all';
+		let currentSort = 'date';
 		let currentPage = 1;
-		const pageSize = 5;
+		const itemsPerPage = 5;
+		const urlParams = new URLSearchParams(window.location.search);
+		let searchQuery = (urlParams.get('search') || '').trim().toLowerCase();
 
-		const pagination = document.getElementById("pagination");
-		const sortDateBtn = document.getElementById("sort-date");
-		const sortRatingBtn = document.getElementById("sort-rating");
-		const searchInput = document.getElementById("search-input");
-		const searchForm = document.getElementById("search-form");
-		const activeMatchesInfo = document.getElementById("active-matches-info");
-
+		const searchInput = document.getElementById('search-input');
 		if (searchInput && searchQuery) {
-			searchInput.value = searchQuery;
+			searchInput.value = urlParams.get('search');
 		}
 
-		// Структура умного фильтра (для movies.html)
-		const filterStructure = {
-			mainGenre: {
-				title: "Жанр кино",
-				options: ["Фантастика", "Боевик", "Драма", "Криминал", "Комедия"]
-			},
-			epoch: {
-				title: "Эпоха / Годы",
-				options: ["1990-е", "2000-е", "2010-е", "2020-е"]
-			},
-			ratingTier: {
-				title: "Рейтинг Kinobase",
-				options: ["9.0+", "8.5+", "8.0+", "До 8.0"]
-			}
-		};
+		// Состояние умного фильтра (movies.html)
+		const smartFilterContainer = document.getElementById('smart-filters-container');
+		const selectedSmart = { genres: new Set(), country: new Set(), quality: new Set() };
 
-		let smartSelected = {
-			mainGenre: [],
-			epoch: [],
-			ratingTier: []
-		};
-
-		// Если есть контейнер умного фильтра (страница movies.html)
-		if (smartFiltersContainer) {
-			let html = "";
-			for (const [key, group] of Object.entries(filterStructure)) {
-				html += `<div class="filter-group" data-prop="${key}">`;
-				html += `<div class="filter-group-title">${group.title}</div>`;
-				group.options.forEach(val => {
-					html += `
-						<label class="filter-checkbox-item" data-prop="${key}" data-val="${val}">
-							<input type="checkbox" name="${key}" value="${val}">
-							<span class="filter-label-text">${val}</span>
-							<span class="filter-count-badge">0</span>
-						</label>
-					`;
-				});
-				html += `</div>`;
-			}
-			smartFiltersContainer.innerHTML = html;
-
-			smartFiltersContainer.addEventListener("change", function (e) {
-				if (e.target.matches("input[type='checkbox']")) {
-					const prop = e.target.name;
-					smartSelected[prop] = Array.from(smartFiltersContainer.querySelectorAll(`input[name="${prop}"]:checked`)).map(i => i.value);
-					currentPage = 1;
-					renderMoviesCatalog();
-				}
-			});
-
-			const resetBtn = document.getElementById("reset-filters-btn");
-			if (resetBtn) {
-				resetBtn.addEventListener("click", function () {
-					smartSelected = { mainGenre: [], epoch: [], ratingTier: [] };
-					smartFiltersContainer.querySelectorAll("input[type='checkbox']").forEach(ch => {
-						ch.checked = false;
-						ch.disabled = false;
-					});
-					smartFiltersContainer.querySelectorAll(".filter-checkbox-item").forEach(item => {
-						item.classList.remove("disabled");
-					});
-					currentPage = 1;
-					renderMoviesCatalog();
-				});
-			}
+		function filterMoviesList() {
+			return MOVIES_DATA.filter(m => {
+				if (searchQuery && !m.title.toLowerCase().includes(searchQuery)) return false;
+				if (currentGenre !== 'all' && !m.genres.includes(currentGenre)) return false;
+				if (selectedSmart.genres.size > 0 && !m.genres.some(g => selectedSmart.genres.has(g))) return false;
+				if (selectedSmart.country.size > 0 && !selectedSmart.country.has(m.country)) return false;
+				if (selectedSmart.quality.size > 0 && !selectedSmart.quality.has(m.quality)) return false;
+				return true;
+			}).sort((a, b) => currentSort === 'rating' ? b.rating - a.rating : b.year - a.year);
 		}
 
-		// Если это главная страница index.html (простой фильтр в сайдбаре)
-		genreLinks.forEach(link => {
-			link.addEventListener("click", function (e) {
-				e.preventDefault();
-				genreLinks.forEach(l => l.classList.remove("active"));
-				this.classList.add("active");
-				selectedGenreSimple = this.dataset.genre || "all";
-				currentPage = 1;
-				renderMoviesCatalog();
-			});
-		});
+		function renderSmartFilters() {
+			if (!smartFilterContainer) return;
+			const groups = [
+				{ key: 'genres', title: 'Жанр', values: ['Фантастика', 'Боевик', 'Драма', 'Криминал', 'Комедия'], isArray: true },
+				{ key: 'country', title: 'Страна производства', values: ['США', 'Великобритания', 'Франция'], isArray: false },
+				{ key: 'quality', title: 'Качество видео', values: ['4K UHD', 'Full HD'], isArray: false }
+			];
 
-		function evaluateSmartFilterAvailability() {
-			if (!smartFiltersContainer) return;
-
-			for (const [propName, group] of Object.entries(filterStructure)) {
-				group.options.forEach(val => {
-					const count = moviesData.filter(movie => {
-						if (propName === "mainGenre") {
-							if (movie.mainGenre !== val) return false;
-						} else if (smartSelected.mainGenre.length > 0 && !smartSelected.mainGenre.includes(movie.mainGenre)) {
-							return false;
+			smartFilterContainer.innerHTML = groups.map(group => {
+				const itemsHtml = group.values.map(val => {
+					const isChecked = selectedSmart[group.key].has(val);
+					const matchingCount = MOVIES_DATA.filter(m => {
+						if (searchQuery && !m.title.toLowerCase().includes(searchQuery)) return false;
+						for (const gKey of ['genres', 'country', 'quality']) {
+							if (gKey === group.key) continue;
+							if (selectedSmart[gKey].size > 0) {
+								if (gKey === 'genres' && !m.genres.some(x => selectedSmart.genres.has(x))) return false;
+								if (gKey !== 'genres' && !selectedSmart[gKey].has(m[gKey])) return false;
+							}
 						}
-
-						if (propName === "epoch") {
-							if (movie.epoch !== val) return false;
-						} else if (smartSelected.epoch.length > 0 && !smartSelected.epoch.includes(movie.epoch)) {
-							return false;
-						}
-
-						if (propName === "ratingTier") {
-							if (movie.ratingTier !== val) return false;
-						} else if (smartSelected.ratingTier.length > 0 && !smartSelected.ratingTier.includes(movie.ratingTier)) {
-							return false;
-						}
-
-						if (searchQuery) {
-							const text = (movie.title + " " + movie.desc).toLowerCase();
-							if (!text.includes(searchQuery.toLowerCase().trim())) return false;
-						}
-						return true;
+						return group.isArray ? m.genres.includes(val) : m[group.key] === val;
 					}).length;
 
-					const labelEl = smartFiltersContainer.querySelector(`.filter-checkbox-item[data-prop="${propName}"][data-val="${val}"]`);
-					if (labelEl) {
-						const badgeEl = labelEl.querySelector(".filter-count-badge");
-						const inputEl = labelEl.querySelector("input");
-						if (badgeEl) badgeEl.textContent = count;
-						if (count === 0 && !inputEl.checked) {
-							labelEl.classList.add("disabled");
-							inputEl.disabled = true;
-						} else {
-							labelEl.classList.remove("disabled");
-							inputEl.disabled = false;
-						}
-					}
+					const isDisabled = matchingCount === 0 && !isChecked;
+					return `
+						<label class="filter-checkbox-item ${isDisabled ? 'disabled' : ''}">
+							<input type="checkbox" data-group="${group.key}" value="${val}" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''}>
+							<span>${val}</span>
+							<span class="filter-count-badge">${matchingCount}</span>
+						</label>
+					`;
+				}).join('');
+
+				return `<div class="filter-group"><div class="filter-group-title">${group.title}</div>${itemsHtml}</div>`;
+			}).join('');
+
+			smartFilterContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+				cb.addEventListener('change', () => {
+					const grp = cb.dataset.group;
+					if (cb.checked) selectedSmart[grp].add(cb.value);
+					else selectedSmart[grp].delete(cb.value);
+					currentPage = 1;
+					updateCatalog();
 				});
-			}
-		}
-
-		function getFilteredMovies() {
-			return moviesData.filter(movie => {
-				// Логика умного фильтра
-				if (smartFiltersContainer) {
-					if (smartSelected.mainGenre.length > 0 && !smartSelected.mainGenre.includes(movie.mainGenre)) return false;
-					if (smartSelected.epoch.length > 0 && !smartSelected.epoch.includes(movie.epoch)) return false;
-					if (smartSelected.ratingTier.length > 0 && !smartSelected.ratingTier.includes(movie.ratingTier)) return false;
-				} else {
-					// Логика простого фильтра главной страницы
-					if (selectedGenreSimple !== "all" && !movie.genre.includes(selectedGenreSimple)) return false;
-				}
-
-				if (searchQuery) {
-					const text = (movie.title + " " + movie.desc).toLowerCase();
-					if (!text.includes(searchQuery.toLowerCase().trim())) return false;
-				}
-				return true;
-			}).sort((a, b) => {
-				if (currentSort === "rating") return b.rating - a.rating;
-				return b.year - a.year;
 			});
 		}
 
-		function renderMoviesCatalog() {
-			const filtered = getFilteredMovies();
-			if (activeMatchesInfo) {
-				activeMatchesInfo.textContent = `Найдено: ${filtered.length}`;
-			}
+		function updateCatalog() {
+			renderSmartFilters();
+			const filtered = filterMoviesList();
+			const activeMatches = document.getElementById('active-matches-info');
+			if (activeMatches) activeMatches.textContent = `Найдено: ${filtered.length}`;
 
-			const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+			const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
 			if (currentPage > totalPages) currentPage = 1;
 
-			const start = (currentPage - 1) * pageSize;
-			const pageMovies = filtered.slice(start, start + pageSize);
-
-			if (pageMovies.length === 0) {
-				moviesContainer.innerHTML = `
-					<div class="movie-view-card" style="text-align: center; padding: 40px 20px;">
-						<h3>По выбранным параметрам ничего не найдено</h3>
-						<p class="not-found-text">Попробуйте изменить условия поиска или сбросить фильтры.</p>
-					</div>
-				`;
-			} else {
-				moviesContainer.innerHTML = pageMovies.map(movie => `
+			const pageItems = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+			moviesContainer.innerHTML = pageItems.length === 0
+				? `<p class="not-found-text">По вашему запросу фильмов не найдено.</p>`
+				: pageItems.map(m => `
 					<article class="movie-card">
 						<div class="poster-box">
-							<a href="movie.html?id=${movie.id}">
-								<img src="images/${movie.file}" alt="Постер к фильму ${movie.title}" class="poster-image">
+							<a href="movie.html?id=${m.id}">
+								<img src="${m.poster}" alt="Постер к фильму ${escapeHtml(m.title)}" class="poster-image">
 							</a>
-							<span class="movie-rating-badge">${movie.rating}</span>
+							<span class="movie-rating-badge">${m.rating.toFixed(1)}</span>
 						</div>
 						<div class="movie-info">
-							<h3 class="movie-name"><a href="movie.html?id=${movie.id}" class="movie-link">${movie.title}</a></h3>
-							<p class="movie-meta">${movie.year} г. • ${movie.genre}</p>
-							<p class="movie-summary">${movie.desc}</p>
+							<h3 class="movie-name"><a href="movie.html?id=${m.id}" class="movie-link">${escapeHtml(m.title)}</a></h3>
+							<p class="movie-meta">${m.year} г. • ${m.genres.join(', ')} • ${m.country} (${m.quality})</p>
+							<p class="movie-summary">${escapeHtml(m.summary)}</p>
 							<div class="movie-actions">
-								<a href="movie.html?id=${movie.id}" class="button button-detail">Смотреть онлайн</a>
+								<a href="movie.html?id=${m.id}" class="button button-detail">Смотреть онлайн</a>
 							</div>
 						</div>
 					</article>
-				`).join("");
-			}
+				`).join('');
 
-			if (pagination) {
-				let html = "";
-				for (let i = 1; i <= totalPages; i++) {
-					html += `<li class="page-item"><button type="button" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button></li>`;
-				}
-				pagination.innerHTML = html;
-				pagination.querySelectorAll(".page-link").forEach(btn => {
-					btn.addEventListener("click", function () {
-						currentPage = Number(this.dataset.page);
-						renderMoviesCatalog();
-						window.scrollTo({ top: 150, behavior: "smooth" });
+			const paginationEl = document.getElementById('pagination');
+			if (paginationEl) {
+				paginationEl.innerHTML = Array.from({ length: totalPages }, (_, i) => i + 1).map(p => `
+					<li class="page-item"><button type="button" class="page-link ${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button></li>
+				`).join('');
+				paginationEl.querySelectorAll('.page-link').forEach(btn => {
+					btn.addEventListener('click', () => {
+						currentPage = Number(btn.dataset.page);
+						updateCatalog();
 					});
 				});
 			}
-
-			evaluateSmartFilterAvailability();
 		}
 
-		if (sortDateBtn && sortRatingBtn) {
-			sortDateBtn.addEventListener("click", function (e) {
+		// Фильтр жанров в сайдбаре index.html
+		document.querySelectorAll('#genre-filter .genre-link').forEach(link => {
+			link.addEventListener('click', (e) => {
 				e.preventDefault();
-				sortRatingBtn.classList.remove("active");
-				this.classList.add("active");
-				currentSort = "date";
-				renderMoviesCatalog();
-			});
-
-			sortRatingBtn.addEventListener("click", function (e) {
-				e.preventDefault();
-				sortDateBtn.classList.remove("active");
-				this.classList.add("active");
-				currentSort = "rating";
-				renderMoviesCatalog();
-			});
-		}
-
-		if (searchInput) {
-			searchInput.addEventListener("input", function () {
-				searchQuery = this.value.toLowerCase().trim();
+				document.querySelectorAll('#genre-filter .genre-link').forEach(l => l.classList.remove('active'));
+				link.classList.add('active');
+				currentGenre = link.dataset.genre || 'all';
 				currentPage = 1;
-				renderMoviesCatalog();
+				updateCatalog();
 			});
-		}
+		});
 
-		if (searchForm) {
-			searchForm.addEventListener("submit", function (e) {
+		// Сортировка
+		const sortDate = document.getElementById('sort-date');
+		const sortRating = document.getElementById('sort-rating');
+		if (sortDate && sortRating) {
+			sortDate.addEventListener('click', (e) => {
 				e.preventDefault();
-				searchQuery = searchInput.value.toLowerCase().trim();
-				currentPage = 1;
-				renderMoviesCatalog();
+				currentSort = 'date';
+				sortDate.classList.add('active');
+				sortRating.classList.remove('active');
+				updateCatalog();
+			});
+			sortRating.addEventListener('click', (e) => {
+				e.preventDefault();
+				currentSort = 'rating';
+				sortRating.classList.add('active');
+				sortDate.classList.remove('active');
+				updateCatalog();
 			});
 		}
 
-		renderMoviesCatalog();
+		const resetBtn = document.getElementById('reset-filters-btn');
+		if (resetBtn) {
+			resetBtn.addEventListener('click', () => {
+				selectedSmart.genres.clear();
+				selectedSmart.country.clear();
+				selectedSmart.quality.clear();
+				searchQuery = '';
+				if (searchInput) searchInput.value = '';
+				currentPage = 1;
+				updateCatalog();
+			});
+		}
+
+		const promoBtn = document.getElementById('promo-action-btn');
+		if (promoBtn) {
+			promoBtn.addEventListener('click', () => {
+				window.location.href = 'movie.html?id=1';
+			});
+		}
+
+		updateCatalog();
 	}
 
-	// =========================================================================
-	// 3. Страница отдельного фильма (movie.html)
-	// =========================================================================
-	const movieDetailsContainer = document.getElementById("movie-details-container");
+	// Страница отдельного фильма (movie.html)
+	const movieDetailsContainer = document.getElementById('movie-details-container');
 	if (movieDetailsContainer) {
 		const params = new URLSearchParams(window.location.search);
-		const movieId = Number(params.get("id")) || 1;
-		const movie = moviesData.find(m => m.id === movieId);
+		const movieId = Number(params.get('id')) || 1;
+		const movie = MOVIES_DATA.find(m => m.id === movieId) || MOVIES_DATA[0];
 
-		if (!movie) {
-			movieDetailsContainer.innerHTML = `
-				<div class="movie-view-card">
-					<h2>Фильм не найден</h2>
-					<p class="not-found-text">Запрашиваемый фильм отсутствует в базе данных.</p>
-					<a href="movies.html" class="button button-primary">Вернуться в каталог</a>
-				</div>
-			`;
-		} else {
-			document.title = `${movie.title} (${movie.year}) — Kinobase`;
-			const titleTag = document.getElementById("movie-page-title");
-			if (titleTag) titleTag.textContent = `${movie.title} — Kinobase`;
-
-			movieDetailsContainer.innerHTML = `
-				<article class="movie-view-card">
-					<div class="movie-view-header">
-						<div class="movie-view-poster">
-							<img src="images/${movie.file}" alt="Постер к фильму ${movie.title}">
-						</div>
-						<div class="movie-view-info">
-							<h1 class="movie-view-title">${movie.title}</h1>
-							<div class="movie-view-rating">★ Рейтинг: ${movie.rating} / 10</div>
-							<div class="movie-view-meta">
-								<span>Год выпуска:</span> <strong>${movie.year}</strong><br>
-								<span>Жанр:</span> <strong>${movie.genre}</strong>
-							</div>
-							<p class="movie-view-desc">${movie.desc}</p>
-							<div>
-								<button type="button" class="button button-primary" onclick="document.getElementById('video-player').scrollIntoView({behavior: 'smooth'})">Смотреть онлайн</button>
-								<a href="movies.html" class="button button-detail button-inline">В каталог</a>
-							</div>
+		document.title = `Kinobase — ${movie.title} (${movie.year})`;
+		movieDetailsContainer.innerHTML = `
+			<article class="movie-view-card">
+				<div class="movie-view-header">
+					<div class="movie-view-poster">
+						<img src="${movie.poster}" alt="${escapeHtml(movie.title)}">
+					</div>
+					<div class="movie-view-info">
+						<h1 class="movie-view-title">${escapeHtml(movie.title)}</h1>
+						<p class="movie-view-meta"><span>Год:</span> ${movie.year} • <span>Жанр:</span> ${movie.genres.join(', ')} • <span>Страна:</span> ${movie.country}</p>
+						<div class="movie-view-rating">Рейтинг Kinobase: ${movie.rating.toFixed(1)} / 10</div>
+						<p class="movie-view-desc">${escapeHtml(movie.summary)}</p>
+						<div>
+							<a href="movies.html" class="button button-detail">← Все фильмы каталога</a>
 						</div>
 					</div>
+				</div>
+				<div class="player-section">
+					<h3 class="widget-title">Онлайн-плеер (${movie.quality})</h3>
+					<div class="player-box">
+						<div class="player-icon" title="Запустить просмотр"></div>
+						<p class="player-caption">Нажмите Play для просмотра «${escapeHtml(movie.title)}» в качестве ${movie.quality}</p>
+					</div>
+				</div>
+			</article>
+		`;
 
-					<section class="player-section" id="video-player">
-						<h3 class="widget-title">Онлайн плеер Kinobase</h3>
-						<div class="player-box">
-							<div class="player-icon" onclick="alert('Воспроизведение фильма: ${movie.title}')"></div>
-							<p class="player-caption">Нажмите для запуска официального видеоплеера Full HD 1080p</p>
-						</div>
-					</section>
-				</article>
-			`;
-
-			const similarList = document.getElementById("similar-movies-list");
-			if (similarList) {
-				const similar = moviesData
-					.filter(m => m.id !== movie.id && m.mainGenre === movie.mainGenre)
-					.sort((a, b) => b.rating - a.rating)
-					.slice(0, 4);
-
-				similarList.innerHTML = similar.map((m, idx) => `
-					<li class="top-list-item">
-						<span class="position-number">${idx + 1}</span>
-						<div class="top-info">
-							<a href="movie.html?id=${m.id}" class="top-link">${m.title}</a>
-							<span class="rating">${m.rating}</span>
-						</div>
-					</li>
-				`).join("");
-			}
+		const similarList = document.getElementById('similar-movies-list');
+		if (similarList) {
+			const similar = MOVIES_DATA.filter(m => m.id !== movie.id && m.genres.some(g => movie.genres.includes(g))).slice(0, 5);
+			similarList.innerHTML = similar.map((m, idx) => `
+				<li class="top-list-item">
+					<span class="position-number">${idx + 1}</span>
+					<div class="top-info">
+						<a href="movie.html?id=${m.id}" class="top-link">${escapeHtml(m.title)}</a>
+						<span class="rating">${m.rating.toFixed(1)}</span>
+					</div>
+				</li>
+			`).join('');
 		}
 	}
 
-	// =========================================================================
-	// 4. Модальное окно и формы
-	// =========================================================================
-	const loginBtn = document.getElementById("open-login-btn");
-	const loginModal = document.getElementById("login-modal");
-	const closeModalBtn = document.getElementById("close-modal-btn");
-	const loginForm = document.getElementById("login-form");
-
-	if (loginBtn && loginModal) {
-		loginBtn.addEventListener("click", () => loginModal.classList.remove("hidden"));
-		closeModalBtn.addEventListener("click", () => loginModal.classList.add("hidden"));
-		loginModal.addEventListener("click", (e) => {
-			if (e.target === loginModal) loginModal.classList.add("hidden");
-		});
-
-		loginForm.addEventListener("submit", function (e) {
-			e.preventDefault();
-			const email = document.getElementById("login-email").value;
-			alert(`Вы успешно вошли как: ${email}`);
-			loginModal.classList.add("hidden");
-			loginBtn.textContent = email.split("@")[0];
-		});
-	}
-
-	const feedback = document.getElementById("feedback-form");
-	if (feedback) {
-		feedback.addEventListener("submit", function (e) {
-			e.preventDefault();
-			alert("Спасибо! Ваше обращение отправлено администрации Kinobase.");
-			feedback.reset();
-		});
-	}
-
-	const promoBtn = document.getElementById("promo-action-btn");
-	if (promoBtn) {
-		promoBtn.addEventListener("click", () => {
-			window.location.href = "movie.html?id=1";
-		});
-	}
+	// Запускаем модули Лабораторной работы №4
+	buildAuthModal();
+	updateAuthUI();
+	initProfilePage();
+	checkUrlAuthActions();
 });

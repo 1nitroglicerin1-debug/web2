@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kinobase — Закрытый раздел (Личный кабинет VIP)</title>
+	<link rel="stylesheet" href="styles.css">
+	<script>
+		// Защита от прямого перехода по ссылке (Пункт 2 ТЗ)
+		(function () {
+			function getCookie(name) {
+				const matches = document.cookie.match(new RegExp(
+					"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+				));
+				return matches ? decodeURIComponent(matches[1]) : undefined;
+			}
+			const cookieId = getCookie('id');
+			const cookieHash = getCookie('hash');
+			const rawUsers = localStorage.getItem('kinobase_users_db');
+			let authorized = false;
+
+			if (cookieId && cookieHash && rawUsers) {
+				try {
+					const users = JSON.parse(rawUsers);
+					const user = users.find(u => String(u.user_id) === String(cookieId));
+					if (user && user.user_hash === cookieHash) {
+						authorized = true;
+					}
+				} catch (e) {
+					authorized = false;
+				}
+			}
+
+			if (!authorized) {
+				window.location.replace('index.html?auth_required=1');
+			}
+		})();
+	</script>
+</head>
+<body>
+
+	<!-- Шапка сайта -->
+	<header id="site-header" class="header">
+		<div class="container header-container">
+			<div class="logo">
+				<a href="index.html" class="logo-link">
+					<img src="images/logo.png" alt="Логотип Kinobase" class="logo-image">
+					<span class="logo-text">KINO<span class="logo-accent">BASE</span></span>
+				</a>
+			</div>
+
+			<form id="search-form" class="search-form" action="movies.html" method="get">
+				<input type="text" id="search-input" name="search" class="search-input" placeholder="Поиск фильма..." autocomplete="off">
+				<button type="submit" class="search-button">Найти</button>
+			</form>
+
+			<div class="user-panel">
+				<button type="button" id="open-login-btn" class="button button-login">Вход</button>
+			</div>
+		</div>
+
+		<nav id="main-navigation" class="navigation">
+			<div class="container">
+				<ul class="nav-list">
+					<li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+					<li class="nav-item"><a href="about.html" class="nav-link">О Компании</a></li>
+					<li class="nav-item"><a href="movies.html" class="nav-link">Каталог фильмов</a></li>
+					<li class="nav-item"><a href="price.html" class="nav-link">Прайс-лист</a></li>
+					<li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container layout-wrapper">
+		<!-- Сайдбар личного кабинета -->
+		<aside class="sidebar">
+			<section class="widget profile-card-widget">
+				<div class="profile-avatar-wrapper">
+					<img id="profile-current-avatar" src="images/logo.png" alt="Аватар пользователя" class="profile-avatar-large">
+				</div>
+				<h3 id="profile-display-fio" class="profile-name">Загрузка...</h3>
+				<p class="profile-login-tag">Логин: <span id="profile-display-login">—</span></p>
+				<p class="profile-email-tag" id="profile-display-email">—</p>
+				<div class="profile-badge-vip">★ VIP-доступ активен</div>
+				<button type="button" id="profile-logout-btn" class="button button-detail button-block">Выйти из аккаунта</button>
+			</section>
+
+			<section class="widget">
+				<h3 class="widget-title">Параметры сессии (Cookie)</h3>
+				<div class="session-debug-box">
+					<p><strong>Cookie ID:</strong> <code id="debug-cookie-id">-</code></p>
+					<p><strong>Cookie Hash:</strong> <code id="debug-cookie-hash">-</code></p>
+					<p><strong>Привязка к IP:</strong> <span id="debug-user-ip">-</span></p>
+					<p class="filter-hint" style="margin-top:8px;">Если не нажимать «Выход», Cookie сохраняют авторизацию на 30 дней для следующих сеансов (п. 4 ТЗ).</p>
+				</div>
+			</section>
+		</aside>
+
+		<!-- Основной контент закрытого раздела -->
+		<main id="main-content" class="content">
+			<section class="about-section">
+				<h2 class="catalog-title">🔒 Закрытый VIP-раздел и настройки профиля</h2>
+				<p class="about-lead">Добро пожаловать в закрытый раздел Kinobase! Эта страница защищена проверкой авторизации и недоступна по прямой ссылке гостям сайта.</p>
+
+				<div class="profile-grid">
+					<!-- Форма изменения данных (Пункт 3 ТЗ: всё кроме логина) -->
+					<div class="about-card">
+						<h3 class="about-subtitle">Редактирование личных данных (п. 3 ТЗ)</h3>
+						<div id="profile-message" class="auth-alert hidden"></div>
+
+						<form id="profile-edit-form">
+							<div class="form-group">
+								<label for="edit-login">Логин (изменение запрещено):</label>
+								<input type="text" id="edit-login" class="form-control input-disabled" readonly disabled title="Логин нельзя изменить согласно требованиям ЛР №4">
+								<small class="form-help-text">Поле логина заблокировано для изменения согласно п. 3 задания.</small>
+							</div>
+
+							<div class="form-group">
+								<label for="edit-fio">ФИО:</label>
+								<input type="text" id="edit-fio" class="form-control" placeholder="Введите ФИО" required>
+							</div>
+
+							<div class="form-group">
+								<label for="edit-email">Электронная почта (Email):</label>
+								<input type="email" id="edit-email" class="form-control" placeholder="user@example.com" required>
+							</div>
+
+							<div class="form-group">
+								<label for="edit-avatar-file">Сменить аватар (изображение):</label>
+								<input type="file" id="edit-avatar-file" class="form-control" accept="image/*">
+								<small class="form-help-text">Оставьте пустым, если хотите сохранить текущий аватар.</small>
+							</div>
+
+							<div class="form-group">
+								<label for="edit-new-password">Новый пароль (необязательно):</label>
+								<input type="password" id="edit-new-password" class="form-control" placeholder="Оставьте пустым, чтобы не менять">
+							</div>
+
+							<button type="submit" class="button button-primary button-block">Сохранить изменения</button>
+						</form>
+					</div>
+
+					<!-- Эксклюзивный контент закрытого раздела -->
+					<div class="about-card">
+						<h3 class="about-subtitle">Эксклюзивные материалы для авторизованных</h3>
+						<p style="margin-bottom: 14px; color: #cbd5e0;">Как авторизованному резиденту Kinobase, вам доступны закрытые предпремьерные показы и персональные привилегии:</p>
+
+						<ul class="vip-movies-list">
+							<li>
+								<img src="images/poster-dune-2.jpg" alt="Дюна 2">
+								<div>
+									<strong>Дюна: Часть вторая (Режиссёрская 4K IMAX версия)</strong>
+									<span>Доступно только в закрытом разделе • Звук Dolby Atmos</span>
+									<a href="movie.html?id=13" class="vip-watch-link">Смотреть закрытую копию →</a>
+								</div>
+							</li>
+							<li>
+								<img src="images/poster-oppenheimer.jpg" alt="Оппенгеймер">
+								<div>
+									<strong>Оппенгеймер + Дополнительные материалы съёмок</strong>
+									<span>Эксклюзивный дубляж • Без рекламы</span>
+									<a href="movie.html?id=14" class="vip-watch-link">Смотреть закрытую копию →</a>
+								</div>
+							</li>
+							<li>
+								<img src="images/poster-interstellar.jpg" alt="Интерстеллар">
+								<div>
+									<strong>Интерстеллар (Юбилейный ремастер 10 лет)</strong>
+									<span>Оригинальная дорожка + комментарии Кристофера Нолана</span>
+									<a href="movie.html?id=1" class="vip-watch-link">Смотреть закрытую копию →</a>
+								</div>
+							</li>
+						</ul>
+
+						<div class="vip-promo-box">
+							<p>Ваш персональный промокод на 30 дней подписки «Премиум 4K»:</p>
+							<code class="promo-code-badge">KINOBASE-VIP-2026</code>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- Модальное окно авторизации/регистрации -->
+	<div id="login-modal" class="modal-overlay hidden"></div>
+
+	<!-- Подвал -->
+	<footer id="site-footer" class="footer">
+		<div class="container footer-container">
+			<div class="footer-copyright">
+				<p>&copy; 2026 Kinobase. Лабораторная работа №4 по веб-разработке.</p>
+			</div>
+			<ul class="footer-navigation">
+				<li class="footer-nav-item"><a href="index.html" class="footer-link">Главная</a></li>
+				<li class="footer-nav-item"><a href="about.html" class="footer-link">О Компании</a></li>
+				<li class="footer-nav-item"><a href="movies.html" class="footer-link">Каталог</a></li>
+				<li class="footer-nav-item"><a href="price.html" class="footer-link">Прайс-лист</a></li>
+				<li class="footer-nav-item"><a href="contacts.html" class="footer-link">Контакты</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>

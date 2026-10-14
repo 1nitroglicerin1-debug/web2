@@ -1336,3 +1336,304 @@ a:active {
 	font-weight: bold;
 	margin-right: 15px;
 }
+
+/* ==========================================================================
+   Лабораторная №4: Авторизация, Регистрация, Профиль и Закрытый раздел
+   ========================================================================== */
+.modal-window {
+	max-width: 440px;
+	max-height: 92vh;
+	overflow-y: auto;
+}
+
+.auth-tabs {
+	display: flex;
+	gap: 6px;
+	margin-bottom: 18px;
+	border-bottom: 1px solid #2d3748;
+	padding-bottom: 10px;
+}
+
+.auth-tab-btn {
+	flex: 1;
+	background-color: #242c3d;
+	border: 1px solid #2d3748;
+	color: #a0aec0;
+	padding: 8px 6px;
+	font-size: 12px;
+	font-weight: bold;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.auth-tab-btn.active,
+.auth-tab-btn:hover {
+	background-color: #ed8936;
+	border-color: #ed8936;
+	color: #ffffff;
+}
+
+.auth-alert {
+	padding: 10px 12px;
+	border-radius: 4px;
+	margin-bottom: 14px;
+	font-size: 13px;
+	line-height: 1.4;
+	word-break: break-word;
+}
+
+.auth-alert.error {
+	background-color: rgba(229, 62, 62, 0.18);
+	border: 1px solid #e53e3e;
+	color: #feb2b2;
+}
+
+.auth-alert.success {
+	background-color: rgba(72, 187, 120, 0.18);
+	border: 1px solid #48bb78;
+	color: #9ae6b4;
+}
+
+.auth-alert.info {
+	background-color: rgba(66, 153, 225, 0.18);
+	border: 1px solid #4299e1;
+	color: #bee3f8;
+}
+
+.checkbox-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	color: #cbd5e0;
+	margin-bottom: 14px;
+	cursor: pointer;
+}
+
+.checkbox-row input[type="checkbox"] {
+	accent-color: #ed8936;
+	width: 15px;
+	height: 15px;
+}
+
+.avatar-preview-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.avatar-preview-img {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid #ed8936;
+	background-color: #2d3748;
+}
+
+.user-panel {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.header-user-badge {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background-color: #242c3d;
+	border: 1px solid #2d3748;
+	padding: 4px 10px;
+	border-radius: 20px;
+	text-decoration: none !important;
+	color: #ffffff !important;
+}
+
+.header-user-badge:hover {
+	border-color: #ed8936;
+}
+
+.header-avatar-mini {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid #ed8936;
+}
+
+.header-user-name {
+	font-size: 13px;
+	font-weight: bold;
+	color: #edf2f7;
+	max-width: 130px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.profile-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
+	margin-top: 20px;
+}
+
+.profile-card-widget {
+	text-align: center;
+}
+
+.profile-avatar-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 12px;
+}
+
+.profile-avatar-large {
+	width: 110px;
+	height: 110px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 3px solid #ed8936;
+	background-color: #2d3748;
+}
+
+.profile-name {
+	font-size: 17px;
+	color: #ffffff;
+	margin-bottom: 4px;
+}
+
+.profile-login-tag {
+	font-size: 13px;
+	color: #ed8936;
+	font-weight: bold;
+	margin-bottom: 4px;
+}
+
+.profile-email-tag {
+	font-size: 12px;
+	color: #a0aec0;
+	margin-bottom: 12px;
+}
+
+.profile-badge-vip {
+	display: inline-block;
+	background-color: rgba(56, 161, 105, 0.2);
+	border: 1px solid #38a169;
+	color: #68d391;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 4px 10px;
+	border-radius: 12px;
+	margin-bottom: 14px;
+}
+
+.input-disabled {
+	background-color: #161b26 !important;
+	color: #718096 !important;
+	cursor: not-allowed;
+	border-color: #2d3748 !important;
+}
+
+.form-help-text {
+	display: block;
+	font-size: 11px;
+	color: #718096;
+	margin-top: 4px;
+}
+
+.session-debug-box p {
+	font-size: 12px;
+	margin-bottom: 6px;
+	color: #cbd5e0;
+	word-break: break-all;
+}
+
+.session-debug-box code {
+	background-color: #12151c;
+	color: #f6ad55;
+	padding: 2px 5px;
+	border-radius: 3px;
+	font-size: 11px;
+}
+
+.vip-movies-list li {
+	display: flex;
+	gap: 12px;
+	padding: 10px 0;
+	border-bottom: 1px solid #2d3748;
+}
+
+.vip-movies-list li:last-child {
+	border-bottom: none;
+}
+
+.vip-movies-list img {
+	width: 50px;
+	height: 70px;
+	object-fit: cover;
+	border-radius: 4px;
+	flex-shrink: 0;
+}
+
+.vip-movies-list strong {
+	display: block;
+	font-size: 13px;
+	color: #ffffff;
+}
+
+.vip-movies-list span {
+	display: block;
+	font-size: 11px;
+	color: #a0aec0;
+	margin: 3px 0;
+}
+
+.vip-watch-link {
+	font-size: 12px;
+	font-weight: bold;
+	color: #ed8936 !important;
+}
+
+.vip-promo-box {
+	margin-top: 16px;
+	background-color: #161b26;
+	border: 1px dashed #ed8936;
+	border-radius: 6px;
+	padding: 12px;
+	text-align: center;
+}
+
+.promo-code-badge {
+	display: inline-block;
+	margin-top: 6px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #ed8936;
+	letter-spacing: 1px;
+}
+
+.reset-link-box {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #12151c;
+	border: 1px dashed #ed8936;
+	border-radius: 4px;
+	font-size: 12px;
+}
+
+.reset-link-box a {
+	display: inline-block;
+	margin-top: 6px;
+	font-weight: bold;
+	color: #f6ad55 !important;
+	word-break: break-all;
+}
+
+@media (max-width: 768px) {
+	.profile-grid {
+		grid-template-columns: 1fr;
+	}
+}
