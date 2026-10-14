@@ -1218,13 +1218,33 @@ document.addEventListener('DOMContentLoaded', () => {
 					</iframe>
 				`;
 			} else {
-				const videoSrc = movie.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4';
+				// Набор 100% рабочих открытых MP4-потоков (W3C, Plyr, VideoJS, W3Schools)
+				const workingStreams = [
+					'https://media.w3.org/2010/05/sintel/trailer.mp4',
+					'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
+					'https://vjs.zencdn.net/v/oceans.mp4',
+					'https://media.w3.org/2010/05/bunny/trailer.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				];
+				const primaryMp4 = workingStreams[(movie.id - 1) % workingStreams.length];
+
 				playerBox.innerHTML = `
-					<video controls autoplay poster="${movie.poster}" style="width: 100%; height: 100%; border-radius: 6px; background: #000; outline: none;">
-						<source src="${videoSrc}" type="video/mp4">
+					<video id="active-html5-video" controls autoplay playsinline poster="${movie.poster}" style="width: 100%; height: 100%; border-radius: 6px; background: #000; outline: none;">
+						<source src="${primaryMp4}" type="video/mp4">
+						<source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+						<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
 						Ваш браузер не поддерживает встроенное видео.
 					</video>
 				`;
+
+				const videoEl = document.getElementById('active-html5-video');
+				if (videoEl) {
+					videoEl.load();
+					videoEl.play().catch(() => {
+						// Если браузер блокирует автозапуск со звуком, включаем показ контролов
+						videoEl.controls = true;
+					});
+				}
 			}
 		}
 
